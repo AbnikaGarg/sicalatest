@@ -63,7 +63,7 @@ class _HomepageState extends State<Homepage> {
     Choice(title: 'Vendors', svg: "vendors", page: const Vendors()),
     Choice(title: 'Operators', svg: "member", page: const Operators()),
     Choice(title: 'Fund', svg: "hand", page: const Funds()),
-    Choice(title: 'Form', svg: "viewall", page: SelectReason()),
+    Choice(title: 'Support', svg: "viewall", page: SelectReason()),
   ];
   List forumType = [
     {"title": "WEBSITE LAUNCH", "image": "assets/images/website.png"},
@@ -94,7 +94,7 @@ class _HomepageState extends State<Homepage> {
       "date": "Jul 15 2023"
     },
   ];
-  List _category = ["All", "News", "Gallery", "Blogs", "Tech Talks"];
+  List _category = ["All", "News", "Blogs", "Tech Talks"];
   List events = [
     {
       "title": "Film Camera Training part1",

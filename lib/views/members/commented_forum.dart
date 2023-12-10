@@ -25,8 +25,7 @@ class _nameState extends State<DiscussionCommented> {
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => DiscussionFormReply()));
+               
               },
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),

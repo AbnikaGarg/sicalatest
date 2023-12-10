@@ -53,6 +53,7 @@ dependencies:
   webview_flutter: ^4.4.2
   flutter_widget_from_html: ^0.14.8
   flutter_html: ^3.0.0-beta.2
+  lottie: ^2.7.0
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import 'package:sica/views/members/components/members_tabbar.dart';
 import 'package:sica/views/vendors/vendors_details.dart';
 
@@ -179,29 +180,39 @@ class _nameState extends State<Operators> {
                 ))
           ],
         ),
-        body: Column(
-          children: [
-            SizedBox(
-              height: 10.h,
-            ),
-            Expanded(
-                child: ListView.builder(
-              itemCount: vendorList.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => OperatorDetails(
-                            vendors: vendorList[index]["vendors"])));
-                  },
-                  child: VendorCard(
-                    vendor: vendorList[index],
-                  ),
-                );
-              },
-            ))
-          ],
-        ));
+        body: Center(
+        child: Container(
+          width: 260.w,
+          child: Lottie.network(
+            'https://lottie.host/86c8b48e-69f0-48a6-a6c6-b506bb45a9d0/ERZSLsvt2n.json',
+            
+          ),
+        ),
+      ),
+        // body: Column(
+        //   children: [
+        //     SizedBox(
+        //       height: 10.h,
+        //     ),
+        //     Expanded(
+        //         child: ListView.builder(
+        //       itemCount: vendorList.length,
+        //       itemBuilder: (context, index) {
+        //         return GestureDetector(
+        //           onTap: () {
+        //             Navigator.of(context).push(MaterialPageRoute(
+        //                 builder: (context) => OperatorDetails(
+        //                     vendors: vendorList[index]["vendors"])));
+        //           },
+        //           child: VendorCard(
+        //             vendor: vendorList[index],
+        //           ),
+        //         );
+        //       },
+        //     ))
+        //   ],
+       // )
+        );
   }
 }
 

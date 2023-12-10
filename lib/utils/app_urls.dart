@@ -14,5 +14,11 @@ class AppConstants {
   static String createJobSeeker = "/create/job_seeker";
   static String getJobProvider = "/all/job_provider";
   static String addJobProvider = "/create/job_provider";
-   static String createPayment = "/create/razorpay_order";
+  static String createPayment = "/create/razorpay_order";
+  static String getCategories = "/get/all/discuss_category";
+  static String discussionTopic = "/get/all/discussion_topic";
+  static String createTopic = "/create/discussion_topic";
+  static String updateTopic = "/update/discussion_topic";
+  static String deleteTopic = "/delete/discussion_topic";
+  static String createComment = "/create/discussion_comment";
 }

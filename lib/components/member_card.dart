@@ -55,9 +55,10 @@ class MemberCard extends StatelessWidget {
                         fit: BoxFit.cover,
                       )),
                 ),
+                
                 placeholder: (context, url) => SizedBox(
-                  child:  Center(
-                      child:const CircularProgressIndicator(
+                  child: Center(
+                      child: const CircularProgressIndicator(
                     color: Colors.yellow,
                   )),
                   height: 10.h,
@@ -95,15 +96,16 @@ class MemberCard extends StatelessWidget {
                           "$designation",
                           style: Theme.of(context).textTheme.displaySmall,
                         ),
-                        if (designation != "")
+                        // if (designation != "")
+                        //   Text(
+                        //     " | ",
+                        //     style: Theme.of(context).textTheme.displaySmall,
+                        //   ),
+                        if (designation == "")
                           Text(
-                            " | ",
+                            "$date",
                             style: Theme.of(context).textTheme.displaySmall,
                           ),
-                        Text(
-                          "$date",
-                          style: Theme.of(context).textTheme.displaySmall,
-                        ),
                       ],
                     )
                   ],

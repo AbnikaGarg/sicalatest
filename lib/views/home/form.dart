@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:sica/services/member_repo.dart';
+import 'package:sica/utils/config.dart';
+import 'package:sica/views/home/dashboard.dart';
 import 'package:sica/views/profile/add_work.dart';
 import '../../components/buton.dart';
 import '../../components/dynamic_modal_sheet.dart';
@@ -9,8 +13,8 @@ import '../login/otp_page.dart';
 import 'package:intl/intl.dart';
 
 class CreateDelayReport extends StatefulWidget {
-  CreateDelayReport({super.key});
-
+  CreateDelayReport({super.key, required this.reasonid});
+  final String reasonid;
   @override
   State<CreateDelayReport> createState() => _CreateDelayReportState();
 }
@@ -20,9 +24,77 @@ class _CreateDelayReportState extends State<CreateDelayReport> {
   final cameraIssueText = TextEditingController();
   final outdorrIssueText = TextEditingController();
   final issueTypeText = TextEditingController();
-  List issueType = ["Yes", "No"];
-  List outdorrIssue = ["Yes", "No"];
-  List CameraIssue = ["Camera", "Lens", "Lights", "Grips"];
+  final name = TextEditingController();
+  final memberno = TextEditingController();
+  final project = TextEditingController();
+  final production = TextEditingController();
+  final outdoor = TextEditingController();
+  final location = TextEditingController();
+  final issue = TextEditingController();
+  final aproxTime = TextEditingController();
+  final managerContact = TextEditingController();
+  final productionContact = TextEditingController();
+  final briefIssue = TextEditingController();
+  List issueType = [
+    {"ans": "Yes"},
+    {"ans": "No"}
+  ];
+  List outdorrIssue = [
+    {"ans": "Yes"},
+    {"ans": "No"}
+  ];
+  List CameraIssue = [
+    {"type": "Camera"},
+    {"type": "Lens"},
+    {"type": "Lights"},
+    {"type": "Grips"}
+  ];
+   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  submit() {
+    if (_formKey.currentState!.validate()) {
+      final service = MemberRepo();
+      DialogHelp.showLoading(context);
+      service
+          .createReason(
+            widget.reasonid,
+              memberno.text,
+              name.text,
+              project.text,
+              production.text,
+              outdoor.text,
+              location.text,
+              cameraIssueText.text,
+              aproxTime.text,
+              managerContact.text,
+              outdorrIssueText.text,
+            issueTypeText.text,
+              productionContact.text,
+              briefIssue.text)
+          .then((value) {
+        DialogHelp().hideLoading(context);
+        if (value.isNotEmpty) {
+          Fluttertoast.showToast(
+              msg: "Grievance Added",
+              backgroundColor: Colors.green,
+              gravity: ToastGravity.TOP,
+              textColor: Colors.white);
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      MyDashBoard(currentIndex: 0)),
+              (_) => false);
+        } else {
+          Fluttertoast.showToast(
+              msg: "Something went wrong",
+              backgroundColor: Colors.red,
+              gravity: ToastGravity.TOP,
+              textColor: Colors.white);
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,8 +107,9 @@ class _CreateDelayReportState extends State<CreateDelayReport> {
       ),
       body: SingleChildScrollView(
         child: Form(
+          key: _formKey,
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.h),
+            padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 20.h),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -187,13 +260,14 @@ class _CreateDelayReportState extends State<CreateDelayReport> {
                       return null;
                     },
                     ontap: () {
-                      ModalSheet.showModal(context, CameraIssue, (value) {
+                      ModalSheet.showModal(context, CameraIssue, "type",
+                          (value) {
                         //  print(value);
                         //sss _controller.setMode(value);
                         setState(() {
                           cameraIssueText.text = value;
                         });
-                      },cameraIssueText.text );
+                      }, (value) {}, cameraIssueText.text);
                     },
                     hintText: "Your answer",
                     icon: Icon(
@@ -263,11 +337,11 @@ class _CreateDelayReportState extends State<CreateDelayReport> {
                       return null;
                     },
                     ontap: () {
-                      ModalSheet.showModal(context, issueType, (value) {
-                       setState(() {
+                      ModalSheet.showModal(context, issueType, "ans", (value) {
+                        setState(() {
                           issueTypeText.text = value;
                         });
-                      },issueTypeText.text);
+                      }, (value) {}, issueTypeText.text);
                     },
                     readOnly: true,
                     icon: Icon(
@@ -288,7 +362,7 @@ class _CreateDelayReportState extends State<CreateDelayReport> {
                   ),
                 ),
                 MyTextField(
-                   textEditingController: outdorrIssueText,
+                    textEditingController: outdorrIssueText,
                     validation: (value) {
                       if (value == null || value.isEmpty) {
                         return "Enter Has the Issue been reported to the Production Manager / Executive Producer";
@@ -296,11 +370,12 @@ class _CreateDelayReportState extends State<CreateDelayReport> {
                       return null;
                     },
                     ontap: () {
-                      ModalSheet.showModal(context, outdorrIssue, (value) {
-                         setState(() {
+                      ModalSheet.showModal(context, outdorrIssue, "ans",
+                          (value) {
+                        setState(() {
                           outdorrIssueText.text = value;
                         });
-                      },outdorrIssueText.text);
+                      }, (value) {}, outdorrIssueText.text);
                     },
                     readOnly: true,
                     icon: Icon(
@@ -356,12 +431,7 @@ class _CreateDelayReportState extends State<CreateDelayReport> {
                   padding: EdgeInsets.symmetric(vertical: 26.h),
                   child: RoundedButton(
                       ontap: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => OtpScreen(),
-                        //   ),
-                        // );
+                       submit();
                       },
                       title: "Submit",
                       color: Theme.of(context).primaryColor,

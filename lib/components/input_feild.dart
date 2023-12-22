@@ -19,6 +19,7 @@ class MyTextField extends StatelessWidget {
   var ontap;
   var ontapSuffix;
   FloatingLabelBehavior float;
+  final ValueChanged<String>? onChanged;
   final bool obsecureText;
   final bool isSuffixIcon;
   final TextEditingController? textEditingController;
@@ -27,6 +28,7 @@ class MyTextField extends StatelessWidget {
       required this.hintText,
       required this.color,
       this.icon,
+      this.onChanged,
       this.fillcolor = Colors.white,
       this.ontapSuffix,
       this.obsecureText = false,
@@ -53,6 +55,7 @@ class MyTextField extends StatelessWidget {
           controller: textEditingController,
           obscureText: obsecureText,
           validator: validation,
+          onChanged: onChanged,
           cursorColor: Theme.of(context).primaryColor,
           textAlignVertical: TextAlignVertical.center,
           style:

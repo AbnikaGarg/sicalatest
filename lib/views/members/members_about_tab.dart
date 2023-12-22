@@ -41,8 +41,8 @@ class _nameState extends State<MemberAboutTab> {
               children: [
                 if (widget.memberdetails.memberDetails!.image.toString() != "")
                   Container(
-                    height: 80.h,
-                    width: 80.h,
+                    height: 60.h,
+                    width: 60.h,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
@@ -55,8 +55,8 @@ class _nameState extends State<MemberAboutTab> {
                   )
                 else
                   Container(
-                    height: 80.h,
-                    width: 80.h,
+                    height: 60.h,
+                    width: 60.h,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
@@ -76,11 +76,10 @@ class _nameState extends State<MemberAboutTab> {
                             widget.memberdetails.memberDetails!.name.toString(),
                             style: Theme.of(context).textTheme.headlineMedium!),
                         SizedBox(
-                          height: 6.h,
+                          height: 4.h,
                         ),
                         Text(
-                          widget.memberdetails.memberDetails!.designation
-                              .toString(),
+                          widget.memberdetails.memberDetails!.grade.toString(),
                           style: Theme.of(context).textTheme.displaySmall,
                         )
                       ],
@@ -115,21 +114,38 @@ class _nameState extends State<MemberAboutTab> {
                 SizedBox(
                   width: 80.w,
                 ),
-                Row(
-                  children: [
-                    Icon(
-                      CupertinoIcons.calendar,
-                      size: 22.h,
-                    ),
-                    Text(
-                        ' ${widget.memberdetails.memberDetails!.joiningDate.toString()}',
-                        style:
-                            Theme.of(context).textTheme.headlineSmall!.copyWith(
-                                  fontSize: 14.sp,
-                                )),
-                  ],
-                )
+                if (widget.memberdetails.memberDetails!.joiningDate
+                        .toString() !=
+                    "")
+                  Row(
+                    children: [
+                      Icon(
+                        CupertinoIcons.calendar,
+                        size: 22.h,
+                      ),
+                      Text(
+                          ' ${widget.memberdetails.memberDetails!.joiningDate.toString()}',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineSmall!
+                              .copyWith(
+                                fontSize: 14.sp,
+                              )),
+                    ],
+                  )
               ],
+            ),
+            SizedBox(
+              height: 25.h,
+            ),
+            Text("Designation",
+                style: Theme.of(context).textTheme.headlineMedium!),
+            SizedBox(
+              height: 6.h,
+            ),
+            Text(
+              "${widget.memberdetails.memberDetails!.designation.toString()}",
+              style: Theme.of(context).textTheme.bodySmall,
             ),
             SizedBox(
               height: 25.h,
@@ -156,81 +172,17 @@ class _nameState extends State<MemberAboutTab> {
             SizedBox(
               height: 25.h,
             ),
-            Text("Portfolio Link",
+            Text("Experience",
                 style: Theme.of(context).textTheme.headlineMedium!),
             SizedBox(
               height: 6.h,
             ),
             Text(
-              "${widget.memberdetails.memberDetails!.portifolioLink.toString()}",
+              "${widget.memberdetails.memberDetails!.experience.toString()}",
               style: Theme.of(context).textTheme.bodySmall,
             ),
             SizedBox(
               height: 25.h,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Socials Link",
-                    style: Theme.of(context).textTheme.headlineMedium!),
-              ],
-            ),
-            SizedBox(
-              height: 16.h,
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    if (widget.memberdetails.memberDetails!.facebookLink
-                            .toString() !=
-                        "")
-                      Padding(
-                        padding: EdgeInsets.only(right: 20.w),
-                        child: SocialLinks(socialLinks: socialLinks[0]),
-                      ),
-                    if (widget.memberdetails.memberDetails!.instagramLink
-                            .toString() !=
-                        "")
-                      Padding(
-                        padding: EdgeInsets.only(right: 20.w),
-                        child: SocialLinks(socialLinks: socialLinks[1]),
-                      ),
-                    if (widget.memberdetails.memberDetails!.youtubeLink
-                            .toString() !=
-                        "")
-                      Padding(
-                        padding: EdgeInsets.only(right: 20.w),
-                        child: SocialLinks(socialLinks: socialLinks[2]),
-                      ),
-                    if (widget.memberdetails.memberDetails!.twitterLink
-                            .toString() !=
-                        "")
-                      Padding(
-                        padding: EdgeInsets.only(right: 20.w),
-                        child: SocialLinks(socialLinks: socialLinks[3]),
-                      ),
-                    if (widget.memberdetails.memberDetails!.linkedinLink
-                            .toString() !=
-                        "")
-                      Padding(
-                        padding: EdgeInsets.only(right: 0.w),
-                        child: SocialLinks(socialLinks: socialLinks[4]),
-                      )
-                  ]
-                  //     List.generate(socialLinks.length, (index) {
-                  //   return Padding(
-                  //     padding: EdgeInsets.only(
-                  //         left: index == 0 ? 0 : 20.w),
-                  //     child: SocialLinks(
-                  //         socialLinks: socialLinks[index]),
-                  //   );
-                  // }),
-                  ),
-            ),
-            SizedBox(
-              height: 20.h,
             ),
             Text("Notes", style: Theme.of(context).textTheme.headlineMedium!),
             SizedBox(

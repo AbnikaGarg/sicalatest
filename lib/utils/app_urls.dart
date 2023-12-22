@@ -21,4 +21,15 @@ class AppConstants {
   static String updateTopic = "/update/discussion_topic";
   static String deleteTopic = "/delete/discussion_topic";
   static String createComment = "/create/discussion_comment";
+  static String createShooting = "/create/sica_shooting";
+  static String createDop = "/create/shooting_dop";
+  static String getShootingdop = "/get/all/shooting_dop_details";
+  static String getShooting = "/get/all/shooting_details";
+  static String medium = "/get/all/medium";
+  static String getBanners = "/get/mobile_photo";
+  static String getReasons = "/get/all/grievance_reason";
+  static String createGrievance = "/create/grievance_report";
+  static String createAssociate = "/create/shooting_associate";
+  static String getApproval = "/get/all/shooting_dop_approval";
+  static String updateApproval = "/update/dop_associate_attending";
 }

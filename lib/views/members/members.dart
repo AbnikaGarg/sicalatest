@@ -26,7 +26,8 @@ class _nameState extends State<Members> {
   void initState() {
     super.initState();
     getMemberDetails();
-    scrollController = ScrollController()..addListener(loadnumbers);
+    getMemberAllData();
+    scrollController = ScrollController()..addListener(loadMore);
   }
 
   @override
@@ -35,66 +36,85 @@ class _nameState extends State<Members> {
     scrollController.dispose();
   }
 
-  // void loadMore() {
-  //   if (hasNextPage == true &&
-  //       isLoadedMore == false &&
-  //       scrollController.position.maxScrollExtent == scrollController.offset) {
-  //     isLoadedMore = true;
-  //     page = page + 100;
-  //     final service = MemberRepo();
-  //     print(page);
-  //     service.getAllMemberDetails(page.toString()).then((value) {
-  //       if (value.isNotEmpty) {
-  //         memberDetails = value;
-  //         if (memberDetails!.first.memberBasicDetails!.isNotEmpty) {
-  //           memberBasicDetails =
-  //               memberBasicDetails! + memberDetails!.first.memberBasicDetails!;
-  //         } else {
-  //           hasNextPage = false;
-  //         }
-  //         isLoadedMore = false;
-  //         if (mounted) setState(() {});
-  //       }
-  //     });
-  //   }
-  // }
-
-  void loadnumbers() {
+  void loadMore() {
     if (hasNextPage == true &&
         isLoadedMore == false &&
         scrollController.position.maxScrollExtent == scrollController.offset) {
       isLoadedMore = true;
-
-      if (totalNumber > page) {
-        page = page + 100;
-        //final service = MemberRepo();
-        print(page);
-        if (page > totalNumber) {
-          page = totalNumber;
+      page = page + 100;
+      final service = MemberRepo();
+      print(page);
+      service.getAllMemberDetails(page.toString()).then((value) {
+        if (value.isNotEmpty) {
+          memberDetails = value;
+          if (memberDetails!.first.memberBasicDetails!.isNotEmpty) {
+            memberBasicDetails =
+                memberBasicDetails! + memberDetails!.first.memberBasicDetails!;
+          } else {
+            hasNextPage = false;
+          }
+          isLoadedMore = false;
+          if (mounted) setState(() {});
         }
-      } else {
-        hasNextPage = false;
-      }
-      isLoadedMore = false;
-      if (mounted) setState(() {});
+      });
     }
   }
 
-  int page = 100;
-  int totalNumber = 0;
+  // void loadnumbers() {
+  //   if (hasNextPage == true &&
+  //       isLoadedMore == false &&
+  //       scrollController.position.maxScrollExtent == scrollController.offset) {
+  //     isLoadedMore = true;
+
+  //     if (totalNumber > page) {
+  //       page = page + 100;
+  //       //final service = MemberRepo();
+  //       print(page);
+  //       if (page > totalNumber) {
+  //         page = totalNumber;
+  //       }
+  //     } else {
+  //       hasNextPage = false;
+  //     }
+  //     isLoadedMore = false;
+  //     if (mounted) setState(() {});
+  //   }
+  // }
+
+  int page = 0;
+  // int totalNumber = 0;
   void getMemberDetails() {
     final service = MemberRepo();
     service.getAllMemberDetails(page.toString()).then((value) {
       if (value.isNotEmpty) {
-        memberDetails = value;
-        totalNumber = value.first.memberBasicDetails!.length;
+        //  memberDetails = value;
+        //  totalNumber = value.first.memberBasicDetails!.length;
         memberBasicDetails = value.first.memberBasicDetails;
         // memberBasicDetails = value.first.memberBasicDetails.sort((a, b) {
         //   return a.memberDetails!.membershipNo!.compareTo(b.memberDetails!.membershipNo!);
         // });
-        memberBasicDetails!.sort((a, b) =>
-            int.parse(a.memberDetails!.membershipNo.toString()).compareTo(
-                int.parse(b.memberDetails!.membershipNo.toString())));
+        // memberBasicDetails!.sort((a, b) =>
+        //     int.parse(a.memberDetails!.membershipNo.toString()).compareTo(
+        //         int.parse(b.memberDetails!.membershipNo.toString())));
+        if (mounted) setState(() {});
+      }
+    });
+  }
+
+  void getMemberAllData() {
+    final service = MemberRepo();
+    service.getAllMemberData().then((value) {
+      if (value.isNotEmpty) {
+        memberDetails = value;
+        print("loaded");
+        //  totalNumber = value.first.memberBasicDetails!.length;
+        // memberBasicDetails = value.first.memberBasicDetails;
+        // memberBasicDetails = value.first.memberBasicDetails.sort((a, b) {
+        //   return a.memberDetails!.membershipNo!.compareTo(b.memberDetails!.membershipNo!);
+        // });
+        // memberBasicDetails!.sort((a, b) =>
+        //     int.parse(a.memberDetails!.membershipNo.toString()).compareTo(
+        //         int.parse(b.memberDetails!.membershipNo.toString())));
         if (mounted) setState(() {});
       }
     });
@@ -105,16 +125,16 @@ class _nameState extends State<Members> {
       memberBasicDetails = memberDetails!.first.memberBasicDetails!
           .where((elem) => elem.memberDetails!.name!
               .toLowerCase()
-              .contains(query.toLowerCase()))
+              .startsWith(query.toLowerCase()))
           .toList();
-      page = memberBasicDetails!.length;
-      totalNumber = memberBasicDetails!.length;
-       
-        isLoadedMore = true;
+     // page = memberBasicDetails!.length;
+      //totalNumber = memberBasicDetails!.length;
+
+      isLoadedMore = true;
       setState(() {});
     } else {
       setState(() {
-        page = 100;
+        page = 0;
         isLoadedMore = false;
         hasNextPage = true;
       });
@@ -198,7 +218,7 @@ class _nameState extends State<Members> {
                   ListView.builder(
                     primary: false,
                     shrinkWrap: true,
-                    itemCount: page,
+                    itemCount: memberBasicDetails!.length,
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
@@ -214,7 +234,7 @@ class _nameState extends State<Members> {
                               .toString(),
                           designation: memberBasicDetails![index]
                               .memberDetails!
-                              .designation
+                              .grade
                               .toString(),
                           date: memberBasicDetails![index]
                               .memberDetails!
@@ -239,7 +259,7 @@ class _nameState extends State<Members> {
                     child: Text('no more Records'),
                   ),
                 )
-              else if(!isLoadedMore)
+              else if (!isLoadedMore)
                 Container(
                     alignment: Alignment.center,
                     color: Theme.of(context).scaffoldBackgroundColor,

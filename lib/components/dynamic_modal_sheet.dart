@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ModalSheet {
-  static void showModal(context, List items, final ValueChanged<String> update,
+  static void showModal(context, List items,String? key, final ValueChanged<String> update,
+      final ValueChanged<int> indexselct,
       [String? selValue]) {
     String? val;
     showModalBottomSheet(
@@ -17,12 +18,12 @@ class ModalSheet {
         ),
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
-       // useSafeArea: true,
+        // useSafeArea: true,
         builder: (context) {
           return GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: (() {
-              //  Navigator.of(context).pop();
+                //  Navigator.of(context).pop();
               }),
               child: SingleChildScrollView(
                 child: Container(
@@ -34,9 +35,7 @@ class ModalSheet {
                     ),
                   ),
                   alignment: Alignment.center,
-                  child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
+                  child: Column(mainAxisSize: MainAxisSize.min, children: [
                     // Icon(
                     //   Icons.remove,
                     //   color: Colors.grey[600],
@@ -70,13 +69,13 @@ class ModalSheet {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      items[index],
+                                      items[index][key],
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodySmall!
                                           .copyWith(fontSize: 15.sp),
                                     ),
-                                    if (items[index] == selValue)
+                                    if ( items[index][key] == selValue)
                                       Icon(CupertinoIcons.checkmark,
                                           size: 24.sp, color: Colors.blue)
                                     // Container(
@@ -101,8 +100,8 @@ class ModalSheet {
                                 // Get.find<AccountSetUpController>()
                                 //     .setAccountValue(items[index]);
                                 //    _controller.accountType.value =  TextEditingController(text: _items[index]);
-
-                                update(items[index]);
+                                indexselct(index);
+                                update( items[index][key]);
                                 Navigator.pop(context);
                               });
                         }),

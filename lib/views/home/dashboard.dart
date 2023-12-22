@@ -142,7 +142,7 @@ class _MyDashBoardState extends State<MyDashBoard> {
                                     Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const CreateShooting()));
+                                                 CreateShooting()));
                                   },
                                   child: Column(
                                     children: [
@@ -175,7 +175,7 @@ class _MyDashBoardState extends State<MyDashBoard> {
                                     Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const CreateDOP()));
+                                                const CreateDOP(associateList: [],)));
                                   },
                                   child: Column(
                                     children: [
@@ -242,7 +242,7 @@ class _MyDashBoardState extends State<MyDashBoard> {
                                     Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                ShootingDetail()));
+                                                ShootingDopApproval()));
                                   },
                                   child: Column(
                                     children: [

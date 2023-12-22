@@ -5,10 +5,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sica/components/gallery_card.dart';
+import 'package:sica/services/member_repo.dart';
 import 'package:sica/views/employeement_schema/job_provider.dart';
 import 'package:sica/views/employeement_schema/job_seeker.dart';
 import 'package:sica/views/home/seeAllFeatures.dart';
 import 'package:sica/views/home/select_form_reason.dart';
+import 'package:sica/views/shooting/dop_list.dart';
 import '../../components/buton.dart';
 import '../../theme/theme.dart';
 import '../../utils/images.dart';
@@ -163,13 +165,8 @@ class _HomepageState extends State<Homepage> {
       "image": "assets/images/h.png"
     },
   ];
-  List bannerImages = [
-    {"images": "assets/images/banner1.png"},
-    {"images": "assets/images/banner2.png"},
-    {"images": "assets/images/banner3.png"},
-    {"images": "assets/images/banner4.png"},
-    {"images": "assets/images/banner5.png"}
-  ];
+  List bannerImages = [];
+  
   _launchURLBrowser() async {
     const url = 'http://thesica.in/';
     if (await canLaunch(url)) {
@@ -177,6 +174,17 @@ class _HomepageState extends State<Homepage> {
     } else {
       throw 'Could not launch $url';
     }
+  }
+ 
+  void getImages() {
+    final service = MemberRepo();
+    service.getBannerImages().then((value) {
+      if (value.isNotEmpty) {
+        bannerImages = value;
+      
+        if (mounted) setState(() {});
+      }
+    });
   }
 
   // this variable determnines whether the back-to-top button is shown or not
@@ -197,6 +205,7 @@ class _HomepageState extends State<Homepage> {
         });
       });
     getDettails();
+     getImages();
     super.initState();
   }
 
@@ -251,8 +260,9 @@ class _HomepageState extends State<Homepage> {
           physics: BouncingScrollPhysics(),
           child: Column(
             children: [
+              if(bannerImages.isNotEmpty)
               CarouselSlider.builder(
-                  itemCount: bannerImages.length,
+                  itemCount: bannerImages[0].length,
                   itemBuilder: (context, index, realIndex) {
                     return Padding(
                       padding: EdgeInsets.symmetric(horizontal: 5.w),
@@ -262,8 +272,8 @@ class _HomepageState extends State<Homepage> {
                             aspectRatio: 16 / 7,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(16),
-                              child: Image.asset(
-                                bannerImages[index]["images"],
+                              child: Image.network(
+                                bannerImages[0][index]["photo_details"]["image"],
                                 fit: BoxFit.cover,
                                 // color: Color(0x66000000),
                                 // colorBlendMode: BlendMode.darken,
@@ -299,8 +309,9 @@ class _HomepageState extends State<Homepage> {
 
                     scrollDirection: Axis.horizontal,
                   )),
+                  if(bannerImages.isNotEmpty)
               DotsIndicator(
-                dotsCount: bannerImages.length,
+                dotsCount:  bannerImages[0].length,
                 position: _currentIndex,
                 decorator: DotsDecorator(
                   size: const Size.square(9.0),
@@ -787,7 +798,7 @@ class _HomepageState extends State<Homepage> {
                         left: 16.w,
                         bottom: MediaQuery.of(context).viewInsets.bottom),
                     child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           SizedBox(
@@ -802,28 +813,28 @@ class _HomepageState extends State<Homepage> {
                                   borderRadius: BorderRadius.circular(12)),
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 12.h),
-                            child: Text(
-                              "Shooting",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineLarge!
-                                  .copyWith(fontSize: 18.sp),
-                            ),
-                          ),
+                          // Padding(
+                          //   padding: EdgeInsets.symmetric(vertical: 12.h),
+                          //   child: Text(
+                          //     "Shooting Dairy",
+                          //     style: Theme.of(context)
+                          //         .textTheme
+                          //         .headlineLarge!
+                          //         .copyWith(fontSize: 18.sp),
+                          //   ),
+                          // ),
                           SizedBox(
-                            height: 10.h,
+                            height: 30.h,
                           ),
                           Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 GestureDetector(
                                   onTap: () {
                                     Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const CreateShooting()));
+                                                 CreateShooting()));
                                   },
                                   child: Column(
                                     children: [
@@ -838,12 +849,12 @@ class _HomepageState extends State<Homepage> {
                                           child: Icon(
                                             CupertinoIcons.video_camera_solid,
                                             color: AppTheme.bodyTextColor,
-                                            size: 26.sp,
+                                            size: 30.sp,
                                           )),
                                       SizedBox(
                                         height: 8.h,
                                       ),
-                                      Text("Create Shooting",
+                                      Text("Shooting",
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodySmall!
@@ -851,12 +862,13 @@ class _HomepageState extends State<Homepage> {
                                     ],
                                   ),
                                 ),
+                                SizedBox(width: 50,),
                                 GestureDetector(
                                   onTap: () {
-                                    Navigator.of(context).pushReplacement(
+                                   Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const CreateDOP()));
+                                                const CreateDOP(associateList: [],)));
                                   },
                                   child: Column(
                                     children: [
@@ -877,7 +889,7 @@ class _HomepageState extends State<Homepage> {
                                       SizedBox(
                                         height: 8.h,
                                       ),
-                                      Text("Create DOP",
+                                      Text("DOP",
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodySmall!
@@ -885,45 +897,46 @@ class _HomepageState extends State<Homepage> {
                                     ],
                                   ),
                                 ),
+                                // GestureDetector(
+                                //   onTap: () {
+                                //     Navigator.of(context).pushReplacement(
+                                //         MaterialPageRoute(
+                                //             builder: (context) =>
+                                //                 const ShootingList()));
+                                //   },
+                                //   child: Column(
+                                //     children: [
+                                //       Container(
+                                //           height: 60.h,
+                                //           width: 60.h,
+                                //           alignment: Alignment.center,
+                                //           decoration: BoxDecoration(
+                                //               color: Theme.of(context)
+                                //                   .primaryColor,
+                                //               shape: BoxShape.circle),
+                                //           child: Icon(
+                                //             Icons.list_rounded,
+                                //             color: AppTheme.bodyTextColor,
+                                //             size: 26.sp,
+                                //           )),
+                                //       SizedBox(
+                                //         height: 8.h,
+                                //       ),
+                                //       Text("List",
+                                //           style: Theme.of(context)
+                                //               .textTheme
+                                //               .bodySmall!
+                                //               .copyWith(fontSize: 12.sp)),
+                                //     ],
+                                //   ),
+                                // ),
+                                SizedBox(width: 50,),
                                 GestureDetector(
                                   onTap: () {
                                     Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const ShootingList()));
-                                  },
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                          height: 60.h,
-                                          width: 60.h,
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              shape: BoxShape.circle),
-                                          child: Icon(
-                                            Icons.list_rounded,
-                                            color: AppTheme.bodyTextColor,
-                                            size: 26.sp,
-                                          )),
-                                      SizedBox(
-                                        height: 8.h,
-                                      ),
-                                      Text("List",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall!
-                                              .copyWith(fontSize: 12.sp)),
-                                    ],
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ShootingDetail()));
+                                                ShootingDopApproval()));
                                   },
                                   child: Column(
                                     children: [
@@ -951,7 +964,7 @@ class _HomepageState extends State<Homepage> {
                                     ],
                                   ),
                                 ),
-                              ]),
+                            ]),
                           SizedBox(
                             height: 20.h,
                           ),

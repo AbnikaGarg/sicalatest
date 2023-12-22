@@ -1,101 +1,181 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../components/buton.dart';
-import '../../components/input_feild.dart';
-import '../../theme/theme.dart';
-
-class AssociateModel {
-  String name;
-  String mobile;
-  int id;
-
-  AssociateModel({
-    this.name = "",
-    this.mobile = "",
-    required this.id,
-  });
-}
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:sica/components/buton.dart';
+import 'package:sica/components/input_feild.dart';
+import 'package:sica/models/DopModel.dart';
+import 'package:sica/models/MemberDetailModel.dart';
+import 'package:sica/services/member_repo.dart';
+import 'package:sica/theme/theme.dart';
+import 'package:sica/utils/config.dart';
+import 'package:sica/views/home/dashboard.dart';
+import 'package:sica/views/shooting/dop_list.dart';
 
 class AddAssociate extends StatefulWidget {
-  AddAssociate({super.key});
+  const AddAssociate(
+      {super.key, required this.associate, required this.shootingid});
+  final Associate associate;
+  final String shootingid;
 
   @override
-  State<AddAssociate> createState() => _AddWorkState();
+  State<AddAssociate> createState() => _nameState();
 }
 
-class _AddWorkState extends State<AddAssociate> {
-  List<WorkForm> workForm = List.empty(growable: true);
+class _nameState extends State<AddAssociate> {
+  String showYear = 'Select Year';
+  DateTime _selectedYear = DateTime.now();
+  final name = TextEditingController();
+  final memberno = TextEditingController();
+  final mobile = TextEditingController();
   @override
   void initState() {
     super.initState();
-    AssociateModel _workModel = AssociateModel(id: 1);
-    workForm.add(WorkForm(
-      index: workForm.length,
-      associateModel: _workModel,
-      onRemove: () => onRemove(_workModel),
-    ));
+    if (widget.associate.name != null) {
+      name.text = widget.associate.name.toString();
+      memberno.text = widget.associate.memberNumber.toString();
+
+      mobile.text = widget.associate.mobileNumber.toString();
+    }
+    setState(() {});
   }
 
-  onRemove(AssociateModel work) {
-    setState(() {
-      int index =
-          workForm.indexWhere((element) => element.associateModel.id == work.id);
-
-      if (workForm != null) workForm.removeAt(index);
-    });
+  void submit() {
+    if (formKey.currentState!.validate()) {
+      final service = MemberRepo();
+      DialogHelp.showLoading(context);
+      service
+          .addAssociate(
+              widget.shootingid, name.text, memberno.text, mobile.text)
+          .then((value) {
+        DialogHelp().hideLoading(context);
+        if (value.isNotEmpty) {
+          Fluttertoast.showToast(
+              msg: "Associate Added Successfully",
+              backgroundColor: Colors.green,
+              gravity: ToastGravity.TOP,
+              textColor: Colors.white);
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (BuildContext context) => DOPList()),
+              (_) => false);
+        } else {
+          Fluttertoast.showToast(
+              msg: "Something went wrong",
+              backgroundColor: Colors.red,
+              gravity: ToastGravity.TOP,
+              textColor: Colors.white);
+        }
+      });
+    }
   }
 
-  onAdd() {
-    setState(() {
-      AssociateModel _associateModel = AssociateModel(id: workForm.length);
-      workForm.add(WorkForm(
-        index: workForm.length,
-        associateModel: _associateModel,
-        onRemove: () => onRemove(_associateModel),
-      ));
-    });
-  }
-
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  // void editWork() {
+  //   if (formKey.currentState!.validate()) {
+  //     final service = MemberRepo();
+  //     DialogHelp.showLoading(context);
+  //     service
+  //         .editWork(name.text, year.text, designation.text,
+  //             int.parse(widget.associate.memberId.toString()))
+  //         .then((value) {
+  //       DialogHelp().hideLoading(context);
+  //       if (value.isNotEmpty) {
+  //         Fluttertoast.showToast(
+  //             msg: "Work Edit Successfully",
+  //             backgroundColor: Colors.green,
+  //             gravity: ToastGravity.TOP,
+  //             textColor: Colors.white);
+  //         Navigator.pushAndRemoveUntil(
+  //             context,
+  //             MaterialPageRoute(
+  //                 builder: (BuildContext context) =>
+  //                     MyDashBoard(currentIndex: 3)),
+  //             (_) => false);
+  //       } else {
+  //         Fluttertoast.showToast(
+  //             msg: "Something went wrong",
+  //             backgroundColor: Colors.red,
+  //             gravity: ToastGravity.TOP,
+  //             textColor: Colors.white);
+  //       }
+  //     });
+  //   }
+  // }  final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 0,
         elevation: 1,
-        title:const Text("Add Associate or Assistant"),
-        actions: [
-          IconButton(
-              onPressed: () {
-                onAdd();
-              },
-              icon:const Icon(
-                Icons.add,
-                //  color: AppTheme.bodyTextColor,
-              ))
-        ],
+        title: Text(widget.associate.memberId != null
+            ? "Edit Associate"
+            : "Add Associate"),
+        // actions: [
+        //   if( widget.projectList.id != null)
+        //   Padding(
+        //     padding: const EdgeInsets.only(right: 6),
+        //     child: IconButton(
+        //       icon: Icon(Icons.delete, color: Colors.red,),
+        //       onPressed: () {deleteWork();},
+        //     ),
+        //   )
+        // ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 20.h),
+        child: Form(
+          key: formKey,
           child: Column(
             children: [
-              SizedBox(height: 5.h),
-              if (workForm.isNotEmpty)
-                ListView.builder(
-                    primary: false,
-                    shrinkWrap: true,
-                    itemCount: workForm.length,
-                    itemBuilder: (_, index) {
-                      return workForm[index];
-                    })
-              else
-               const Center(child: Text("Tap on + to Add Associate or Assistant")),
+              SizedBox(height: 8.h),
+              MyTextField(
+                  textEditingController: name,
+                  validation: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Enter Name";
+                    }
+                    return null;
+                  },
+                  hintText: "Name",
+                  float: FloatingLabelBehavior.always,
+                  labelText: "",
+                  color: const Color(0xff585A60)),
+              SizedBox(height: 8.h),
+              MyTextField(
+                  textEditingController: memberno,
+                  validation: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Member No. is required";
+                    }
+                    return null;
+                  },
+                  hintText: "Enter Member No.",
+                  float: FloatingLabelBehavior.always,
+                  labelText: "",
+                  color: const Color(0xff585A60)),
+              SizedBox(height: 8.h),
+              MyTextField(
+                  textEditingController: mobile,
+                  float: FloatingLabelBehavior.always,
+                  validation: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Mobile is required";
+                    }
+                    return null;
+                  },
+                  hintText: "Enter Mobile",
+                  labelText: "",
+                  color: const Color(0xff585A60)),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 26.h),
+                padding: EdgeInsets.symmetric(vertical: 30.h),
                 child: RoundedButton(
-                    ontap: () {},
+                    ontap: () {
+                      // if (widget.projectList.id != null) {
+                      //   editWork();
+                      // } else {
+                      submit();
+                      // }
+                    },
                     title: "Save",
                     color: Theme.of(context).primaryColor,
                     textcolor: AppTheme.darkTextColor),
@@ -103,84 +183,6 @@ class _AddWorkState extends State<AddAssociate> {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class WorkForm extends StatefulWidget {
-  WorkForm({
-    super.key,
-    this.index,
-    required this.onRemove,
-    required this.associateModel,
-  });
-  final index;
-  AssociateModel associateModel;
-  final Function onRemove;
-
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _mobileController = TextEditingController();
-
-  @override
-  State<WorkForm> createState() => _WorkFormState();
-}
-
-class _WorkFormState extends State<WorkForm> {
-  final formKey = GlobalKey<FormState>();
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: formKey,
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Member ${widget.index + 1}",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineMedium!
-                      .copyWith(color: AppTheme.whiteBackgroundColor)),
-              InkWell(
-                onTap: () {
-                  widget.onRemove();
-                },
-                child: const Icon(
-                  Icons.delete,
-                  color: Color.fromARGB(255, 247, 74, 62),
-                ),
-              )
-            ],
-          ),
-          SizedBox(height: 8.h),
-          MyTextField(
-              // textEditingController: _controller.emailController,
-              validation: (value) {
-                if (value == null || value.isEmpty) {
-                  return "Enter Name";
-                }
-                return null;
-              },
-              hintText: "Name",
-              float: FloatingLabelBehavior.always,
-              labelText: "",
-              color: const Color(0xff585A60)),
-          SizedBox(height: 8.h),
-          MyTextField(
-              textEditingController: widget._mobileController,
-              float: FloatingLabelBehavior.always,
-              validation: (value) {
-                if (value == null || value.isEmpty) {
-                  return "Mobile is required";
-                }
-                return null;
-              },
-              hintText: "Enter Mobile",
-              labelText: "",
-              color: const Color(0xff585A60)),
-          SizedBox(height: 12.h),
-        ],
       ),
     );
   }

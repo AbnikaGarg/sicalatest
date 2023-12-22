@@ -3,11 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sica/views/home/history.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import '../../utils/images.dart';
 
 class AboutSica extends StatelessWidget {
   const AboutSica({super.key});
+  launchURLMethod(String link) async {
+    final Uri url = Uri.parse(link);
+    try {
+        if (!await launchUrl(url,mode: LaunchMode.inAppBrowserView)) {
+      throw Exception('Could not launch $url');
+    }
+    // ignore: empty_catches
+    } catch (e) {
+      print(e);
+    }
+  
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,12 +61,11 @@ class AboutSica extends StatelessWidget {
               ),
               SizedBox(height: 5.h),
               GestureDetector(
-                 behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                  
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => History()));
-                  }, 
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => History()));
+                },
                 child: Padding(
                   padding: EdgeInsets.only(top: 20.h, bottom: 6.h),
                   child: Row(
@@ -86,127 +97,146 @@ class AboutSica extends StatelessWidget {
               Divider(
                 color: Color.fromRGBO(31, 94, 94, 94),
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 10.h, bottom: 6.h),
-                child: Row(
-                  children: [
-                    Icon(
-                      CupertinoIcons.news_solid,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    SizedBox(
-                      width: 10.w,
-                    ),
-                    Expanded(
-                      child: Text(
-                        "Current Body",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall!
-                            .copyWith(fontSize: 15.sp),
+              GestureDetector(
+                onTap: () {
+                  launchURLMethod('https://thesica.in/current-body/');
+                },
+                child: Padding(
+                  padding: EdgeInsets.only(top: 10.h, bottom: 6.h),
+                  child: Row(
+                    children: [
+                      Icon(
+                        CupertinoIcons.news_solid,
+                        color: Theme.of(context).primaryColor,
                       ),
-                    ),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      size: 12.h,
-                    )
-                  ],
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Expanded(
+                        child: Text(
+                          "Current Body",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(fontSize: 15.sp),
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        size: 12.h,
+                      )
+                    ],
+                  ),
                 ),
               ),
               Divider(
                 color: Color.fromRGBO(31, 94, 94, 94),
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 10.h, bottom: 6.h),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.notes,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    SizedBox(
-                      width: 10.w,
-                    ),
-                    Expanded(
-                      child: Text(
-                        "Previous Body",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall!
-                            .copyWith(fontSize: 15.sp),
+              GestureDetector(
+                onTap: () {
+                  launchURLMethod('https://thesica.in/593-2/');
+                },
+                child: Padding(
+                  padding: EdgeInsets.only(top: 10.h, bottom: 6.h),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.notes,
+                        color: Theme.of(context).primaryColor,
                       ),
-                    ),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      size: 12.h,
-                    )
-                  ],
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Expanded(
+                        child: Text(
+                          "Previous Body",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(fontSize: 15.sp),
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        size: 12.h,
+                      )
+                    ],
+                  ),
                 ),
               ),
               Divider(
                 color: Color.fromRGBO(31, 94, 94, 94),
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 10.h, bottom: 6.h),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.label_important,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    SizedBox(
-                      width: 10.w,
-                    ),
-                    Expanded(
-                      child: Text(
-                        "The Master",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall!
-                            .copyWith(fontSize: 15.sp),
+              GestureDetector(
+                onTap: () {
+                  launchURLMethod('https://thesica.in/themaster/');
+                },
+                child: Padding(
+                  padding: EdgeInsets.only(top: 10.h, bottom: 6.h),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.label_important,
+                        color: Theme.of(context).primaryColor,
                       ),
-                    ),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      size: 12.h,
-                    )
-                  ],
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Expanded(
+                        child: Text(
+                          "The Master",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(fontSize: 15.sp),
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        size: 12.h,
+                      )
+                    ],
+                  ),
                 ),
               ),
               Divider(
                 color: Color.fromRGBO(31, 94, 94, 94),
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 10.h, bottom: 6.h),
-                child: Row(
-                  children: [
-                    SvgPicture.asset(
-                      "assets/icons/award.svg",
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    SizedBox(
-                      width: 10.w,
-                    ),
-                    Expanded(
-                      child: Text(
-                        "Award Winners",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall!
-                            .copyWith(fontSize: 15.sp),
+              GestureDetector(
+                onTap: () {
+                  launchURLMethod('https://thesica.in/sica-awards-winners/');
+                },
+                child: Padding(
+                  padding: EdgeInsets.only(top: 10.h, bottom: 6.h),
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        "assets/icons/award.svg",
+                        color: Theme.of(context).primaryColor,
                       ),
-                    ),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      size: 12.h,
-                    )
-                  ],
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Expanded(
+                        child: Text(
+                          "Award Winners",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(fontSize: 15.sp),
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        size: 12.h,
+                      )
+                    ],
+                  ),
                 ),
               ),
               Divider(
                 color: Color.fromRGBO(31, 94, 94, 94),
               ),
-              
             ],
           )),
     );

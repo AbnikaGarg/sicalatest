@@ -55,6 +55,7 @@ class MemberBasicDetails {
 class MemberDetails {
   MemberDetails({
       this.name, 
+      this.grade,
       this.designation, 
       this.membershipNo, 
       this.joiningDate, 
@@ -88,8 +89,10 @@ class MemberDetails {
     twitterLink = json['twitter_link'];
     linkedinLink = json['linkedin_link'];
     image = json['image'];
+    grade=json['grade'];
   }
   String? name;
+  String? grade;
   String? designation;
   String? membershipNo;
   String? joiningDate;
@@ -124,6 +127,7 @@ class MemberDetails {
     map['twitter_link'] = twitterLink;
     map['linkedin_link'] = linkedinLink;
     map['image'] = image;
+    map['grade']=grade;
     return map;
   }
 

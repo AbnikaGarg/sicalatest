@@ -62,8 +62,7 @@ class _nameState extends State<ShootingList> {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ShootingDetail()));
+                     
                     },
                     child: Padding(
                       padding: EdgeInsets.symmetric(

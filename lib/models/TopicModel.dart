@@ -66,7 +66,7 @@ class DiscussionComments {
     comment = json['comment'];
     commentCreateDate = json['comment_create_date'];
     memberName = json['member_name'];
-    designation = json['designation'];
+    designation = json['designation'].toString();
     commentId = json['comment_id'];
   }
   String? profileImage;
@@ -98,6 +98,9 @@ class DiscussionDetails {
       this.categoryId, 
       this.discussionId, 
       this.createDate, 
+      this.last_commit_member_image,
+      this.last_member_name,
+      this.last_topic_create_date,
       this.memberId, 
       this.designation,});
 
@@ -105,12 +108,15 @@ class DiscussionDetails {
     profile = json['profile'];
     topic = json['topic'];
     memberName = json['member_name'];
-    categoryName = json['category_name'];
+    categoryName = json['category_name'].toString();
     categoryId = json['category_id'];
     discussionId = json['discussion_id'];
     createDate = json['create_date'];
     memberId = json['member_id'];
-    designation = json['designation'];
+    designation = json['designation'].toString();
+    last_topic_create_date = json['last_topic_create_date'].toString();
+    last_member_name = json['last_member_name'].toString();
+    last_commit_member_image = json['last_commit_member_image'].toString();
   }
   String? profile;
   String? topic;
@@ -121,6 +127,9 @@ class DiscussionDetails {
   String? createDate;
   int? memberId;
   String? designation;
+  String? last_member_name;
+  String? last_topic_create_date;
+  String? last_commit_member_image;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -133,6 +142,9 @@ class DiscussionDetails {
     map['create_date'] = createDate;
     map['member_id'] = memberId;
     map['designation'] = designation;
+     map['last_member_name'] = last_member_name;
+    map['last_commit_member_image'] = last_commit_member_image;
+    map['desiglast_topic_create_datenation'] = last_topic_create_date;
     return map;
   }
 

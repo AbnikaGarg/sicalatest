@@ -14,10 +14,9 @@ class GalleryList extends StatefulWidget {
 
 class _nameState extends State<GalleryList> {
   List galleryList = [
-    {"title": "WEBSITE LAUNCH", "image": "assets/images/website.png"},
-    {"title": "SICA AGM 2021", "image": "assets/images/agm.png"},
-    {"title": "MEETING", "image": "assets/images/meeting.png"},
-    {"title": "WORKSHOP", "image": "assets/images/workshop.png"}
+    {"title": "Movies", "image": "assets/images/website.png"},
+  
+    {"title": "Camera", "image": "assets/images/workshop.png"}
   ];
   @override
   Widget build(BuildContext context) {
@@ -35,12 +34,12 @@ class _nameState extends State<GalleryList> {
                   crossAxisSpacing: 20.w,
                   mainAxisSpacing: 20.h,
                   crossAxisCount: 2,
-                  mainAxisExtent: 120.h),
+                  mainAxisExtent: 90.h),
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
                      Navigator.of(context).push(MaterialPageRoute(
-                         builder: (context) => GalleryScreen()));
+                         builder: (context) => GalleryScreen(category: galleryList[index]["title"], categoryid: '',)));
                   },
                   child: GalleryWidget(galleryList: galleryList[index]),
                 );

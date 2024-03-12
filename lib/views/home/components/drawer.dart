@@ -25,8 +25,8 @@ class _NavBarState extends State<NavBar> {
   logout() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     bool? isRemember = preferences.getBool('isRemember');
-   
-      preferences.clear();
+
+    preferences.clear();
     DialogHelp.showLoading(context);
     await Future.delayed(Duration(seconds: 1));
     Navigator.of(context).pushAndRemoveUntil(
@@ -88,60 +88,60 @@ class _NavBarState extends State<NavBar> {
                   },
                   child: _buildIconwithText("Gallery", "gallery", context),
                 ),
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    Navigator.pop(context);
-                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const Awards(),
-                      ),
-                    );
-                  }, 
-                  child:_buildIconwithText("SICA Awards", "award", context),
-                ),
-                
-                SizedBox(
-                  height: 30.h,
-                ),
-                Text("Shop",
-                    style: Theme.of(context).textTheme.headlineMedium!),
-                _buildIconwithText("SICA Products", "shop", context),
-                SizedBox(
-                  height: 30.h,
-                ),
-              Text("User",
-                style: Theme.of(context).textTheme.headlineMedium!),
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                     Navigator.pop(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const Polls(),
-                      ),
-                    );
-                  },
-                  child: _buildIconwithText("Polls", "polls", context),
-                ),
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    Navigator.pop(context);
-                   
-                  }, 
-                  child: _buildIconwithText("Employment", "employement", context),
-                ),
-                
+                // GestureDetector(
+                //   behavior: HitTestBehavior.opaque,
+                //   onTap: () {
+                //     Navigator.pop(context);
+                //    Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //         builder: (context) => const Awards(),
+                //       ),
+                //     );
+                //   },
+                //   child:_buildIconwithText("SICA Awards", "award", context),
+                // ),
+
+                // SizedBox(
+                //   height: 30.h,
+                // ),
+                // Text("Shop",
+                //     style: Theme.of(context).textTheme.headlineMedium!),
+                // _buildIconwithText("SICA Products", "shop", context),
+                //   SizedBox(
+                //     height: 30.h,
+                //   ),
+                // Text("User",
+                //   style: Theme.of(context).textTheme.headlineMedium!),
+                //   GestureDetector(
+                //     behavior: HitTestBehavior.opaque,
+                //     onTap: () {
+                //        Navigator.pop(context);
+                //       Navigator.push(
+                //         context,
+                //         MaterialPageRoute(
+                //           builder: (context) => const Polls(),
+                //         ),
+                //       );
+                //     },
+                //     child: _buildIconwithText("Polls", "polls", context),
+                //   ),
+                // GestureDetector(
+                //   behavior: HitTestBehavior.opaque,
+                //   onTap: () {
+                //     Navigator.pop(context);
+
+                //   },
+                //   child: _buildIconwithText("Employment", "employement", context),
+                // ),
+
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () {
                     Navigator.pop(context);
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => Members()));
-                  }, 
+                  },
                   child: _buildIconwithText("Members", "member", context),
                 ),
                 GestureDetector(
@@ -150,24 +150,66 @@ class _NavBarState extends State<NavBar> {
                     Navigator.pop(context);
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => Vendors()));
-                  }, 
+                  },
                   child: _buildIconwithText("Vendors", "vendors", context),
                 ),
-               
+
                 SizedBox(
                   height: 30.h,
                 ),
                 Text("Account",
                     style: Theme.of(context).textTheme.headlineMedium!),
-              //  _buildIconwithText("Support", "support", context),
-                 GestureDetector(
+                _buildIconwithText("Support", "support", context),
+                Padding(
+                  padding: EdgeInsets.only(top: 18.h),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.privacy_tip_outlined,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      SizedBox(
+                        width: 6.w,
+                      ),
+                      Text(
+                        "Privacy Policy",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall!
+                            .copyWith(fontSize: 15.sp),
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 18.h),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.edit_document,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      SizedBox(
+                        width: 6.w,
+                      ),
+                      Text(
+                        "Terms & Conditions",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall!
+                            .copyWith(fontSize: 15.sp),
+                      )
+                    ],
+                  ),
+                ),
+               
+                GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () {
-                   logout();
-                  }, 
-                  child:_buildIconwithText("Logout", "logout", context),
+                    logout();
+                  },
+                  child: _buildIconwithText("Logout", "logout", context),
                 ),
-              
               ],
             ),
           ),

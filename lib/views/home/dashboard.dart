@@ -7,6 +7,7 @@ import 'package:sica/views/shooting/shooting_list.dart';
 
 import '../bottom_bar/bottom_bar.dart';
 import '../events/tabbar/tab_bar.dart';
+import '../gallery/gallery_list.dart';
 import '../profile/profile.dart';
 import '../shooting/create_dop.dart';
 import '../shooting/create_shooting.dart';
@@ -39,11 +40,9 @@ class _MyDashBoardState extends State<MyDashBoard> {
       itemCornerRadius: 50,
       curve: Curves.easeIn,
       onItemSelected: (index) {
-        if (index == 2) {
-          showModal(context);
-        } else {
+        
           setState(() => widget.currentIndex = index);
-        }
+        
       },
       items: <BottomNavyBarItem>[
         BottomNavyBarItem(
@@ -61,9 +60,9 @@ class _MyDashBoardState extends State<MyDashBoard> {
           textAlign: TextAlign.center,
         ),
         BottomNavyBarItem(
-          icon: const Icon(CupertinoIcons.video_camera_solid),
+          icon: const Icon(CupertinoIcons.photo),
           title: const Text(
-            'Shooting',
+            'Gallery',
           ),
           activeColor: activeColor,
           inactiveColor: _inactiveColor,
@@ -135,14 +134,14 @@ class _MyDashBoardState extends State<MyDashBoard> {
                             height: 10.h,
                           ),
                           Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 GestureDetector(
                                   onTap: () {
                                     Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                 CreateShooting()));
+                                                 ShootingList()));
                                   },
                                   child: Column(
                                     children: [
@@ -162,7 +161,7 @@ class _MyDashBoardState extends State<MyDashBoard> {
                                       SizedBox(
                                         height: 8.h,
                                       ),
-                                      Text("Create Shooting",
+                                      Text("Update Shooting",
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodySmall!
@@ -170,6 +169,7 @@ class _MyDashBoardState extends State<MyDashBoard> {
                                     ],
                                   ),
                                 ),
+                                SizedBox(width: 20,),
                                 GestureDetector(
                                   onTap: () {
                                     Navigator.of(context).pushReplacement(
@@ -196,7 +196,7 @@ class _MyDashBoardState extends State<MyDashBoard> {
                                       SizedBox(
                                         height: 8.h,
                                       ),
-                                      Text("Create DOP",
+                                      Text("Update DOP",
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodySmall!
@@ -204,73 +204,7 @@ class _MyDashBoardState extends State<MyDashBoard> {
                                     ],
                                   ),
                                 ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const ShootingList()));
-                                  },
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                          height: 60.h,
-                                          width: 60.h,
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              shape: BoxShape.circle),
-                                          child: Icon(
-                                            Icons.list_rounded,
-                                            color: AppTheme.bodyTextColor,
-                                            size: 26.sp,
-                                          )),
-                                      SizedBox(
-                                        height: 8.h,
-                                      ),
-                                      Text("List",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall!
-                                              .copyWith(fontSize: 12.sp)),
-                                    ],
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ShootingDopApproval()));
-                                  },
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                          height: 60.h,
-                                          width: 60.h,
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              shape: BoxShape.circle),
-                                          child: Icon(
-                                            Icons.approval_rounded,
-                                            color: AppTheme.bodyTextColor,
-                                            size: 26.sp,
-                                          )),
-                                      SizedBox(
-                                        height: 8.h,
-                                      ),
-                                      Text("Approval",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall!
-                                              .copyWith(fontSize: 12.sp)),
-                                    ],
-                                  ),
-                                ),
-                              ]),
+                               ]),
                           SizedBox(
                             height: 20.h,
                           ),
@@ -285,7 +219,7 @@ class _MyDashBoardState extends State<MyDashBoard> {
     List<Widget> pages = [
       const Homepage(),
       EventsTabBar(),
-      Center(child: const Text("Camera")),
+      GalleryList(),
       Profile(),
     ];
     return IndexedStack(

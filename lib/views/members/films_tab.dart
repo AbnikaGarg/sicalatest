@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sica/models/OtherMemberProfile.dart';
+import 'package:sica/models/MemberDetailModel.dart';
 import 'package:sica/theme/theme.dart';
 import 'package:sica/views/profile/add_project.dart';
 import '../../components/movie_card.dart';
 
 class FilmsTab extends StatefulWidget {
-  const FilmsTab({super.key, required this.memberdetails});
-  final MemberBasicDetails memberdetails;
+  const FilmsTab({super.key, required this.projectWork});
+ final List<ProjectWork> projectWork;
 
   @override
   State<FilmsTab> createState() => _nameState();
@@ -18,16 +18,16 @@ class _nameState extends State<FilmsTab> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        if ( widget.memberdetails.works!.length != 0)
+        if ( widget.projectWork.isNotEmpty)
           Expanded(
             child: ListView.builder(
-              itemCount:widget.memberdetails.works!.length,
+              itemCount:widget.projectWork.length,
              
               padding: EdgeInsets.zero,
              
               itemBuilder: (context, index) {
                 return Padding(
-                  padding: EdgeInsets.only(top: 20.h),
+                  padding: EdgeInsets.only(top: 20.h, left: 12,right: 12),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -36,7 +36,7 @@ class _nameState extends State<FilmsTab> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "${widget.memberdetails.works![index].projectName}",
+                              "${widget.projectWork[index].projectName}",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall!
@@ -46,7 +46,7 @@ class _nameState extends State<FilmsTab> {
                               height: 5.h,
                             ),
                             Text(
-                              "${widget.memberdetails.works![index].designation}",
+                              "${widget.projectWork[index].designation}",
                               style: Theme.of(context)
                                   .textTheme
                                   .displaySmall!
@@ -64,13 +64,11 @@ class _nameState extends State<FilmsTab> {
                         children: [
                          
                           Text(
-                            "${widget.memberdetails.works![index].year}",
+                            "${widget.projectWork[index].year}",
                             style: Theme.of(context)
                                 .textTheme
-                                .bodySmall!
-                                .copyWith(
-                                    fontSize: 12.sp,
-                                    color: Theme.of(context).iconTheme.color),
+                                .bodyLarge
+                                
                           ),
                         ],
                       )

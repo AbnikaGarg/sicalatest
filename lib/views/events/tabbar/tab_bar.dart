@@ -12,14 +12,13 @@ class EventsTabBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultTabController(
       initialIndex: 0,
-      length: 2,
+      length: 3,
       child: Scaffold(
         //  backgroundColor: AppTheme.ticketBackground,
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(kToolbarHeight),
           child: Container(
             decoration: BoxDecoration(
-          
               boxShadow: [
                 BoxShadow(
                   color: Color.fromARGB(139, 88, 88, 90).withOpacity(0.4),
@@ -40,16 +39,22 @@ class EventsTabBar extends StatelessWidget {
                         Expanded(child: Container()),
                         TabBar(
                           indicatorWeight: 2,
+                          unselectedLabelStyle: AppTheme.text14Px,
+                          labelStyle: AppTheme.text14Px,
                           indicatorColor: AppTheme.darkPrimaryColor,
                           isScrollable: false,
                           tabs: [
                             Padding(
                               padding: EdgeInsets.only(bottom: 12.h),
-                              child: const Text("Upcoming"),
+                              child: const Text("All Events"),
                             ),
                             Padding(
                               padding: EdgeInsets.only(bottom: 12.h),
-                              child: const Text("Assigned"),
+                              child: const Text("Booked"),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 12.h),
+                              child: const Text("Completed"),
                             ),
                           ],
                         ),
@@ -63,7 +68,7 @@ class EventsTabBar extends StatelessWidget {
         ),
         body: const TabBarView(
           physics: NeverScrollableScrollPhysics(),
-          children: <Widget>[EventsTab(), EventsTab()],
+          children: <Widget>[EventsTab(), EventsTab(), EventsTab()],
         ),
       ),
     );

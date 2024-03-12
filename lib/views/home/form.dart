@@ -1,6 +1,11 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sica/models/OtherMemberProfile.dart';
 import 'package:sica/services/member_repo.dart';
 import 'package:sica/utils/config.dart';
 import 'package:sica/views/home/dashboard.dart';
@@ -49,6 +54,12 @@ class _CreateDelayReportState extends State<CreateDelayReport> {
     {"type": "Lights"},
     {"type": "Grips"}
   ];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getMemberAllData();
+  }
    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   submit() {
     if (_formKey.currentState!.validate()) {
@@ -94,7 +105,54 @@ class _CreateDelayReportState extends State<CreateDelayReport> {
       });
     }
   }
+   List<MemberBasicDetails>? memberBasicDetails;
+  List<MemberBasicDetails>? memberBasicDetails2;
 
+Timer? searchOnStoppedTyping;
+
+  _onChangeHandler(value) {
+    const duration = Duration(
+        milliseconds:
+            800); // set the duration that you want call search() after that.
+    if (searchOnStoppedTyping != null) {
+      setState(() => searchOnStoppedTyping!.cancel()); // clear timer
+    }
+    setState(
+        () => searchOnStoppedTyping = new Timer(duration, () => search(value)));
+  }
+
+  Future<void> getMemberAllData() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final rawJson = sharedPreferences.getString('memberList') ?? '';
+    var jsonMap = json.decode(rawJson);
+    memberBasicDetails = List<MemberBasicDetails>.from(
+        jsonMap.map((x) => MemberBasicDetails.fromJson(x)));
+    memberBasicDetails2 = memberBasicDetails;
+    print("loaded");
+  }
+
+  search(value) {
+    print(value);
+    if (value.isNotEmpty) {
+      memberBasicDetails2 = memberBasicDetails!
+          .where((elem) =>
+              elem.memberDetails!.membershipNo!.toString() == value.toString())
+          .toList();
+      if (memberBasicDetails2!.isNotEmpty) {
+      //  mobile.text = memberBasicDetails2!.first.memberDetails!.mobileNumber!;
+        name.text = memberBasicDetails2!.first.memberDetails!.name!;
+       // designation.text = memberBasicDetails2!.first.memberDetails!.grade!;
+      } else {
+     //   mobile.clear();
+        name.clear();
+       // designation.clear();
+      }
+    } else {
+    //  mobile.clear();
+      name.clear();
+   //   designation.clear();
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,7 +174,7 @@ class _CreateDelayReportState extends State<CreateDelayReport> {
                 Padding(
                   padding: EdgeInsets.only(bottom: 3.h),
                   child: Text(
-                    "MEMBER NAME & M.NO",
+                    "MEMBER NO",
                     style: Theme.of(context)
                         .textTheme
                         .labelSmall!
@@ -124,7 +182,8 @@ class _CreateDelayReportState extends State<CreateDelayReport> {
                   ),
                 ),
                 MyTextField(
-                    // textEditingController: _controller.emailController,
+                  onChanged: _onChangeHandler,
+                    textEditingController: memberno,
                     validation: (value) {
                       if (value == null || value.isEmpty) {
                         return "Enter MEMBER NAME & M.NO";
@@ -146,7 +205,7 @@ class _CreateDelayReportState extends State<CreateDelayReport> {
                   ),
                 ),
                 MyTextField(
-                    // textEditingController: _controller.emailController,
+                     textEditingController: name,
                     validation: (value) {
                       if (value == null || value.isEmpty) {
                         return "Enter Name";
@@ -167,7 +226,7 @@ class _CreateDelayReportState extends State<CreateDelayReport> {
                   ),
                 ),
                 MyTextField(
-                    // textEditingController: _controller.emailController,
+                   textEditingController: project,
                     validation: (value) {
                       if (value == null || value.isEmpty) {
                         return "Enter PROJECT NAME";
@@ -188,7 +247,7 @@ class _CreateDelayReportState extends State<CreateDelayReport> {
                   ),
                 ),
                 MyTextField(
-                    // textEditingController: _controller.emailController,
+                   textEditingController: production,
                     validation: (value) {
                       if (value == null || value.isEmpty) {
                         return "Enter PRODUCTION HOUSE NAME";
@@ -209,7 +268,7 @@ class _CreateDelayReportState extends State<CreateDelayReport> {
                   ),
                 ),
                 MyTextField(
-                    // textEditingController: _controller.emailController,
+                   textEditingController: outdoor,
                     validation: (value) {
                       if (value == null || value.isEmpty) {
                         return "Enter OUTDOOR UNIT NAME";
@@ -230,7 +289,7 @@ class _CreateDelayReportState extends State<CreateDelayReport> {
                   ),
                 ),
                 MyTextField(
-                    // textEditingController: _controller.emailController,
+                    textEditingController:location,
                     validation: (value) {
                       if (value == null || value.isEmpty) {
                         return "Enter LOCATION";
@@ -287,7 +346,7 @@ class _CreateDelayReportState extends State<CreateDelayReport> {
                   ),
                 ),
                 MyTextField(
-                    // textEditingController: _controller.emailController,
+                     textEditingController: aproxTime,
                     validation: (value) {
                       if (value == null || value.isEmpty) {
                         return "Enter Approximate Time Lost Due to the Problem";
@@ -308,7 +367,7 @@ class _CreateDelayReportState extends State<CreateDelayReport> {
                   ),
                 ),
                 MyTextField(
-                    // textEditingController: _controller.emailController,
+                     textEditingController: managerContact,
                     validation: (value) {
                       if (value == null || value.isEmpty) {
                         return "Enter Name and Contact No of Outdoor Unit Manager.";
@@ -396,7 +455,7 @@ class _CreateDelayReportState extends State<CreateDelayReport> {
                   ),
                 ),
                 MyTextField(
-                    // textEditingController: _controller.emailController,
+                     textEditingController:productionContact,
                     validation: (value) {
                       if (value == null || value.isEmpty) {
                         return "Enter Name and Contact No of the Production Manager / Executive Producer.";
@@ -418,7 +477,7 @@ class _CreateDelayReportState extends State<CreateDelayReport> {
                 ),
                 MyTextField(
 
-                    // textEditingController: _controller.emailController,
+                     textEditingController: issue,
                     validation: (value) {
                       if (value == null || value.isEmpty) {
                         return "Enter Brief the issues you faced with the service of Outdoor  Unit / Equipments";

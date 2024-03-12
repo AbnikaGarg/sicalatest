@@ -1,15 +1,20 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sica/components/dynamic_modal_sheet.dart';
 import 'package:sica/models/OtherMemberProfile.dart';
+import 'package:sica/models/ShootingUpdateModel.dart';
 import 'package:sica/services/member_repo.dart';
 import 'package:sica/utils/config.dart';
 import 'package:sica/views/home/dashboard.dart';
 import 'package:sica/views/profile/add_work.dart';
+import 'package:sica/views/shooting/shooting_list.dart';
 import '../../components/buton.dart';
 import '../../components/input_feild.dart';
 import '../../theme/theme.dart';
@@ -17,32 +22,42 @@ import '../login/otp_page.dart';
 import 'package:intl/intl.dart';
 
 class CreateShooting extends StatefulWidget {
-  CreateShooting({super.key});
-
+  CreateShooting({super.key, required this.updatesShot});
+  final MemberShooting updatesShot;
   @override
   State<CreateShooting> createState() => _CreateShootingState();
 }
 
 class _CreateShootingState extends State<CreateShooting> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  final dopname = TextEditingController();
+  final dopmemno = TextEditingController();
   final mobile = TextEditingController();
-
+  final date = TextEditingController();
   final name = TextEditingController();
-
+  final producer = TextEditingController();
+  final producerExt = TextEditingController();
+  final producerExtContact = TextEditingController();
+  final proHouse = TextEditingController();
   final memberno = TextEditingController();
-
+  List postTypes = [
+    {"type": "Operative Cameraman"},
+    {"type": "Associate  Cameraman"},
+    {"type": "Assistant Cameraman"},
+    {"type": "2nd Unit Cameraman"},
+    {"type": "1st Unit  Cameraman"},
+  ];
   final designation = TextEditingController();
-
+  final grade = TextEditingController();
   final medium = TextEditingController();
-
+  String? updateid;
   final projecttitle = TextEditingController();
 
-  final startDate = TextEditingController();
+  final outdoor = TextEditingController();
 
-  final endDate = TextEditingController();
+  final locaion = TextEditingController();
 
-  final approvalTypeText = TextEditingController();
+  //final approvalTypeText = TextEditingController();
   final notes = TextEditingController();
   List approvalType = [
     {"ans": "Yes"},
@@ -50,28 +65,54 @@ class _CreateShootingState extends State<CreateShooting> {
   ];
   @override
   void initState() {
-    super.initState();
     getMedium();
     getMemberAllData();
+    super.initState();
+    if (widget.updatesShot.updateShooingId != null) {
+      updateid = widget.updatesShot.updateShooingId.toString();
+      memberno.text = widget.updatesShot.memberNumber.toString();
+      grade.text = widget.updatesShot.grade.toString();
+      name.text = widget.updatesShot.memberName.toString();
+      mobile.text = widget.updatesShot.mobileNumber.toString();
+      designation.text = widget.updatesShot.designation.toString();
+      projecttitle.text = widget.updatesShot.projectTitle.toString();
+      dopmemno.text = widget.updatesShot.dopNumber.toString();
+      dopname.text = widget.updatesShot.dopName.toString();
+
+      producer.text = widget.updatesShot.producer.toString();
+      producerExt.text = widget.updatesShot.productionExecutive.toString();
+      notes.text = widget.updatesShot.notes.toString();
+      grade.text = widget.updatesShot.grade.toString();
+      proHouse.text = widget.updatesShot.productionHouse.toString();
+      locaion.text = widget.updatesShot.location.toString();
+      outdoor.text = widget.updatesShot.outdoorUnitName.toString();
+      date.text = widget.updatesShot.date.toString();
+      producerExtContact.text =
+          widget.updatesShot.productionExecutiveContactNo.toString();
+      //  List aa=   mediumList
+      //         .where((value) =>
+      //             value["format_id"].toString() ==
+      //             widget.updatesShot.mediumId.toString())
+      //         .toList();
+      //         medium.text=aa[0]["format_name"];
+      setState(() {});
+    }
   }
 
+//shooting_title
   List<MemberBasicDetails>? memberBasicDetails;
   List<MemberBasicDetails>? memberBasicDetails2;
-  void getMemberAllData() {
-    final service = MemberRepo();
-    service.getAllMemberData().then((value) {
-      if (value.isNotEmpty) {
-        memberBasicDetails = value.first.memberBasicDetails!;
-        memberBasicDetails2 = memberBasicDetails;
-        print("loaded");
-
-        if (mounted) setState(() {});
-      }
-    });
+  Future<void> getMemberAllData() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final rawJson = sharedPreferences.getString('memberList') ?? '';
+    var jsonMap = json.decode(rawJson);
+    memberBasicDetails = List<MemberBasicDetails>.from(
+        jsonMap.map((x) => MemberBasicDetails.fromJson(x)));
+    memberBasicDetails2 = memberBasicDetails;
+    print("loaded");
   }
 
   Timer? searchOnStoppedTyping;
-
   _onChangeHandler(value) {
     const duration = Duration(
         milliseconds:
@@ -80,7 +121,7 @@ class _CreateShootingState extends State<CreateShooting> {
       setState(() => searchOnStoppedTyping!.cancel()); // clear timer
     }
     setState(
-        () => searchOnStoppedTyping = new Timer(duration, () => search(value)));
+        () => searchOnStoppedTyping = Timer(duration, () => search(value)));
   }
 
   search(value) {
@@ -93,9 +134,16 @@ class _CreateShootingState extends State<CreateShooting> {
       if (memberBasicDetails2!.isNotEmpty) {
         mobile.text = memberBasicDetails2!.first.memberDetails!.mobileNumber!;
         name.text = memberBasicDetails2!.first.memberDetails!.name!;
-        designation.text =
-            memberBasicDetails2!.first.memberDetails!.designation!;
+        grade.text = memberBasicDetails2!.first.memberDetails!.grade!;
+      } else {
+        mobile.clear();
+        name.clear();
+        grade.clear();
       }
+    } else {
+      mobile.clear();
+      name.clear();
+      grade.clear();
     }
   }
 
@@ -105,21 +153,28 @@ class _CreateShootingState extends State<CreateShooting> {
       DialogHelp.showLoading(context);
       service
           .submitShooting(
+              dopname.text,
+              dopmemno.text,
+              producer.text,
+              proHouse.text,
+              producerExt.text,
+              producerExtContact.text,
               mobile.text,
               name.text,
               memberno.text,
               designation.text,
               projecttitle.text,
               mediumid!,
-              startDate.text,
-              endDate.text,
+              date.text,
+              grade.text,
               notes.text,
-              approvalTypeText.text)
+              locaion.text,
+              outdoor.text)
           .then((value) {
         DialogHelp().hideLoading(context);
         if (value.isNotEmpty) {
           Fluttertoast.showToast(
-              msg: "Shooting Added",
+              msg: "Shooting Updated",
               backgroundColor: Colors.green,
               gravity: ToastGravity.TOP,
               textColor: Colors.white);
@@ -159,7 +214,31 @@ class _CreateShootingState extends State<CreateShooting> {
       appBar: AppBar(
         titleSpacing: 0,
         elevation: 1,
-        title: const Text("Create Shooting"),
+        centerTitle: false,
+        title: const Text("Update Shooting"),
+        actions: [
+          if(updateid==null)
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => ShootingList()));
+              },
+              child: Container(
+                margin: EdgeInsets.only(right: 10),
+                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+                decoration: BoxDecoration(
+                    color: AppTheme.yelloDarkColor,
+                    borderRadius: BorderRadius.circular(5)),
+                child: Text(
+                  "History",
+                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                      fontSize: 16.sp, color: AppTheme.whiteBackgroundColor),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -175,19 +254,65 @@ class _CreateShootingState extends State<CreateShooting> {
                 //   height: 16.h,
                 // ),
                 MyTextField(
-                    onChanged: _onChangeHandler,
+                    readOnly: true,
+                    textEditingController: date,
+                    ontap: () async {
+                       if(updateid != null){
+                        return;
+                      }
+                      DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2101));
+
+                      if (pickedDate != null) {
+                        print(pickedDate);
+                        String formattedDate =
+                            DateFormat('dd/MM/yyyy').format(pickedDate);
+                        print(formattedDate);
+                        date.text =
+                            formattedDate; //set output date to TextField value.
+                        setState(() {});
+                      } else {
+                        print("Start from date is not selected");
+                      }
+                    },
+                    // textEditingController: _controller.emailController,
+                    validation: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Enter Date";
+                      }
+                      return null;
+                    },
+                    icon: Icon(
+                      Icons.calendar_month,
+                      color: Color(0xff585A60),
+                    ),
+                    hintText: "Select Date",
+                    color: const Color(0xff585A60)),
+                SizedBox(height: 6.h),
+                // ),
+                MyTextField(
                     textEditingController: memberno,
+                    readOnly: updateid != null,
                     validation: (value) {
                       if (value == null || value.isEmpty) {
                         return "Enter Membership Number";
                       }
                       return null;
                     },
+                    textInputType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
+                    onChanged: _onChangeHandler,
                     hintText: "Membership Number",
                     color: const Color(0xff585A60)),
                 SizedBox(height: 6.h),
                 MyTextField(
                     textEditingController: mobile,
+                    readOnly: updateid != null,
                     validation: (value) {
                       if (value == null || value.isEmpty) {
                         return "Enter Mobile Number";
@@ -200,6 +325,7 @@ class _CreateShootingState extends State<CreateShooting> {
                 SizedBox(height: 6.h),
                 MyTextField(
                     textEditingController: name,
+                    readOnly: updateid != null,
                     validation: (value) {
                       if (value == null || value.isEmpty) {
                         return "Enter Name";
@@ -211,14 +337,15 @@ class _CreateShootingState extends State<CreateShooting> {
                 SizedBox(height: 6.h),
 
                 MyTextField(
-                    textEditingController: designation,
+                    textEditingController: grade,
+                    readOnly: updateid != null,
                     validation: (value) {
                       if (value == null || value.isEmpty) {
-                        return "Enter Designation/Grade";
+                        return "Enter Grade";
                       }
                       return null;
                     },
-                    hintText: "Designation/Grade",
+                    hintText: "Grade",
                     color: const Color(0xff585A60)),
                 SizedBox(height: 6.h),
                 MyTextField(
@@ -229,7 +356,36 @@ class _CreateShootingState extends State<CreateShooting> {
                       }
                       return null;
                     },
+                    readOnly: updateid != null,
                     hintText: "Project Title",
+                    color: const Color(0xff585A60)),
+                SizedBox(height: 6.h),
+
+                MyTextField(
+                    textEditingController: dopname,
+                    readOnly: updateid != null,
+                    validation: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Enter DOP name";
+                      }
+                      return null;
+                    },
+                    // onChanged: _onChangeProjectTiHandler,
+                    hintText: "DOP name",
+                    color: const Color(0xff585A60)),
+                SizedBox(height: 6.h),
+                SizedBox(height: 6.h),
+                MyTextField(
+                    textEditingController: dopmemno,
+                    readOnly: updateid != null,
+                    validation: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Enter DOP Member number";
+                      }
+                      return null;
+                    },
+                    // onChanged: _onChangeProjectTiHandler,
+                    hintText: "DOP Member number",
                     color: const Color(0xff585A60)),
                 SizedBox(height: 6.h),
                 if (mediumList.isNotEmpty)
@@ -238,19 +394,21 @@ class _CreateShootingState extends State<CreateShooting> {
                       readOnly: true,
                       validation: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Select Medium";
+                          return "Select Format";
                         }
                         return null;
                       },
-                      ontap: () {
+                      ontap: () { if(updateid != null){
+                        return;
+                      }
                         ModalSheet.showModal(
-                            context, mediumList[0], "medium_name", (value) {
+                            context, mediumList[0], "format_name", (value) {
                           setState(() {
                             medium.text = value;
                           });
                         }, (value) {
                           mediumid =
-                              mediumList[0][value]["medium_id"].toString();
+                              mediumList[0][value]["format_id"].toString();
                           setState(() {});
                         }, medium.text);
                       },
@@ -258,128 +416,217 @@ class _CreateShootingState extends State<CreateShooting> {
                         Icons.arrow_drop_down,
                         color: Color(0xff585A60),
                       ),
-                      hintText: "Select Medium",
+                      hintText: "Select Format",
                       color: const Color(0xff585A60)),
                 SizedBox(height: 6.h),
+
                 MyTextField(
-                    textEditingController: approvalTypeText,
+                    textEditingController: designation,
                     readOnly: true,
                     validation: (value) {
                       if (value == null || value.isEmpty) {
-                        return "Select DOP for approval";
+                        return "Select Designation";
                       }
                       return null;
                     },
                     ontap: () {
-                      ModalSheet.showModal(context, approvalType, "ans",
-                          (value) {
-                        //  print(value);
-                        //sss _controller.setMode(value);
+                      if(updateid != null){
+                        return;
+                      }
+                      ModalSheet.showModal(context, postTypes, "type", (value) {
                         setState(() {
-                          approvalTypeText.text = value;
+                          designation.text = value;
                         });
-                      }, (value) {}, approvalTypeText.text);
+                      }, (value) {
+                        setState(() {});
+                      }, designation.text);
                     },
                     icon: Icon(
                       Icons.arrow_drop_down,
                       color: Color(0xff585A60),
                     ),
-                    hintText: "Select DOP for approval",
+                    hintText: "Select Designation",
                     color: const Color(0xff585A60)),
                 SizedBox(height: 6.h),
-                MyTextField(
-                    readOnly: true,
-                    textEditingController: startDate,
-                    ontap: () async {
-                      DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2101));
+                // SizedBox(height: 6.h),
+                // MyTextField(
+                //     textEditingController: approvalTypeText,
+                //     readOnly: true,
+                //     validation: (value) {
+                //       if (value == null || value.isEmpty) {
+                //         return "Select DOP for approval";
+                //       }
+                //       return null;
+                //     },
+                //     ontap: () {
+                //       ModalSheet.showModal(context, approvalType, "ans",
+                //           (value) {
+                //         //  print(value);
+                //         //sss _controller.setMode(value);
+                //         setState(() {
+                //           approvalTypeText.text = value;
+                //         });
+                //       }, (value) {}, approvalTypeText.text);
+                //     },
+                //     icon: Icon(
+                //       Icons.arrow_drop_down,
+                //       color: Color(0xff585A60),
+                //     ),
+                //     hintText: "Select DOP for approval",
+                //     color: const Color(0xff585A60)),
 
-                      if (pickedDate != null) {
-                        print(pickedDate);
-                        String formattedDate =
-                            DateFormat('dd/MM/yyyy').format(pickedDate);
-                        print(formattedDate);
-                        startDate.text =
-                            formattedDate; //set output date to TextField value.
-                        setState(() {});
-                      } else {
-                        print("Start from date is not selected");
-                      }
-                    },
-                    // textEditingController: _controller.emailController,
+                // MyTextField(
+                //     readOnly: true,
+                //     textEditingController: startDate,
+                //     ontap: () async {
+                //       DateTime? pickedDate = await showDatePicker(
+                //           context: context,
+                //           initialDate: DateTime.now(),
+                //           firstDate: DateTime(2000),
+                //           lastDate: DateTime(2101));
+
+                //       if (pickedDate != null) {
+                //         print(pickedDate);
+                //         String formattedDate =
+                //             DateFormat('dd/MM/yyyy').format(pickedDate);
+                //         print(formattedDate);
+                //         startDate.text =
+                //             formattedDate; //set output date to TextField value.
+                //         setState(() {});
+                //       } else {
+                //         print("Start from date is not selected");
+                //       }
+                //     },
+                //     // textEditingController: _controller.emailController,
+                //     validation: (value) {
+                //       if (value == null || value.isEmpty) {
+                //         return "Enter Start Date";
+                //       }
+                //       return null;
+                //     },
+                //     icon: Icon(
+                //       Icons.calendar_month,
+                //       color: Color(0xff585A60),
+                //     ),
+                //     hintText: "Start Date",
+                //     color: const Color(0xff585A60)),
+                // SizedBox(height: 6.h),
+                // MyTextField(
+                //     readOnly: true,
+                //     textEditingController: endDate,
+                //     ontap: () async {
+                //       DateTime? pickedDate = await showDatePicker(
+                //           context: context,
+                //           initialDate: DateTime.now(),
+                //           firstDate: DateTime(2000),
+                //           lastDate: DateTime(2101));
+
+                //       if (pickedDate != null) {
+                //         print(pickedDate);
+                //         String formattedDate =
+                //             DateFormat('dd/MM/yyyy').format(pickedDate);
+                //         print(formattedDate);
+                //         endDate.text =
+                //             formattedDate; //set output date to TextField value.
+                //       } else {
+                //         print("end from date is not selected");
+                //       }
+                //     },
+                //     // textEditingController: _controller.emailController,
+                //     validation: (value) {
+                //       if (value == null || value.isEmpty) {
+                //         return "Enter End Date";
+                //       }
+                //       return null;
+                //     },
+                //     icon: Icon(
+                //       Icons.calendar_month,
+                //       color: Color(0xff585A60),
+                //     ),
+                //     hintText: "End Date",
+                //     color: const Color(0xff585A60)),
+                // SizedBox(height: 6.h),
+                SizedBox(height: 6.h),
+                MyTextField(
+                    textEditingController: producer,
+                    readOnly: updateid != null,
+                    fillcolor: Theme.of(context).cardColor,
+                    hintText: "Enter Producer name",
+                    color: const Color(0xff585A60)),
+                SizedBox(height: 5.h),
+
+                MyTextField(
+                    textEditingController: proHouse,
+                    readOnly: updateid != null,
                     validation: (value) {
                       if (value == null || value.isEmpty) {
-                        return "Enter Start Date";
+                        return "Enter Production House";
                       }
                       return null;
                     },
-                    icon: Icon(
-                      Icons.calendar_month,
-                      color: Color(0xff585A60),
-                    ),
-                    hintText: "Start Date",
+                    fillcolor: Theme.of(context).cardColor,
+                    hintText: "Enter Production House",
                     color: const Color(0xff585A60)),
-                SizedBox(height: 6.h),
-                MyTextField(
-                    readOnly: true,
-                    textEditingController: endDate,
-                    ontap: () async {
-                      DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2101));
+                SizedBox(height: 5.h),
 
-                      if (pickedDate != null) {
-                        print(pickedDate);
-                        String formattedDate =
-                            DateFormat('dd/MM/yyyy').format(pickedDate);
-                        print(formattedDate);
-                        endDate.text =
-                            formattedDate; //set output date to TextField value.
-                      } else {
-                        print("end from date is not selected");
-                      }
-                    },
-                    // textEditingController: _controller.emailController,
+                MyTextField(
+                    textEditingController: producerExt,
+                    readOnly: updateid != null,
                     validation: (value) {
                       if (value == null || value.isEmpty) {
-                        return "Enter End Date";
+                        return "Enter Production Executive/Manager name";
                       }
                       return null;
                     },
-                    icon: Icon(
-                      Icons.calendar_month,
-                      color: Color(0xff585A60),
-                    ),
-                    hintText: "End Date",
+                    fillcolor: Theme.of(context).cardColor,
+                    hintText: "Enter Production Executive/Manager name",
                     color: const Color(0xff585A60)),
-                SizedBox(height: 6.h),
+                SizedBox(height: 5.h),
 
+                MyTextField(
+                    textEditingController: producerExtContact,
+                    readOnly: updateid != null,
+                    validation: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Enter Production Executive/Manager - Contact No.";
+                      }
+                      return null;
+                    },
+                    fillcolor: Theme.of(context).cardColor,
+                    hintText:
+                        "Enter Production Executive/Manager - Contact No.",
+                    color: const Color(0xff585A60)),
+                SizedBox(height: 5.h),
+                MyTextField(
+                    readOnly: updateid != null,
+                    textEditingController: locaion,
+                    hintText: "Location",
+                    color: const Color(0xff585A60)),
+                SizedBox(height: 5.h),
+                MyTextField(
+                    textEditingController: outdoor,
+                    readOnly: updateid != null,
+                    hintText: "Outdoor Unit name",
+                    color: const Color(0xff585A60)),
+                SizedBox(height: 5.h),
                 MyTextField(
                     textEditingController: notes,
-                    validation: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Enter Notes";
-                      }
-                      return null;
-                    },
+                    readOnly: updateid != null,
                     hintText: "Notes",
                     color: const Color(0xff585A60)),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 12),
-                  child: RoundedButton(
-                      ontap: () {
-                        submit();
-                      },
-                      title: "Apply",
-                      height: 40,
-                      color: Theme.of(context).primaryColor,
-                      textcolor: AppTheme.darkTextColor),
-                ),
+                if (updateid == null)
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 20.h, horizontal: 12),
+                    child: RoundedButton(
+                        ontap: () {
+                          submit();
+                        },
+                        title: "Apply",
+                        height: 40,
+                        color: Theme.of(context).primaryColor,
+                        textcolor: AppTheme.darkTextColor),
+                  ),
               ],
             ),
           ),

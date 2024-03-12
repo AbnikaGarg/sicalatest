@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,6 +13,8 @@ import 'package:sica/views/profile/add_project.dart';
 import 'package:sica/views/profile/add_work.dart';
 import 'package:sica/views/profile/edit_profile.dart';
 import 'package:sica/views/profile/payment.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../components/movie_card.dart';
 import '../../theme/theme.dart';
@@ -28,11 +29,12 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   List socialLinks = [
+    {"image": "imbd.png", "title": "IMDB"},
     {"image": "facebook.png", "title": "Facebook"},
     {"image": "insta.png", "title": "Insta"},
     {"image": "youtube.png", "title": "youtube"},
     {"image": "twiter.png", "title": "twiter"},
-    {"image": "linkedin.png", "title": "linkedin"}
+    {"image": "imbd.png", "title": "IMDB"}
   ];
 
   List<MemberDetailModel>? memberDetails;
@@ -49,12 +51,24 @@ class _ProfileState extends State<Profile> {
     accountType = (sharedPreferences.getString('accounttype') ?? "");
     if (mounted) setState(() {});
     final service = MemberRepo();
-    service.getMemberDetails().then((value) {
+    service.getMemberDetails("").then((value) {
       if (value.isNotEmpty) {
         memberDetails = value;
         if (mounted) setState(() {});
       }
     });
+  }
+
+  launchURLMethod(String link) async {
+    final Uri url = Uri.parse(link);
+    try {
+      if (!await launchUrl(url)) {
+        throw Exception('Could not launch $url');
+      }
+      // ignore: empty_catches
+    } catch (e) {
+      print(e);
+    }
   }
 
   void createPayment() {
@@ -66,9 +80,8 @@ class _ProfileState extends State<Profile> {
         List<PaymentResponse> res = value;
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => MakePayment(
-                  url: res[0].paymentlink!.shortUrl.toString(),
-                  callBackurl:res[0].paymentlink!.callbackUrl.toString()
-                )));
+                url: res[0].paymentlink!.shortUrl.toString(),
+                callBackurl: res[0].paymentlink!.callbackUrl.toString())));
       } else {
         Fluttertoast.showToast(
             msg: "Something went wrong",
@@ -78,6 +91,8 @@ class _ProfileState extends State<Profile> {
       }
     });
   }
+
+  DateTime now = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +123,7 @@ class _ProfileState extends State<Profile> {
               ? SingleChildScrollView(
                   child: Padding(
                     padding:
-                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                        EdgeInsets.symmetric(horizontal: 10.w, vertical: 16.h),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -121,10 +136,10 @@ class _ProfileState extends State<Profile> {
                                     .toString() ==
                                 "")
                               Container(
-                                height: 80.h,
-                                width: 80.h,
+                                height: 140,
+                                width: 120,
                                 decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
+                                  //  shape: BoxShape.circle,
                                   image: DecorationImage(
                                     image: AssetImage(
                                         'assets/images/profile.jpeg'),
@@ -134,10 +149,10 @@ class _ProfileState extends State<Profile> {
                               )
                             else
                               Container(
-                                height: 80.h,
-                                width: 80.h,
+                                height: 140,
+                                width: 120,
                                 decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
+                                  //  shape: BoxShape.circle,
                                   image: DecorationImage(
                                     image: NetworkImage(memberDetails![0]
                                         .memberBasicDetails!
@@ -149,7 +164,7 @@ class _ProfileState extends State<Profile> {
                               ),
                             Expanded(
                               child: Padding(
-                                padding: EdgeInsets.only(left: 12.w),
+                                padding: EdgeInsets.only(left: 10.w),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -161,110 +176,487 @@ class _ProfileState extends State<Profile> {
                                             .toString(),
                                         style: Theme.of(context)
                                             .textTheme
-                                            .headlineMedium!),
+                                            .headlineMedium!
+                                            .copyWith(
+                                              fontSize: 16,
+                                            )),
+                                    Divider(
+                                      color: AppTheme.backGround2,
+                                    ),
                                     SizedBox(
-                                      height: 6.h,
+                                      height: 6,
+                                    ),
+                                    RichText(
+                                      textScaleFactor: 1,
+                                      text: TextSpan(
+                                        text: '#',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineSmall!
+                                            .copyWith(
+                                              fontSize: 18.sp,
+                                            ),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                              text:
+                                                  ' ${memberDetails![0].memberBasicDetails!.membershipNo.toString()}',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                              )),
+                                        ],
+                                      ),
+                                    ),
+                                    Divider(
+                                      color: AppTheme.backGround2,
+                                    ),
+                                    SizedBox(
+                                      height: 6,
                                     ),
                                     Text(
                                       memberDetails![0]
                                           .memberBasicDetails!
-                                          .designation
+                                          .grade
                                           .toString(),
                                       style: Theme.of(context)
                                           .textTheme
-                                          .displaySmall,
-                                    )
+                                          .headlineMedium!
+                                          .copyWith(
+                                            fontSize: 16,
+                                          ),
+                                    ),
+                                    Divider(
+                                      color: AppTheme.backGround2,
+                                    ),
                                   ],
                                 ),
                               ),
                             ),
                           ],
                         ),
+
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.start,
+                        //   children: [
+                        //     RichText(
+                        //       textScaleFactor: 1,
+                        //       text: TextSpan(
+                        //         text: ' #',
+                        //         style: Theme.of(context)
+                        //             .textTheme
+                        //             .headlineSmall!
+                        //             .copyWith(
+                        //               fontSize: 18.sp,
+                        //             ),
+                        //         children: <TextSpan>[
+                        //           TextSpan(
+                        //               text:
+                        //                   '  ${memberDetails![0].memberBasicDetails!.membershipNo.toString()}',
+                        //               style: TextStyle(
+                        //                 fontSize: 14.sp,
+                        //               )),
+                        //         ],
+                        //       ),
+                        //     ),
+                        //     SizedBox(
+                        //       width: 80.w,
+                        //     ),
+                        //     Row(
+                        //       children: [
+                        //         Icon(
+                        //           CupertinoIcons.calendar,
+                        //           size: 22.h,
+                        //         ),
+                        //         Text(
+                        //             ' ${memberDetails![0].memberBasicDetails!.joiningDate.toString()}',
+                        //             style: Theme.of(context)
+                        //                 .textTheme
+                        //                 .headlineSmall!
+                        //                 .copyWith(
+                        //                   fontSize: 14.sp,
+                        //                 )),
+                        //       ],
+                        //     )
+                        //   ],
+                        // ),
                         SizedBox(
-                          height: 20.h,
+                          height: 25.h,
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            RichText(
-                              textScaleFactor: 1,
-                              text: TextSpan(
-                                text: ' #',
+                            Text("Contact no.",
                                 style: Theme.of(context)
                                     .textTheme
-                                    .headlineSmall!
-                                    .copyWith(
-                                      fontSize: 18.sp,
+                                    .headlineMedium!),
+                            Text(
+                              "${memberDetails![0].memberBasicDetails!.mobileNumber.toString()}",
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ],
+                        ),
+                        Divider(
+                          color: AppTheme.backGround2,
+                        ),
+
+                        if (memberDetails![0]
+                                .memberBasicDetails!
+                                .state
+                                .toString() !=
+                            "")
+                          Padding(
+                            padding: const EdgeInsets.only(top: 25, bottom: 2),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Status",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineMedium!),
+                                GestureDetector(
+                                  onTap: () {
+                                 
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 12, vertical: 8),
+                                    decoration: BoxDecoration(
+                                        color: memberDetails![0]
+                                          .memberBasicDetails!
+                                          .state
+                                          .toString()=="Live"? Colors.green:memberDetails![0]
+                                          .memberBasicDetails!
+                                          .state
+                                          .toString()=="Debar"?Colors.orange:Colors.red,
+                                        borderRadius: BorderRadius.circular(4)),
+                                    child: Text(
+                                      memberDetails![0]
+                                          .memberBasicDetails!
+                                          .state
+                                          .toString(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(fontSize: 22),
                                     ),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                      text:
-                                          '  ${memberDetails![0].memberBasicDetails!.membershipNo.toString()}',
-                                      style: TextStyle(
-                                        fontSize: 14.sp,
-                                      )),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        Divider(
+                          color: AppTheme.backGround2,
+                        ),
+                        if (memberDetails![0]
+                                .memberBasicDetails!
+                                .email
+                                .toString() !=
+                            "")
+                          Padding(
+                            padding: const EdgeInsets.only(top: 25, bottom: 2),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Email",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineMedium!),
+                                Text(
+                                  "${memberDetails![0].memberBasicDetails!.email.toString()}",
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                              ],
+                            ),
+                          ),
+
+                        if (memberDetails![0]
+                                .memberBasicDetails!
+                                .email
+                                .toString() !=
+                            "")
+                          Divider(
+                            color: AppTheme.backGround2,
+                          ),
+                        if (memberDetails![0]
+                                .memberBasicDetails!
+                                .date_of_birth
+                                .toString() !=
+                            "")
+                          Padding(
+                            padding: const EdgeInsets.only(top: 25),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("DOB",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineMedium!),
+                                Text(
+                                  "${memberDetails![0].memberBasicDetails!.date_of_birth.toString()}",
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                              ],
+                            ),
+                          ),
+                        if (memberDetails![0]
+                                .memberBasicDetails!
+                                .date_of_birth
+                                .toString() !=
+                            "")
+                          Divider(
+                            color: AppTheme.backGround2,
+                          ),
+                        if (memberDetails![0]
+                                .memberBasicDetails!
+                                .joiningDate
+                                .toString() !=
+                            "")
+                          Padding(
+                            padding: const EdgeInsets.only(top: 25),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("DOJ",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineMedium!),
+                                Text(
+                                  "${memberDetails![0].memberBasicDetails!.joiningDate.toString()}",
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                              ],
+                            ),
+                          ),
+                        if (memberDetails![0]
+                                .memberBasicDetails!
+                                .joiningDate
+                                .toString() !=
+                            "")
+                          Divider(
+                            color: AppTheme.backGround2,
+                          ),
+                        if (memberDetails![0]
+                                .memberBasicDetails!
+                                .portifolioLink
+                                .toString() !=
+                            "")
+                          Padding(
+                            padding: const EdgeInsets.only(top: 25),
+                            child: GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () {
+                                launchURLMethod(memberDetails![0]
+                                    .memberBasicDetails!
+                                    .portifolioLink
+                                    .toString());
+                              },
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("Portfolio Link",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineMedium!),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Flexible(
+                                    child: Text(
+                                      "${memberDetails![0].memberBasicDetails!.portifolioLink.toString()}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall!
+                                          .copyWith(color: Colors.blue),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
-                            SizedBox(
-                              width: 80.w,
-                            ),
-                            Row(
+                          ),
+                        if (memberDetails![0]
+                                .memberBasicDetails!
+                                .portifolioLink
+                                .toString() !=
+                            "")
+                          Divider(
+                            color: AppTheme.backGround2,
+                          ),
+                        if (memberDetails![0]
+                                .memberBasicDetails!
+                                .paid_till
+                                .toString() !=
+                            "0")
+                          Padding(
+                            padding: const EdgeInsets.only(top: 25, bottom: 2),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Icon(
-                                  CupertinoIcons.calendar,
-                                  size: 22.h,
+                                Row(
+                                  children: [
+                                    Text("Paid Till  ",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineMedium!),
+                                    if (memberDetails![0]
+                                            .memberBasicDetails!
+                                            .subscription_end_date
+                                            .toString() !=
+                                        "")
+                                      if (!now.isBefore(DateTime.parse(
+                                          memberDetails![0]
+                                              .memberBasicDetails!
+                                              .subscription_end_date
+                                              .toString())))
+                                        GestureDetector(
+                                          onTap: () {
+                                            createPayment();
+                                          },
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 8, vertical: 5),
+                                            decoration: BoxDecoration(
+                                                color: Colors.red,
+                                                borderRadius:
+                                                    BorderRadius.circular(4)),
+                                            child: Text(
+                                              "RENEW NOW",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium!
+                                                  .copyWith(fontSize: 16),
+                                            ),
+                                          ),
+                                        )
+                                  ],
                                 ),
                                 Text(
-                                    ' ${memberDetails![0].memberBasicDetails!.joiningDate.toString()}',
+                                    memberDetails![0]
+                                        .memberBasicDetails!
+                                        .paid_till
+                                        .toString(),
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall!),
+                              ],
+                            ),
+                          ),
+                        if (memberDetails![0]
+                                .memberBasicDetails!
+                                .paid_till
+                                .toString() !=
+                            "0")
+                          Divider(
+                            color: AppTheme.backGround2,
+                          ),
+                        if (memberDetails![0]
+                                .memberBasicDetails!
+                                .subscription_end_date
+                                .toString() !=
+                            "")
+                          Padding(
+                            padding: const EdgeInsets.only(top: 25, bottom: 2),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Subscription End date",
                                     style: Theme.of(context)
                                         .textTheme
-                                        .headlineSmall!
-                                        .copyWith(
-                                          fontSize: 14.sp,
-                                        )),
+                                        .headlineMedium!),
+                                Text(
+                                  "${memberDetails![0].memberBasicDetails!.subscription_end_date.toString()}",
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
                               ],
-                            )
-                          ],
-                        ),
+                            ),
+                          ),
+                        if (memberDetails![0]
+                                .memberBasicDetails!
+                                .subscription_end_date
+                                .toString() !=
+                            "")
+                          Divider(
+                            color: AppTheme.backGround2,
+                          ),
+                        if (memberDetails![0]
+                                .memberBasicDetails!
+                                .subscription_end_date
+                                .toString() ==
+                            "")
+                          Padding(
+                            padding: const EdgeInsets.only(top: 25, bottom: 2),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Subscription",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineMedium!),
+                                GestureDetector(
+                                  onTap: () {
+                                    createPayment();
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 5),
+                                    decoration: BoxDecoration(
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.circular(4)),
+                                    child: Text(
+                                      "RENEW NOW",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(fontSize: 20),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        if (memberDetails![0]
+                                .memberBasicDetails!
+                                .subscription_end_date
+                                .toString() ==
+                            "")
+                          Divider(
+                            color: AppTheme.backGround2,
+                          ),
+                        if (memberDetails![0]
+                                .memberBasicDetails!
+                                .notes
+                                .toString() !=
+                            "")
+                          Padding(
+                            padding: const EdgeInsets.only(top: 25),
+                            child: Text("About",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineMedium!),
+                          ),
+
+                        if (memberDetails![0]
+                                .memberBasicDetails!
+                                .notes
+                                .toString() !=
+                            "")
+                          Padding(
+                            padding: const EdgeInsets.only(top: 6),
+                            child: Text(
+                              "${memberDetails![0].memberBasicDetails!.notes.toString()}",
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ),
+                        if (memberDetails![0]
+                                .memberBasicDetails!
+                                .notes
+                                .toString() !=
+                            "")
+                          Divider(
+                            color: AppTheme.backGround2,
+                          ),
                         SizedBox(
-                          height: 25.h,
-                        ),
-                        Text("Skills",
-                            style: Theme.of(context).textTheme.headlineMedium!),
-                        SizedBox(
-                          height: 6.h,
-                        ),
-                        Text(
-                          "${memberDetails![0].memberBasicDetails!.skills.toString()}",
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                        SizedBox(
-                          height: 25.h,
-                        ),
-                        Text("Medium",
-                            style: Theme.of(context).textTheme.headlineMedium!),
-                        SizedBox(
-                          height: 6.h,
-                        ),
-                        Text(
-                          "${memberDetails![0].memberBasicDetails!.medium.toString()}",
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                        SizedBox(
-                          height: 25.h,
-                        ),
-                        Text("Portfolio Link",
-                            style: Theme.of(context).textTheme.headlineMedium!),
-                        SizedBox(
-                          height: 6.h,
-                        ),
-                        Text(
-                          "${memberDetails![0].memberBasicDetails!.portifolioLink.toString()}",
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                        SizedBox(
-                          height: 25.h,
+                          height: 26.h,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -297,6 +689,10 @@ class _ProfileState extends State<Profile> {
                                               .memberBasicDetails!
                                               .youtubeLink
                                               .toString(),
+                                          imdb: memberDetails![0]
+                                              .memberBasicDetails!
+                                              .imdb_link
+                                              .toString(),
                                         )));
                               },
                               child: Text("+Add",
@@ -309,104 +705,157 @@ class _ProfileState extends State<Profile> {
                         SizedBox(
                           height: 16.h,
                         ),
+
                         SizedBox(
                           width: double.infinity,
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                if (memberDetails![0]
-                                        .memberBasicDetails!
-                                        .facebookLink
-                                        .toString() !=
-                                    "")
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 20.w),
-                                    child: SocialLinks(
-                                        socialLinks: socialLinks[0]),
-                                  ),
-                                if (memberDetails![0]
-                                        .memberBasicDetails!
-                                        .instagramLink
-                                        .toString() !=
-                                    "")
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 20.w),
-                                    child: SocialLinks(
-                                        socialLinks: socialLinks[1]),
-                                  ),
-                                if (memberDetails![0]
-                                        .memberBasicDetails!
-                                        .youtubeLink
-                                        .toString() !=
-                                    "")
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 20.w),
-                                    child: SocialLinks(
-                                        socialLinks: socialLinks[2]),
-                                  ),
-                                if (memberDetails![0]
-                                        .memberBasicDetails!
-                                        .twitterLink
-                                        .toString() !=
-                                    "")
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 20.w),
-                                    child: SocialLinks(
-                                        socialLinks: socialLinks[3]),
-                                  ),
-                                if (memberDetails![0]
-                                        .memberBasicDetails!
-                                        .linkedinLink
-                                        .toString() !=
-                                    "")
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 0.w),
-                                    child: SocialLinks(
-                                        socialLinks: socialLinks[4]),
-                                  )
-                              ]
-                              //     List.generate(socialLinks.length, (index) {
-                              //   return Padding(
-                              //     padding: EdgeInsets.only(
-                              //         left: index == 0 ? 0 : 20.w),
-                              //     child: SocialLinks(
-                              //         socialLinks: socialLinks[index]),
-                              //   );
-                              // }),
-                              ),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            physics: BouncingScrollPhysics(),
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  //if (memberDetails![0]
+                                  //   //       .memberBasicDetails!
+                                  //       .imdb_link
+                                  //       .toString() !=
+                                  //   "")
+                                  // Padding(
+                                  //   padding: EdgeInsets.only(right: 20.w),
+                                  //   child: GestureDetector(
+                                  //     onTap: () {
+                                  //       launchURLMethod(memberDetails![0]
+                                  //           .memberBasicDetails!
+                                  //           .imdb_link
+                                  //           .toString());
+                                  //     },
+                                  //     child: SocialLinks(
+                                  //         socialLinks: socialLinks[0]),
+                                  //   ),
+                                  // ),
+                                  if (memberDetails![0]
+                                          .memberBasicDetails!
+                                          .facebookLink
+                                          .toString() !=
+                                      "")
+                                    Padding(
+                                      padding: EdgeInsets.only(right: 20.w),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          launchURLMethod(memberDetails![0]
+                                              .memberBasicDetails!
+                                              .facebookLink
+                                              .toString());
+                                        },
+                                        child: SocialLinks(
+                                            socialLinks: socialLinks[1]),
+                                      ),
+                                    ),
+                                  if (memberDetails![0]
+                                          .memberBasicDetails!
+                                          .instagramLink
+                                          .toString() !=
+                                      "")
+                                    Padding(
+                                      padding: EdgeInsets.only(right: 20.w),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          launchURLMethod(memberDetails![0]
+                                              .memberBasicDetails!
+                                              .instagramLink
+                                              .toString());
+                                        },
+                                        child: SocialLinks(
+                                            socialLinks: socialLinks[2]),
+                                      ),
+                                    ),
+                                  if (memberDetails![0]
+                                          .memberBasicDetails!
+                                          .youtubeLink
+                                          .toString() !=
+                                      "")
+                                    Padding(
+                                      padding: EdgeInsets.only(right: 20.w),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          launchURLMethod(memberDetails![0]
+                                              .memberBasicDetails!
+                                              .youtubeLink
+                                              .toString());
+                                        },
+                                        child: SocialLinks(
+                                            socialLinks: socialLinks[3]),
+                                      ),
+                                    ),
+                                  if (memberDetails![0]
+                                          .memberBasicDetails!
+                                          .twitterLink
+                                          .toString() !=
+                                      "")
+                                    Padding(
+                                      padding: EdgeInsets.only(right: 20.w),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          launchURLMethod(memberDetails![0]
+                                              .memberBasicDetails!
+                                              .twitterLink
+                                              .toString());
+                                        },
+                                        child: SocialLinks(
+                                            socialLinks: socialLinks[4]),
+                                      ),
+                                    ),
+                                  if (memberDetails![0]
+                                          .memberBasicDetails!
+                                          .linkedinLink
+                                          .toString() !=
+                                      "")
+                                    Padding(
+                                      padding: EdgeInsets.only(right: 0.w),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          launchURLMethod(memberDetails![0]
+                                              .memberBasicDetails!
+                                              .linkedinLink
+                                              .toString());
+                                        },
+                                        child: SocialLinks(
+                                            socialLinks: socialLinks[5]),
+                                      ),
+                                    )
+                                ]
+                                //     List.generate(socialLinks.length, (index) {
+                                //   return Padding(
+                                //     padding: EdgeInsets.only(
+                                //         left: index == 0 ? 0 : 20.w),
+                                //     child: SocialLinks(
+                                //         socialLinks: socialLinks[index]),
+                                //   );
+                                // }),
+                                ),
+                          ),
                         ),
                         SizedBox(
                           height: 20.h,
                         ),
-                        Text("Notes",
-                            style: Theme.of(context).textTheme.headlineMedium!),
-                        SizedBox(
-                          height: 6.h,
-                        ),
-                        Text(
-                          "${memberDetails![0].memberBasicDetails!.notes.toString()}",
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                        SizedBox(
-                          height: 26.h,
-                        ),
-                        Center(
-                          child: GestureDetector(
-                            onTap: () {
-                              createPayment();
-                            },
-                            child: Text(
-                              "Membership ends in 14 days. Click here to Renew",
-                              style: GoogleFonts.inter(
-                                  fontSize: 12.sp,
-                                  color: Theme.of(context).primaryColor,
-                                  decoration: TextDecoration.underline),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 30.h,
-                        ),
+
+                        // Center(
+                        //   child: GestureDetector(
+                        //     onTap: () {
+                        //       createPayment();
+                        //     },
+                        //     child: Text(
+                        //       "Membership ends in 14 days. Click here to Renew",
+                        //       style: GoogleFonts.inter(
+                        //           fontSize: 12.sp,
+                        //           color: Theme.of(context).primaryColor,
+                        //           decoration: TextDecoration.underline),
+                        //     ),
+                        //   ),
+                        // ),
+                        // SizedBox(
+                        //   height: 30.h,
+                        // ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -711,6 +1160,7 @@ class SocialLinks extends StatelessWidget {
           height: 40.h,
           width: 40.h,
           decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
             image: DecorationImage(
               image: AssetImage("assets/images/${socialLinks["image"]}"),
               fit: BoxFit.contain,

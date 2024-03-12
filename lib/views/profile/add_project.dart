@@ -28,8 +28,8 @@ class _nameState extends State<AddProject> {
     super.initState();
     if (widget.projectList.id != null) {
       name.text = widget.projectList.projectName.toString();
-      year.text = widget.projectList.year.toString();
-      _selectedYear = DateTime(int.parse(widget.projectList.year.toString()));
+     year.text = widget.projectList.year.toString();
+     _selectedYear = DateTime(int.parse(widget.projectList.year.toString()));
       designation.text = widget.projectList.designation.toString();
     }
     setState(() {});
@@ -195,11 +195,11 @@ void deleteWork() {
                   textEditingController: name,
                   validation: (value) {
                     if (value == null || value.isEmpty) {
-                      return "Enter Name";
+                      return "Enter Project name";
                     }
                     return null;
                   },
-                  hintText: "Name",
+                  hintText: "Project name",
                   float: FloatingLabelBehavior.always,
                   labelText: "",
                   color: const Color(0xff585A60)),

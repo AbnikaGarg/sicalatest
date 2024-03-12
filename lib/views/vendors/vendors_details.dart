@@ -6,18 +6,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sica/views/vendors/vendors_requipements.dart';
 
+import '../../services/vendorsrepo.dart';
 import '../../theme/theme.dart';
 import 'components/vendor_cards.dart';
 
 class VendorsDetails extends StatefulWidget {
-  const VendorsDetails({super.key, required this.vendors});
-  final List vendors;
+  const VendorsDetails({super.key, required this.cat});
+  final int cat;
   @override
   State<VendorsDetails> createState() => _nameState();
 }
 
 class _nameState extends State<VendorsDetails> {
-  int _currentIndex = 0;
+   int _currentIndex = 0;
   List bannerImages = [
     {"images": "assets/images/banner1.png"},
     {"images": "assets/images/banner2.png"},
@@ -26,167 +27,142 @@ class _nameState extends State<VendorsDetails> {
     {"images": "assets/images/banner5.png"}
   ];
   @override
+  void initState() {
+    super.initState();
+    getVendors();
+  }
+
+  String? accountType;
+  void getVendors() async {
+    final service = VendorRepo();
+    service.getSubVendors(widget.cat).then((value) {
+      if (value.isNotEmpty) {
+        vendorList = value[0];
+        if (mounted) setState(() {});
+      }
+    });
+  }
+
+  List vendorList = [];
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+        appBar: AppBar(
           titleSpacing: 0,
           elevation: 0,
           title: Text("Vendor"),
-          actions: [
-            IconButton(
-                onPressed: () {
-                  showModal(context);
-                },
-                icon: Icon(
-                  CupertinoIcons.phone,
-                  // color: AppTheme.bodyTextColor,
-                )),
-          ]),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            CarouselSlider.builder(
-                itemCount: bannerImages.length,
-                itemBuilder: (context, index, realIndex) {
-                  return Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w),
-                    child: Stack(
-                      children: [
-                        AspectRatio(
-                          aspectRatio: 16 / 5,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(16),
-                            child: Image.asset(
-                              bannerImages[index]["images"],
-                              fit: BoxFit.cover,
-                              // color: Color(0x66000000),
-                              // colorBlendMode: BlendMode.darken,
-                            ),
+          // actions: [
+          //   IconButton(
+          //       onPressed: () {
+          //         showModal(context);
+          //       },
+          //       icon: Icon(
+          //         CupertinoIcons.phone,
+          //         // color: AppTheme.bodyTextColor,
+          //       )),
+          // ]
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+                        CarouselSlider.builder(
+                            itemCount: bannerImages.length,
+                            itemBuilder: (context, index, realIndex) {
+                              return Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 12.w),
+                                child: Stack(
+                                  children: [
+                                    AspectRatio(
+                                      aspectRatio: 16 / 5,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(16),
+                                        child: Image.asset(
+                                          bannerImages[index]["images"],
+                                          fit: BoxFit.cover,
+                                          // color: Color(0x66000000),
+                                          // colorBlendMode: BlendMode.darken,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                            options: CarouselOptions(
+                              //  height: getProportionateScreenHeight(300),
+                              aspectRatio: 16 / 5,
+                              enlargeCenterPage: true,
+
+                              viewportFraction: 1,
+                              initialPage: 0,
+                              onPageChanged: (index, reason) {
+                                setState(() {
+                                  _currentIndex = index;
+                                });
+                              },
+
+                              enableInfiniteScroll: true,
+                              reverse: false,
+                              autoPlay: true,
+                              autoPlayInterval: Duration(seconds: 3),
+                              autoPlayAnimationDuration: Duration(milliseconds: 800),
+                              // autoPlayCurve: Curves.fastOutSlowIn,
+                              autoPlayCurve: Curves.fastOutSlowIn,
+                              // onPageChanged: pageController,
+                              enlargeStrategy: CenterPageEnlargeStrategy.zoom,
+
+                              scrollDirection: Axis.horizontal,
+                            )),
+                        DotsIndicator(
+                          dotsCount: bannerImages.length,
+                          position: _currentIndex,
+                          decorator: DotsDecorator(
+                            size: const Size.square(9.0),
+                            activeColor: Theme.of(context).primaryColor,
+                            activeSize: const Size(18.0, 9.0),
+                            color: AppTheme.darkPrimaryColor.withOpacity(0.3),
+                            activeShape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.0)),
                           ),
                         ),
-                      ],
-                    ),
-                  );
-                },
-                options: CarouselOptions(
-                  //  height: getProportionateScreenHeight(300),
-                  aspectRatio: 16 / 5,
-                  enlargeCenterPage: true,
-
-                  viewportFraction: 1,
-                  initialPage: 0,
-                  onPageChanged: (index, reason) {
-                    setState(() {
-                      _currentIndex = index;
-                    });
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        // AspectRatio(
+                        //   aspectRatio: 16 / 9,
+                        //   child: Image.asset(
+                        //     "assets/images/sicaevent1.png",
+                        //     fit: BoxFit.cover,
+                        //     colorBlendMode: BlendMode.dstATop,
+                        //   ),
+                        // ),
+                        // SizedBox(
+                        //   height: 10.h,
+                        // ),
+              if (vendorList.isNotEmpty)
+                ListView.builder(
+                  itemCount: vendorList.length,
+                  primary: false,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => VendorsList(
+                                cat: vendorList[index]["sub_category_id"])));
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 12.h,horizontal: 12),
+                        child: VendorCardDetails(
+                          vendor: vendorList[index],
+                        ),
+                      ),
+                    );
                   },
-
-                  enableInfiniteScroll: true,
-                  reverse: false,
-                  autoPlay: true,
-                  autoPlayInterval: Duration(seconds: 3),
-                  autoPlayAnimationDuration: Duration(milliseconds: 800),
-                  // autoPlayCurve: Curves.fastOutSlowIn,
-                  autoPlayCurve: Curves.fastOutSlowIn,
-                  // onPageChanged: pageController,
-                  enlargeStrategy: CenterPageEnlargeStrategy.zoom,
-
-                  scrollDirection: Axis.horizontal,
-                )),
-            DotsIndicator(
-              dotsCount: bannerImages.length,
-              position: _currentIndex,
-              decorator: DotsDecorator(
-                size: const Size.square(9.0),
-                activeColor: Theme.of(context).primaryColor,
-                activeSize: const Size(18.0, 9.0),
-                color: AppTheme.darkPrimaryColor.withOpacity(0.3),
-                activeShape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.0)),
-              ),
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            AspectRatio(
-              aspectRatio: 16 / 9,
-              child: Image.asset(
-                "assets/images/sicaevent1.png",
-                fit: BoxFit.cover,
-                colorBlendMode: BlendMode.dstATop,
-              ),
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            buildDetailsVendor(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  buildDetailsVendor() {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 12.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(' 4.1',
-                  style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                        fontSize: 14.sp,
-                      )),
-              Text(' (1285)',
-                  style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                      fontSize: 12.sp,
-                      color: Theme.of(context).iconTheme.color)),
+                )
             ],
           ),
-          SizedBox(
-            height: 10.h,
-          ),
-          Text(
-            "Lorem ipsum dolor sit amet. Ut suscipit  of amet explicabeo et voluptatem landandtium amd amet explicabeo et voluptatem Lorem ipsum dolor sit amet. Ut suscipit  of amet explicabeo et amd voluptatem landandtium amd amet explicabeo et voluptatem see more...",
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-          SizedBox(
-            height: 20.h,
-          ),
-          Text(
-            "Vendors",
-            style: Theme.of(context).textTheme.headlineMedium,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          // SizedBox(
-          //   height: 10.h,
-          // ),
-          ListView.builder(
-            itemCount: widget.vendors.length,
-            primary: false,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => VendorsList(
-                          vendorList: widget.vendors[index]["types"])));
-                },
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 12.h),
-                  child: VendorCardDetails(
-                    vendor: widget.vendors[index],
-                  ),
-                ),
-              );
-            },
-          )
-        ],
-      ),
-    );
+        ));
   }
 
   void showModal(context) {

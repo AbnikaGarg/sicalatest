@@ -63,10 +63,11 @@ class MemberDetails {
       this.medium, 
       this.portifolioLink, 
       this.notes, 
-      this.mobileNumber, 
+      this.mobileNumber,  this.email,
       this.experience, 
       this.facebookLink, 
       this.instagramLink, 
+      this.date_of_birth,
       this.youtubeLink, 
       this.twitterLink, 
       this.linkedinLink, 
@@ -74,6 +75,7 @@ class MemberDetails {
 
   MemberDetails.fromJson(dynamic json) {
     name = json['name'];
+    email=json['email'].toString();
     designation = json['designation'];
     membershipNo = json['membership_no'];
     joiningDate = json['joining_date'];
@@ -90,6 +92,7 @@ class MemberDetails {
     linkedinLink = json['linkedin_link'];
     image = json['image'];
     grade=json['grade'];
+    date_of_birth=json["date_of_birth"];
   }
   String? name;
   String? grade;
@@ -108,6 +111,8 @@ class MemberDetails {
   String? twitterLink;
   String? linkedinLink;
   String? image;
+  String? email;
+  String? date_of_birth;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -120,14 +125,14 @@ class MemberDetails {
     map['portifolio_link'] = portifolioLink;
     map['notes'] = notes;
     map['mobile_number'] = mobileNumber;
-    map['experience'] = experience;
+    map['experience'] = experience; map['date_of_birth'] = date_of_birth;
     map['facebook_link'] = facebookLink;
     map['instagram_link'] = instagramLink;
     map['youtube_link'] = youtubeLink;
     map['twitter_link'] = twitterLink;
     map['linkedin_link'] = linkedinLink;
     map['image'] = image;
-    map['grade']=grade;
+    map['grade']=grade; map['email']=email;
     return map;
   }
 

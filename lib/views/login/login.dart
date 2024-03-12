@@ -22,8 +22,25 @@ class _LoginPageState extends State<LoginPage> {
   final memberId = TextEditingController();
 
   final mobile = TextEditingController();
-
+  final name = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  // login() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   prefs.setString("memberid", memberId.text.toString());
+  //   prefs.setString("mobile", mobile.text.toString());
+  //   prefs.setString("accounttype", widget.accountType.toString());
+  //   Navigator.push(
+  //                       context,
+  //                       MaterialPageRoute(
+  //                         builder: (context) => OtpScreen(
+  //                           access_token:
+  //                               '8f764f8b-7b19-4999-bfb8-49c391656a45',
+  //                           accountType: widget.accountType,
+  //                           mobile: '9655558329',
+  //                         ),
+  //                       ),
+  //                     );
+  // }
 
   void submit() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -32,14 +49,14 @@ class _LoginPageState extends State<LoginPage> {
       final service = AuthService();
       service
           .login(mobile.text, memberId.text,
-              widget.accountType == 1 ? "MEMBER" : "GUEST")
+              widget.accountType == 1 ? "MEMBER" : "GUEST",name.text)
           .then((value) {
         DialogHelp().hideLoading(context);
         if (value.isNotEmpty) {
           if (value[0]["error"] == null) {
             prefs.setString("memberid", memberId.text.toString());
             prefs.setString("mobile", mobile.text.toString());
-            prefs.setString("accounttype",widget.accountType.toString());
+            prefs.setString("accounttype", widget.accountType.toString());
             //prefs.setString(
             //    "access_token", value[0]["access_token"].toString());
             Navigator.push(
@@ -48,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
                 builder: (context) => OtpScreen(
                   accountType: widget.accountType,
                   access_token: value[0]["access_token"].toString(),
-                  mobile: mobile.text,
+                  mobile: mobile.text, name: name.text,
                 ),
               ),
             );
@@ -120,6 +137,27 @@ class _LoginPageState extends State<LoginPage> {
                     float: FloatingLabelBehavior.always,
                     hintText: "Membership Number",
                     color: const Color(0xff585A60)),
+                     if (widget.accountType != 1)
+              SizedBox(height: 15.h),
+              if (widget.accountType != 1)
+                Text(
+                  "Name",
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+              if (widget.accountType != 1) SizedBox(height: 5.h),
+              if (widget.accountType != 1)
+                MyTextField(
+                    textEditingController: name,
+                    validation: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Enter Name";
+                      }
+                      return null;
+                    },
+                    labelText: "",
+                    float: FloatingLabelBehavior.always,
+                    hintText: "Enter Name",
+                    color: const Color(0xff585A60)),
               SizedBox(height: 15.h),
               Text(
                 "Mobile Number",
@@ -143,12 +181,6 @@ class _LoginPageState extends State<LoginPage> {
                 child: RoundedButton(
                     ontap: () {
                       submit();
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => OtpScreen(),
-                      //   ),
-                      // );
                     },
                     title: "Continue",
                     color: Theme.of(context).primaryColor,

@@ -13,10 +13,11 @@ import 'package:sica/views/home/dashboard.dart';
 
 import '../../components/buton.dart';
 import '../../theme/theme.dart';
+import 'shooting_approval.dart';
 
 class ShootingDopApproval extends StatefulWidget {
-  const ShootingDopApproval({super.key});
-
+  const ShootingDopApproval({super.key, required this.approval});
+  final MemberShootingPendingDopApproval approval;
   @override
   State<ShootingDopApproval> createState() => _ShootingDopApprovalState();
 }
@@ -25,24 +26,6 @@ class _ShootingDopApprovalState extends State<ShootingDopApproval> {
   @override
   void initState() {
     super.initState();
-    getdata();
-  }
-
-  bool isShow = false;
-  List<DopApprovalModel>? dopList;
-  Future<void> getdata() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    isShow = prefs.getBool("buttonlicked") ?? false;
-    setState(() {});
-    final service = MemberRepo();
-    service.getApprovalService().then((value) {
-      if (value.isNotEmpty) {
-        dopList = value;
-        print("loaded");
-
-        if (mounted) setState(() {});
-      }
-    });
   }
 
   final reason = TextEditingController();
@@ -51,28 +34,20 @@ class _ShootingDopApprovalState extends State<ShootingDopApproval> {
     DialogHelp.showLoading(context);
     service
         .updateApprovalService(
-            dopList!.first.dopAssociateAllDetails!.first.shootingDopDetails!
-                .shootingDopId
-                .toString(),
-            dopList!.first.dopAssociateAllDetails!.first.associate!.first
-                .associateId
-                .toString(),
-            status,
-            reason.text)
+            widget.approval.updateShooingId.toString(), status)
         .then((value) {
       DialogHelp().hideLoading(context);
       if (value.isNotEmpty) {
         Fluttertoast.showToast(
-            msg: "Shooting DOP updated",
+            msg: "DOP Approval updated",
             backgroundColor: Colors.green,
             gravity: ToastGravity.TOP,
             textColor: Colors.white);
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) =>
-                    MyDashBoard(currentIndex: 0)),
-            (_) => false);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => ShootingApprovalList()),
+        );
       } else {
         Fluttertoast.showToast(
             msg: "Something went wrong",
@@ -194,90 +169,62 @@ class _ShootingDopApprovalState extends State<ShootingDopApproval> {
     var height = MediaQuery.of(context).viewPadding.top;
     return Scaffold(
       // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      bottomNavigationBar: !isShow
-          ? Container(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 20.w,
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 24.h),
-                          child: RoundedButton(
-                            height: 40,
-                            textcolor: Color.fromARGB(255, 0, 0, 0),
-                            title: "Attending",
-                            ontap: () async {
-                                 setState(() {
-                                isShow=true;
-                              });
-                              SharedPreferences prefs =
-                                  await SharedPreferences.getInstance();
-                              prefs.setBool("buttonlicked", true);
-                              Fluttertoast.showToast(
-                                  msg: "Shooting DOP updated",
-                                  backgroundColor: Colors.green,
-                                  gravity: ToastGravity.CENTER,
-                                  textColor: Colors.white);
-                              //  submit(true);
-                            },
-                            color: Theme.of(context).primaryColor,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 14.w,
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 24.h),
-                          child: RoundedButton(
-                            height: 40,
-                            textcolor: Color.fromARGB(255, 236, 236, 236),
-                            title: "Not Attending",
-                            ontap: () async {
-                              setState(() {
-                                isShow=true;
-                              });
-                              SharedPreferences prefs =
-                                  await SharedPreferences.getInstance();
-                              prefs.setBool("buttonlicked", true);
-                              Fluttertoast.showToast(
-                                  msg: "Shooting DOP updated",
-                                  backgroundColor: Colors.green,
-                                  gravity: ToastGravity.CENTER,
-                                  textColor: Colors.white);
-                              //  showDialogSubmit();
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) => EventBook(),
-                              //   ),
-                              // );
-                            },
-                            color: Colors.red,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 20.w,
-                      ),
-                    ],
-                  )
-                ],
-              ),
+      bottomNavigationBar: Container(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                SizedBox(
+                  width: 20.w,
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 24.h),
+                    child: RoundedButton(
+                      height: 40,
+                      color: Colors.green,
+                      textcolor: Colors.white,
+                      title: "Attending",
+                      ontap: () async {
+                        submit("approve");
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 14.w,
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 24.h),
+                    child: RoundedButton(
+                      height: 40,
+                      textcolor: Color.fromARGB(255, 236, 236, 236),
+                      title: "Not Attending",
+                      ontap: () async {
+                        submit("reject");
+                        //  showDialogSubmit();
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => EventBook(),
+                        //   ),
+                        // );
+                      },
+                      color: Colors.red,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 20.w,
+                ),
+              ],
             )
-          : Container(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [],
-              ),
-            ),
-      body: dopList == null
+          ],
+        ),
+      ),
+      body: widget.approval == null
           ? Center(
               child: CircularProgressIndicator(),
             )
@@ -311,7 +258,7 @@ class _ShootingDopApprovalState extends State<ShootingDopApproval> {
                                 ),
                                 Expanded(
                                   child: Text(
-                                    "  ${dopList!.first.dopAssociateAllDetails!.first.shootingDopDetails!.projectTitle}",
+                                    "  ${widget.approval.projectTitle}",
                                     style: Theme.of(context)
                                         .textTheme
                                         .headlineLarge!
@@ -343,8 +290,7 @@ class _ShootingDopApprovalState extends State<ShootingDopApproval> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(
-                                        "${dopList!.first.dopAssociateAllDetails!.first.shootingDopDetails!.projectTitle}",
+                                    Text("${widget.approval.projectTitle}",
                                         style: Theme.of(context)
                                             .textTheme
                                             .headlineMedium!),
@@ -352,7 +298,7 @@ class _ShootingDopApprovalState extends State<ShootingDopApproval> {
                                       height: 6.h,
                                     ),
                                     Text(
-                                      "${dopList!.first.dopAssociateAllDetails!.first.shootingDopDetails!.designation} |  ${dopList!.first.dopAssociateAllDetails!.first.shootingDopDetails!.startDate}",
+                                      "${widget.approval.designation} |  ${widget.approval.date}",
                                       style: Theme.of(context)
                                           .textTheme
                                           .displaySmall,
@@ -397,7 +343,7 @@ class _ShootingDopApprovalState extends State<ShootingDopApproval> {
                             height: 10.h,
                           ),
                           Text(
-                            "${dopList!.first.dopAssociateAllDetails!.first.shootingDopDetails!.shootingNote}",
+                            "${widget.approval.notes}",
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ],

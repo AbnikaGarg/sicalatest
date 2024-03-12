@@ -1,77 +1,75 @@
 class DopModel {
   DopModel({
-      this.shootingDopAllDetails,});
+      this.shootingDOPDetails,});
 
   DopModel.fromJson(dynamic json) {
-    if (json['shooting_dop_all_details'] != null) {
-      shootingDopAllDetails = [];
-      json['shooting_dop_all_details'].forEach((v) {
-        shootingDopAllDetails?.add(ShootingDopAllDetails.fromJson(v));
+    if (json['Shooting DOP Details'] != null) {
+      shootingDOPDetails = [];
+      json['Shooting DOP Details'].forEach((v) {
+        shootingDOPDetails?.add(ShootingDopDetails.fromJson(v));
       });
     }
   }
-  List<ShootingDopAllDetails>? shootingDopAllDetails;
+  List<ShootingDopDetails>? shootingDOPDetails;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    if (shootingDopAllDetails != null) {
-      map['shooting_dop_all_details'] = shootingDopAllDetails?.map((v) => v.toJson()).toList();
+    if (shootingDOPDetails != null) {
+      map['Shooting DOP Details'] = shootingDOPDetails?.map((v) => v.toJson()).toList();
     }
     return map;
   }
 
 }
 
-class ShootingDopAllDetails {
-  ShootingDopAllDetails({
-      this.shootingDopDetails, 
-      this.associate,});
+class ShootingDopDetails {
+  ShootingDopDetails({
+      this.shootingDop, 
+      this.addedMembers,});
 
-  ShootingDopAllDetails.fromJson(dynamic json) {
-    shootingDopDetails = json['shooting_dop_details'] != null ? ShootingDopDetails.fromJson(json['shooting_dop_details']) : null;
-    if (json['associate'] != null) {
-      associate = [];
-      json['associate'].forEach((v) {
-        associate?.add(Associate.fromJson(v));
-      });
-    }
+  ShootingDopDetails.fromJson(dynamic json) {
+    shootingDop = json['Shooting_dop'] != [] ? ShootingDop.fromJson(json['Shooting_dop']) : null;
+    addedMembers = json['Added Members'].isNotEmpty ? AddedMembers.fromJson(json['Added Members']) : null;
   }
-  ShootingDopDetails? shootingDopDetails;
-  List<Associate>? associate;
+  ShootingDop? shootingDop;
+  AddedMembers? addedMembers;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    if (shootingDopDetails != null) {
-      map['shooting_dop_details'] = shootingDopDetails?.toJson();
+    if (shootingDop != null) {
+      map['Shooting_dop'] = shootingDop?.toJson();
     }
-    if (associate != null) {
-      map['associate'] = associate?.map((v) => v.toJson()).toList();
+    if (addedMembers != null) {
+      map['Added Members'] = addedMembers?.toJson();
     }
     return map;
   }
 
 }
 
-class Associate {
-  Associate({
+class AddedMembers {
+  AddedMembers({
       this.name, 
       this.mobileNumber, 
       this.shootingId, 
       this.memberNumber, 
-      this.memberId,});
+      this.memberId, 
+      this.memberRoleTpe,});
 
-  Associate.fromJson(dynamic json) {
-    name = json['name'];
-    mobileNumber = json['mobile_number'];
-    shootingId = json['shooting_id'];
-    memberNumber = json['member_number'];
-    memberId = json['member_id'];
+  AddedMembers.fromJson(dynamic json) {
+    name = json['name'].toString();
+    mobileNumber = json['mobile_number'].toString();
+    shootingId = json['shooting_id'].toString();
+    memberNumber = json['member_number'].toString();
+    memberId = json['member_id'].toString();
+    memberRoleTpe = json['member_role_tpe'].toString();
   }
   String? name;
   String? mobileNumber;
-  int? shootingId;
+  String? shootingId;
   String? memberNumber;
-  int? memberId;
+  String? memberId;
+  String? memberRoleTpe;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -80,66 +78,99 @@ class Associate {
     map['shooting_id'] = shootingId;
     map['member_number'] = memberNumber;
     map['member_id'] = memberId;
+    map['member_role_tpe'] = memberRoleTpe;
     return map;
   }
 
 }
 
-class ShootingDopDetails {
-  ShootingDopDetails({
+class ShootingDop {
+  ShootingDop({
       this.mobileNumber, 
       this.memberId, 
-      this.shootingId, 
       this.memberName, 
       this.memberNumber, 
-      this.designation, 
-      this.projectTitle, 
+      this.grade, 
+      this.formatId, 
+      this.formatName, 
       this.mediumId, 
-      this.mediumName, 
-      this.startDate, 
-      this.endDate, 
+      this.medium, 
+      this.scheduleStart, 
+      this.scheduleEnd, 
+      this.date, 
+      this.shootingTitleId, 
+      this.projectTitle, 
+      this.producer, 
+      this.productionHouse, 
+      this.productionExecutive, 
+      this.productionExecutiveContactNo, 
+      this.location, 
       this.outdoorLinkDetails,});
 
-  ShootingDopDetails.fromJson(dynamic json) {
+  ShootingDop.fromJson(dynamic json) {
     mobileNumber = json['mobile_number'];
-    memberId = json['member_id'];
-    shootingId = json['shooting_id'];
+    memberId = json['member_id'].toString();
     memberName = json['member_name'];
     memberNumber = json['member_number'];
-    designation = json['designation'];
-    projectTitle = json['project_title'];
+    grade = json['grade'];
+    formatId = json['format_id'].toString();
+    formatName = json['format_name'];
     mediumId = json['medium_id'].toString();
-    mediumName = json['medium_name'].toString();
-    startDate = json['start_date'];
-    endDate = json['end_date'];
+    medium = json['medium'];
+    scheduleStart = json['schedule_start'];
+    scheduleEnd = json['schedule_end'];
+    date = json['date'];
+    shootingTitleId = json['shooting_title_id'].toString();
+    projectTitle = json['project_title'];
+    producer = json['producer'];
+    productionHouse = json['production_house'];
+    productionExecutive = json['production_executive'];
+    productionExecutiveContactNo = json['production_executive_contact_no'];
+    location = json['location'].toString();
     outdoorLinkDetails = json['outdoor_link_details'];
   }
   String? mobileNumber;
-  int? memberId;
-  int? shootingId;
+  String? memberId;
   String? memberName;
   String? memberNumber;
-  String? designation;
-  String? projectTitle;
+  String? grade;
+  String? formatId;
+  String? formatName;
   String? mediumId;
-  String? mediumName;
-  String? startDate;
-  String? endDate;
+  String? medium;
+  String? scheduleStart;
+  String? scheduleEnd;
+  String? date;
+  String? shootingTitleId;
+  String? projectTitle;
+  String? producer;
+  String? productionHouse;
+  String? productionExecutive;
+  String? productionExecutiveContactNo;
+  String? location;
   String? outdoorLinkDetails;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['mobile_number'] = mobileNumber;
     map['member_id'] = memberId;
-    map['shooting_id'] = shootingId;
     map['member_name'] = memberName;
     map['member_number'] = memberNumber;
-    map['designation'] = designation;
+    map['grade'] = grade;
+    map['format_id'] = formatId;
+    map['format_name'] = formatName;
+    map['medium_id'] = mediumId;
+    map['medium'] = medium;
+    map['schedule_start'] = scheduleStart;
+    map['schedule_end'] = scheduleEnd;
+    map['date'] = date;
+    map['shooting_title_id'] = shootingTitleId;
     map['project_title'] = projectTitle;
-    map['medium_id'] = mediumId!.toString();
-    map['medium_name'] = mediumName.toString();
-    map['start_date'] = startDate;
-    map['end_date'] = endDate;
+    map['producer'] = producer;
+    map['production_house'] = productionHouse;
+    map['production_executive'] = productionExecutive;
+    map['production_executive_contact_no'] = productionExecutiveContactNo;
+    map['location'] = location;
     map['outdoor_link_details'] = outdoorLinkDetails;
     return map;
   }

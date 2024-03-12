@@ -42,8 +42,6 @@ class _nameState extends State<DiscussionForm> {
     });
   }
 
-
- 
   void submit() {
     if (formKey.currentState!.validate()) {
       final service = Forum();
@@ -128,11 +126,14 @@ class _nameState extends State<DiscussionForm> {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => DiscussionFormReply(
-                                      discussionTopicComments: topicList!
-                                          .first.discussionForumDetails![index],
-                                    ))).then((val)=>val?getTopics():null);
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(
+                                    builder: (context) => DiscussionFormReply(
+                                          discussionTopicComments: topicList!
+                                              .first
+                                              .discussionForumDetails![index],
+                                        )))
+                                .then((val) => val ? getTopics() : null);
                           },
                           child: Padding(
                             padding: EdgeInsets.symmetric(
@@ -150,59 +151,59 @@ class _nameState extends State<DiscussionForm> {
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    if (topicList!
-                                            .first
-                                            .discussionForumDetails![index]
-                                            .discussionDetails!
-                                            .profile !=
-                                        "")
-                                      CachedNetworkImage(
-                                        height: 36.h,
-                                        width: 36.h,
-                                        imageUrl: topicList!
-                                            .first
-                                            .discussionForumDetails![index]
-                                            .discussionDetails!
-                                            .profile
-                                            .toString(),
-                                        imageBuilder:
-                                            (context, imageProvider) =>
-                                                Container(
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              image: DecorationImage(
-                                                image: imageProvider,
-                                                fit: BoxFit.cover,
-                                              )),
-                                        ),
-                                        placeholder: (context, url) => SizedBox(
-                                          child: Center(
-                                              child:
-                                                  const CircularProgressIndicator(
-                                            color: Colors.yellow,
-                                          )),
-                                          height: 10.h,
-                                          width: 10.h,
-                                        ),
-                                        errorWidget: (context, url, error) =>
-                                            Icon(Icons.error),
-                                      )
-                                    else
-                                      Container(
-                                        height: 50.h,
-                                        width: 50.h,
-                                        decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          image: DecorationImage(
-                                            image: AssetImage(
-                                                "assets/images/profile.jpeg"),
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
+                                    // if (topicList!
+                                    //         .first
+                                    //         .discussionForumDetails![index]
+                                    //         .discussionDetails!
+                                    //         .last_commit_member_image !=
+                                    //     "")
+                                    //   CachedNetworkImage(
+                                    //     height: 36.h,
+                                    //     width: 36.h,
+                                    //     imageUrl: topicList!
+                                    //         .first
+                                    //         .discussionForumDetails![index]
+                                    //         .discussionDetails!
+                                    //         .last_commit_member_image
+                                    //         .toString(),
+                                    //     imageBuilder:
+                                    //         (context, imageProvider) =>
+                                    //             Container(
+                                    //       decoration: BoxDecoration(
+                                    //           shape: BoxShape.circle,
+                                    //           image: DecorationImage(
+                                    //             image: imageProvider,
+                                    //             fit: BoxFit.cover,
+                                    //           )),
+                                    //     ),
+                                    //     placeholder: (context, url) => SizedBox(
+                                    //       child: Center(
+                                    //           child:
+                                    //               const CircularProgressIndicator(
+                                    //         color: Colors.yellow,
+                                    //       )),
+                                    //       height: 10.h,
+                                    //       width: 10.h,
+                                    //     ),
+                                    //     errorWidget: (context, url, error) =>
+                                    //         Icon(Icons.error),
+                                    //   )
+                                    // else
+                                    //   Container(
+                                    //     height: 50.h,
+                                    //     width: 50.h,
+                                    //     decoration: const BoxDecoration(
+                                    //       shape: BoxShape.circle,
+                                    //       image: DecorationImage(
+                                    //         image: AssetImage(
+                                    //             "assets/images/profile.jpeg"),
+                                    //         fit: BoxFit.cover,
+                                    //       ),
+                                    //     ),
+                                    //   ),
                                     Expanded(
                                       child: Padding(
-                                        padding: EdgeInsets.only(left: 12.w),
+                                        padding: EdgeInsets.only(left: 2.w),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -221,14 +222,29 @@ class _nameState extends State<DiscussionForm> {
                                                     .textTheme
                                                     .headlineMedium!),
                                             SizedBox(
-                                              height: 6.h,
+                                              height: 4.h,
                                             ),
                                             Text(
-                                              "${topicList!.first.discussionForumDetails![index].discussionDetails!.memberName.toString()} | ${topicList!.first.discussionForumDetails![index].discussionDetails!.createDate.toString()}",
+                                              "Created by: ${topicList!.first.discussionForumDetails![index].discussionDetails!.memberName.toString()} ",
                                               style: Theme.of(context)
                                                   .textTheme
-                                                  .displaySmall,
-                                            )
+                                                  .displayLarge!
+                                                  .copyWith(
+                                                      color: AppTheme
+                                                          .hintTextColor),
+                                            ),
+                                             if(topicList!.first.discussionForumDetails![index].discussionDetails!.last_member_name.toString()!="false")
+                                            SizedBox(
+                                              height: 4.h,
+                                            ),
+                                            if(topicList!.first.discussionForumDetails![index].discussionDetails!.last_member_name.toString()!="false")
+                                            Text(
+                                              "Last Post by: ${topicList!.first.discussionForumDetails![index].discussionDetails!.last_member_name.toString()} | ${topicList!.first.discussionForumDetails![index].discussionDetails!.last_topic_create_date.toString()}",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall!
+                                                  .copyWith(fontSize: 14),
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -246,7 +262,8 @@ class _nameState extends State<DiscussionForm> {
                                           color: Theme.of(context).primaryColor,
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.only(bottom: 3),
+                                          padding:
+                                              const EdgeInsets.only(bottom: 3),
                                           child: Text(
                                             " ${topicList!.first.discussionForumDetails![index].discussionComments!.length.toString()}",
                                             style: Theme.of(context)
@@ -254,7 +271,6 @@ class _nameState extends State<DiscussionForm> {
                                                 .headlineSmall!
                                                 .copyWith(
                                                   height: 0,
-                                                  
                                                   fontSize: 14.sp,
                                                 ),
                                           ),
@@ -344,18 +360,79 @@ class _nameState extends State<DiscussionForm> {
                             SizedBox(
                               height: 10.h,
                             ),
-                            MyTextField(
-                                textEditingController: textTopic,
-                                validation: (value) {
+                            Flexible(
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minHeight: 25.0,
+                              maxHeight: 135.0,
+                            ),
+                            child: Scrollbar(
+                              child: TextFormField(
+                                cursorColor: Colors.blue,
+                                keyboardType: TextInputType.multiline,
+                                maxLines: null,
+                                
+                                style: TextStyle(
+                                    color: AppTheme.whiteBackgroundColor),
+                               controller: textTopic,
+                               validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return "Enter Topic";
                                   }
                                   return null;
                                 },
-                                labelText: "",
-                                float: FloatingLabelBehavior.always,
-                                hintText: "Topic Title",
-                                color: const Color(0xff585A60)),
+                                maxLength: 50,
+                                //   _handleSubmitted : null,
+                                decoration: InputDecoration(
+                                   
+                                  counterStyle: TextStyle(
+                                    fontSize: 12,
+                                    color: AppTheme.whiteBackgroundColor),
+                                    
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(
+                                        12,
+                                      ),
+                                      borderSide: BorderSide(
+                                          color: AppTheme.backGround)),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(
+                                        12,
+                                      ),
+                                      borderSide: BorderSide(
+                                          color: AppTheme.backGround)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(
+                                        12,
+                                      ),
+                                      borderSide: BorderSide(
+                                          color: AppTheme.backGround)),
+                                  contentPadding: EdgeInsets.only(
+                                      top: 2.0,
+                                      left: 13.0,
+                                      right: 13.0,
+                                      bottom: 2.0),
+                                  hintText: "Type your topic",
+                                  hintStyle: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                            // MyTextField(
+                            //     textEditingController: textTopic,
+                            //     validation: (value) {
+                            //       if (value == null || value.isEmpty) {
+                            //         return "Enter Topic";
+                            //       }
+                            //       return null;
+                            //     },
+                            //     labelText: "",
+                            //     float: FloatingLabelBehavior.always,
+                            //     hintText: "Topic Title",
+                            //     color: const Color(0xff585A60)),
 
                             // Text(
                             //   "Who can respond?",
@@ -443,7 +520,6 @@ class _nameState extends State<DiscussionForm> {
                                 color: Theme.of(context).primaryColor,
                               ),
                             ),
-                         
                           ]),
                     ),
                   ),

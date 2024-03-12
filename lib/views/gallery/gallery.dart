@@ -1,19 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sica/components/gallery_card.dart';
+import 'package:sica/models/gallerModel.dart';
+import 'package:sica/services/gallery_repo.dart';
 import 'package:sica/theme/theme.dart';
 import '../../components/filter_box.dart';
 import 'grid_view.dart';
 
 class GalleryScreen extends StatefulWidget {
-  const GalleryScreen({Key? key}) : super(key: key);
-
+  const GalleryScreen({Key? key, required this.category, required this.categoryid}) : super(key: key);
+  final String category;
+  final String categoryid;
   @override
   State<GalleryScreen> createState() => _GalleryScreenState();
 }
 
 class _GalleryScreenState extends State<GalleryScreen> {
-   List _category = ["All", "Images", "Videos"];
-   int _selectIndex=0;
+  //  List _category = ["All", "Images", "Videos"];
+  //  int _selectIndex=0;
+    List<GalleryModel>? galleryList;
+    @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+     getData() ;
+
+  }
+   void getData() {
+    final service = GalleryRepo();
+    service.getGalleryData("").then((value) {
+      if (value.isNotEmpty) {
+        galleryList = value;
+        print("loaded");
+        if (mounted) setState(() {});
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     int selectedPos = 0;
@@ -23,7 +45,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
         elevation: 1,
         title: const Text("Gallery"),
       ),
-      body: SingleChildScrollView(
+      body:galleryList==null?Center(child: CircularProgressIndicator(),): SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
           child: Column(
@@ -33,53 +55,51 @@ class _GalleryScreenState extends State<GalleryScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'SICA AGM',
+                    widget.category,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                  Text(
-                    '10 Mar 23 | 10:00 AM',
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
-                  )
+                  // Text(
+                  //   '10 Mar 23 | 10:00 AM',
+                  //   style: TextStyle(fontSize: 12, color: Colors.grey),
+                  // )
                 ],
               ),
-              SizedBox(
-                height: 10.h,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.person_2_outlined,
-                          color: Theme.of(context).primaryColor, size: 20.sp),
-                      Text(
-                        ' The SICA',
-                        style: Theme.of(context).textTheme.displayLarge,
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Icon(Icons.calendar_month_outlined,
-                          color: Theme.of(context).primaryColor, size: 20.sp),
-                      Text(
-                        " 10 mar '23",
-                        style: Theme.of(context).textTheme.displayLarge,
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Icon(Icons.remove_red_eye_outlined,
-                          color: Theme.of(context).primaryColor, size: 20.sp),
-                      Text(
-                        ' 222',
-                        style: Theme.of(context).textTheme.displayLarge,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+             
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Row(
+              //       children: [
+              //         Icon(Icons.person_2_outlined,
+              //             color: Theme.of(context).primaryColor, size: 20.sp),
+              //         Text(
+              //           ' The SICA',
+              //           style: Theme.of(context).textTheme.displayLarge,
+              //         ),
+              //       ],
+              //     ),
+              //     Row(
+              //       children: [
+              //         Icon(Icons.calendar_month_outlined,
+              //             color: Theme.of(context).primaryColor, size: 20.sp),
+              //         Text(
+              //           " 10 mar '23",
+              //           style: Theme.of(context).textTheme.displayLarge,
+              //         ),
+              //       ],
+              //     ),
+              //     Row(
+              //       children: [
+              //         Icon(Icons.remove_red_eye_outlined,
+              //             color: Theme.of(context).primaryColor, size: 20.sp),
+              //         Text(
+              //           ' 222',
+              //           style: Theme.of(context).textTheme.displayLarge,
+              //         ),
+              //       ],
+              //     ),
+              //   ],
+              // ),
               SizedBox(
                 height: 10.h,
               ),
@@ -97,42 +117,43 @@ class _GalleryScreenState extends State<GalleryScreen> {
                   SizedBox(
                     height: 4.h,
                   ),
-                  GestureDetector(
-                    child: Text('see more',
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontSize: 12.sp,
-                        )),
-                  )
+                  // GestureDetector(
+                  //   child: Text('see more',
+                  //       style: TextStyle(
+                  //         color: Theme.of(context).primaryColor,
+                  //         fontSize: 12.sp,
+                  //       )),
+                  // )
                 ],
               ),
+             // SizedBox(
+              //   height: 20.h,
+              // ),
+              // SingleChildScrollView(
+              //   scrollDirection: Axis.horizontal,
+              //   child: Row(
+              //     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     children: List.generate(
+              //         _category.length,
+              //         (index) => GestureDetector(
+              //               onTap: () {
+              //                 setState(() {
+              //                   _selectIndex = index;
+              //                 });
+              //               },
+              //               child: FilterBox(
+              //                   index: index,
+              //                   selectIndex: _selectIndex,
+              //                   category: _category[index],
+              //                   context: context),
+              //             )),
+              //   ),
+              // ),
               SizedBox(
                 height: 20.h,
               ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: List.generate(
-                      _category.length,
-                      (index) => GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _selectIndex = index;
-                              });
-                            },
-                            child: FilterBox(
-                                index: index,
-                                selectIndex: _selectIndex,
-                                category: _category[index],
-                                context: context),
-                          )),
-                ),
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              const GalleryGridView()
+              if(galleryList!.first.galleryDetails!=null)
+               GalleryGridView(galleryList:galleryList)
             ],
           ),
         ),

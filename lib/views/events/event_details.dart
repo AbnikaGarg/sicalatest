@@ -1,19 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sica/models/PaymentResponse.dart';
 import 'package:sica/views/events/event_book.dart';
 
 import '../../components/buton.dart';
+import '../../models/EventModel.dart';
+import '../../services/member_repo.dart';
 import '../../theme/theme.dart';
+import '../../utils/config.dart';
+import '../profile/payment.dart';
 
-class EventDetail extends StatelessWidget {
-
- EventDetail({
+class EventDetail extends StatefulWidget {
+  EventDetail({
     required this.events,
     super.key,
+    required this.category,
   });
- var events;
+  final EventDetails events;
+  final String category;
+
+  @override
+  State<EventDetail> createState() => _EventDetailState();
+}
+
+class _EventDetailState extends State<EventDetail> {
+  void createPayment(eventid) {
+    final service = MemberRepo();
+    DialogHelp.showLoading(context);
+    service.createEventPayment(eventid).then((value) {
+      DialogHelp().hideLoading(context);
+      if (value.isNotEmpty) {
+        List<PaymentResponse> res = value;
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => MakePayment(
+                url: res[0].paymentlink!.shortUrl.toString(),
+                callBackurl: res[0].paymentlink!.callbackUrl.toString())));
+      } else {
+        Fluttertoast.showToast(
+            msg: "Something went wrong",
+            backgroundColor: Colors.red,
+            gravity: ToastGravity.TOP,
+            textColor: Colors.white);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).viewPadding.top;
@@ -24,13 +58,14 @@ class EventDetail extends StatelessWidget {
         child: RoundedButton(
           textcolor: Color.fromARGB(255, 0, 0, 0),
           title: "Enroll",
-          ontap: (){
-             Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => EventBook(),
-          ),
-        );
+          ontap: () {
+            createPayment(widget.events.eventId.toString());
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) => EventBook(),
+            //   ),
+            // );
           },
           color: Theme.of(context).primaryColor,
         ),
@@ -43,8 +78,8 @@ class EventDetail extends StatelessWidget {
               children: [
                 AspectRatio(
                   aspectRatio: 16 / 9,
-                  child: Image.asset(
-                    events["image"].toString(),
+                  child: Image.network(
+                    widget.events.image.toString(),
                     fit: BoxFit.cover,
                     colorBlendMode: BlendMode.dstATop,
                   ),
@@ -55,16 +90,21 @@ class EventDetail extends StatelessWidget {
                     right: 10,
                     child: Row(
                       children: [
-                        Icon(Icons.arrow_back,
-                            color: AppTheme.darkTextColor),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Icon(Icons.arrow_back,
+                              color: AppTheme.whiteBackgroundColor),
+                        ),
                         Expanded(
                           child: Text(
-                            "  ${events["title"].toString()}",
+                            "  ${widget.events.title.toString()}",
                             style: Theme.of(context)
                                 .textTheme
                                 .headlineLarge!
                                 .copyWith(
-                                    color: AppTheme.darkTextColor,
+                                    color: AppTheme.whiteBackgroundColor,
                                     fontSize: 20.sp),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -85,10 +125,13 @@ class EventDetail extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      SvgPicture.asset("assets/icons/callender.svg"),
+                      SvgPicture.asset(
+                        "assets/icons/callender.svg",
+                        color: AppTheme.whiteBackgroundColor,
+                      ),
                       Expanded(
                         child: Text(
-                          " ${events["date"].toString()}",
+                          " ${widget.events.startDate.toString()}",
                           style: Theme.of(context)
                               .textTheme
                               .labelSmall!
@@ -97,16 +140,15 @@ class EventDetail extends StatelessWidget {
                       ),
                       Container(
                         decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
+                          color: AppTheme.yelloDarkColor,
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(4),
+                          padding: const EdgeInsets.all(5),
                           child: Text(
-                            "Workshop",
+                            "${widget.category}",
                             style: GoogleFonts.inter(
-                                fontSize: 12.sp,
-                                color: AppTheme.whiteBackgroundColor),
+                                fontSize: 12.sp, color: AppTheme.blackColor),
                           ),
                         ),
                       ),
@@ -117,9 +159,12 @@ class EventDetail extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      SvgPicture.asset("assets/icons/clock.svg"),
+                      SvgPicture.asset(
+                        "assets/icons/clock.svg",
+                        color: AppTheme.whiteBackgroundColor,
+                      ),
                       Text(
-                       " ${events["duration"].toString()}",
+                        "  3",
                         style: Theme.of(context)
                             .textTheme
                             .labelSmall!
@@ -132,10 +177,13 @@ class EventDetail extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      SvgPicture.asset("assets/icons/reel.svg"),
+                      SvgPicture.asset(
+                        "assets/icons/reel.svg",
+                        color: AppTheme.whiteBackgroundColor,
+                      ),
                       Expanded(
                         child: Text(
-                         " ${events["author"].toString()}",
+                          "  ${widget.events.coachName.toString()}",
                           style: Theme.of(context)
                               .textTheme
                               .labelSmall!
@@ -157,7 +205,7 @@ class EventDetail extends StatelessWidget {
                     height: 10.h,
                   ),
                   Text(
-                    "Lorem ipsum dolor sit amet. Ut suscipit  of amet explicabeo et voluptatem landandtium amd amet explicabeo et voluptatem Lorem ipsum dolor sit amet. Ut suscipit  of amet explicabeo et amd voluptatem landandtium amd amet explicabeo et voluptatem see more...",
+                    "${widget.events.description.toString()}",
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ],

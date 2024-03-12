@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sica/views/home/dashboard.dart';
+import 'package:sica/views/profile/payment_success.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 // Import for Android features.
@@ -91,12 +92,13 @@ class _MainPageState extends State<MakePayment> {
              // flutter: launchaahttps://www.codingcrown.com/?razorpay_payment_id=pay_N5Ahv1uI5SB3S1&razorpay_payment_link_id=plink_N5Ag0kOnHScGHZ&razorpay_payment_link_reference_id=&razorpay_payment_link_status=paid&razorpay_signature=0cbe8ea4b70489ab4a2829f8a90b26858b198aaf66455e533a06f0e51ed1692d
               return NavigationDecision.prevent;
             } else if (request.url.contains("orderStatus=SUCCESS")) {
-                //  Navigator.pushReplacement(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (BuildContext context) => TransactionStatus(type: 1,)),
+                print("Success" + request.url);
+                 Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => paymentSuccess()),
                   
-                //     );
+                    );
               return NavigationDecision.prevent;
             } else if (request.url.startsWith('tel:') ||
                 request.url.startsWith('whatsapp:') ||

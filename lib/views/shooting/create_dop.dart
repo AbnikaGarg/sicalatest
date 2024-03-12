@@ -1,10 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sica/components/dynamic_modal_sheet.dart';
+import 'package:sica/models/ProjectTitle.dart';
 import 'package:sica/models/ShootingModel.dart';
 import 'package:sica/services/member_repo.dart';
 import 'package:sica/utils/config.dart';
@@ -28,7 +32,9 @@ class CreateDOP extends StatefulWidget {
 
 class _CreateDOPState extends State<CreateDOP> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  List? associate;
+  List associate = [];
+  List oldassociate = [];
+  final date = TextEditingController();
   final mobile = TextEditingController();
 
   final name = TextEditingController();
@@ -46,7 +52,13 @@ class _CreateDOPState extends State<CreateDOP> {
   final endDate = TextEditingController();
 
   final notes = TextEditingController();
+  final location = TextEditingController();
   final shooting = TextEditingController();
+  final outdoorLink = TextEditingController();
+  final producer = TextEditingController();
+  final producerExt = TextEditingController();
+  final producerExtContact = TextEditingController();
+  final proHouse = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -82,7 +94,7 @@ class _CreateDOPState extends State<CreateDOP> {
       DialogHelp.showLoading(context);
       service
           .submitDop(
-              int.parse(selValue!),
+              date.text,
               mobile.text,
               name.text,
               memberno.text,
@@ -91,8 +103,13 @@ class _CreateDOPState extends State<CreateDOP> {
               mediumid!,
               startDate.text,
               endDate.text,
-              notes.text,
-              associate!)
+              outdoorLink.text,
+              producer.text,
+              producerExtContact.text,
+              location.text,
+              proHouse.text,
+              producerExt.text,
+              associate)
           .then((value) {
         DialogHelp().hideLoading(context);
         if (value.isNotEmpty) {
@@ -133,17 +150,14 @@ class _CreateDOPState extends State<CreateDOP> {
 
   List<MemberBasicDetails>? memberBasicDetails;
   List<MemberBasicDetails>? memberBasicDetails2;
-  void getMemberAllData() {
-    final service = MemberRepo();
-    service.getAllMemberData().then((value) {
-      if (value.isNotEmpty) {
-        memberBasicDetails = value.first.memberBasicDetails!;
-        memberBasicDetails2 = memberBasicDetails;
-        print("loaded");
-
-        if (mounted) setState(() {});
-      }
-    });
+  Future<void> getMemberAllData() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final rawJson = sharedPreferences.getString('memberList') ?? '';
+    var jsonMap = json.decode(rawJson);
+    memberBasicDetails = List<MemberBasicDetails>.from(
+        jsonMap.map((x) => MemberBasicDetails.fromJson(x)));
+    memberBasicDetails2 = memberBasicDetails;
+    print("loaded");
   }
 
   Timer? searchOnStoppedTyping;
@@ -169,10 +183,62 @@ class _CreateDOPState extends State<CreateDOP> {
       if (memberBasicDetails2!.isNotEmpty) {
         mobile.text = memberBasicDetails2!.first.memberDetails!.mobileNumber!;
         name.text = memberBasicDetails2!.first.memberDetails!.name!;
-        designation.text =
-            memberBasicDetails2!.first.memberDetails!.designation!;
+        designation.text = memberBasicDetails2!.first.memberDetails!.grade!;
+      } else {
+        mobile.clear();
+        name.clear();
+        designation.clear();
       }
+    } else {
+      mobile.clear();
+      name.clear();
+      designation.clear();
     }
+  }
+
+  Timer? searchOnProjectyping;
+
+  _onChangeProjectTiHandler(value) {
+    const duration = Duration(
+        milliseconds:
+            800); // set the duration that you want call search() after that.
+    if (searchOnProjectyping != null) {
+      setState(() => searchOnProjectyping!.cancel()); // clear timer
+    }
+    setState(() =>
+        searchOnProjectyping = Timer(duration, () => getProjectTitle(value)));
+  }
+
+  String? projectid;
+  List<ProjectTitle> projectTitleList = [];
+  void getProjectTitle(sss) {
+    final service = MemberRepo();
+    service.getProjectTitle(sss).then((value) {
+      if (value.isNotEmpty) {
+        projectTitleList = value;
+        oldassociate = [];
+
+        for (int i = 0;
+            i < projectTitleList.first.shootingAllDetails!.length;
+            i++) {
+          Map<String, dynamic> json = {
+            'name':
+                '${projectTitleList.first.shootingAllDetails![i].shootingDetails!.memberName.toString()}',
+            'mobile_number':
+                '${projectTitleList.first.shootingAllDetails![i].shootingDetails!.mobileNumber.toString()}',
+            'member_number':
+                '${projectTitleList.first.shootingAllDetails![i].shootingDetails!.memberNumber.toString()}',
+            'role':
+                '${projectTitleList.first.shootingAllDetails![i].shootingDetails!.designation.toString()}',
+          };
+          oldassociate.add(json);
+        }
+        if (mounted) setState(() {});
+      } else {
+        oldassociate = [];
+        setState(() {});
+      }
+    });
   }
 
   @override
@@ -185,30 +251,25 @@ class _CreateDOPState extends State<CreateDOP> {
           titleSpacing: 0,
           elevation: 1,
           centerTitle: false,
-          title: const Text("Create DOP"),
+          title: const Text("Update DOP"),
           actions: [
             Center(
               child: GestureDetector(
                 onTap: () {
                   Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => AddWork()))
-                      .then((value) {
-                    associate = value;
-                    setState(() {});
-                  });
+                      .push(MaterialPageRoute(builder: (context) => DOPList()));
                 },
                 child: Container(
-                  margin: EdgeInsets.only(right: 10.w),
-                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
+                  margin: EdgeInsets.only(right: 10),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
                   decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
+                      color: AppTheme.yelloDarkColor,
                       borderRadius: BorderRadius.circular(5)),
                   child: Text(
-                    "+ Add Associate",
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineSmall!
-                        .copyWith(fontSize: 15.sp, color: AppTheme.blackColor),
+                    "History",
+                    style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                        fontSize: 16.sp, color: AppTheme.whiteBackgroundColor),
                   ),
                 ),
               ),
@@ -223,10 +284,42 @@ class _CreateDOPState extends State<CreateDOP> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Text("Shooting Details",
-                  //     style: Theme.of(context).textTheme.headlineMedium!),
-                  // SizedBox(
-                  //   height: 16.h,
+                  MyTextField(
+                      readOnly: true,
+                      textEditingController: date,
+                      ontap: () async {
+                        DateTime? pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2000),
+                            lastDate: DateTime(2101));
+
+                        if (pickedDate != null) {
+                          print(pickedDate);
+                          String formattedDate =
+                              DateFormat('dd/MM/yyyy').format(pickedDate);
+                          print(formattedDate);
+                          date.text =
+                              formattedDate; //set output date to TextField value.
+                          setState(() {});
+                        } else {
+                          print("Start from date is not selected");
+                        }
+                      },
+                      // textEditingController: _controller.emailController,
+                      validation: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Enter Date";
+                        }
+                        return null;
+                      },
+                      icon: Icon(
+                        Icons.calendar_month,
+                        color: Color(0xff585A60),
+                      ),
+                      hintText: "Select Date",
+                      color: const Color(0xff585A60)),
+                  SizedBox(height: 6.h),
                   // ),
                   MyTextField(
                       textEditingController: memberno,
@@ -236,6 +329,10 @@ class _CreateDOPState extends State<CreateDOP> {
                         }
                         return null;
                       },
+                      textInputType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
                       onChanged: _onChangeHandler,
                       hintText: "Membership Number",
                       color: const Color(0xff585A60)),
@@ -268,11 +365,11 @@ class _CreateDOPState extends State<CreateDOP> {
                       textEditingController: designation,
                       validation: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Enter Designation/Grade";
+                          return "Enter Grade";
                         }
                         return null;
                       },
-                      hintText: "Designation/Grade",
+                      hintText: "Grade",
                       color: const Color(0xff585A60)),
                   SizedBox(height: 6.h),
                   MyTextField(
@@ -283,6 +380,7 @@ class _CreateDOPState extends State<CreateDOP> {
                         }
                         return null;
                       },
+                      onChanged: _onChangeProjectTiHandler,
                       hintText: "Project Title",
                       color: const Color(0xff585A60)),
                   SizedBox(height: 6.h),
@@ -292,19 +390,19 @@ class _CreateDOPState extends State<CreateDOP> {
                         readOnly: true,
                         validation: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Select Medium";
+                            return "Select Format";
                           }
                           return null;
                         },
                         ontap: () {
                           ModalSheet.showModal(
-                              context, mediumList[0], "medium_name", (value) {
+                              context, mediumList[0], "format_name", (value) {
                             setState(() {
                               medium.text = value;
                             });
                           }, (value) {
                             mediumid =
-                                mediumList[0][value]["medium_id"].toString();
+                                mediumList[0][value]["format_id"].toString();
                             setState(() {});
                           }, medium.text);
                         },
@@ -312,30 +410,30 @@ class _CreateDOPState extends State<CreateDOP> {
                           Icons.arrow_drop_down,
                           color: Color(0xff585A60),
                         ),
-                        hintText: "Select Medium",
+                        hintText: "Select Format",
                         color: const Color(0xff585A60)),
                   SizedBox(height: 6.h),
 
-                  if (dopList != null)
-                    if (dopList!.isNotEmpty)
-                      MyTextField(
-                          textEditingController: shooting,
-                          readOnly: true,
-                          validation: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Select Shooting";
-                            }
-                            return null;
-                          },
-                          ontap: () {
-                            showModal();
-                          },
-                          icon: Icon(
-                            Icons.arrow_drop_down,
-                            color: Color(0xff585A60),
-                          ),
-                          hintText: "Select Shooting",
-                          color: const Color(0xff585A60)),
+                  // if (dopList != null)
+                  //   if (dopList!.isNotEmpty)
+                  //     MyTextField(
+                  //         textEditingController: shooting,
+                  //         readOnly: true,
+                  //         validation: (value) {
+                  //           if (value == null || value.isEmpty) {
+                  //             return "Select Shooting";
+                  //           }
+                  //           return null;
+                  //         },
+                  //         ontap: () {
+                  //           showModal();
+                  //         },
+                  //         icon: Icon(
+                  //           Icons.arrow_drop_down,
+                  //           color: Color(0xff585A60),
+                  //         ),
+                  //         hintText: "Select Shooting",
+                  //         color: const Color(0xff585A60)),
                   SizedBox(height: 6.h),
                   MyTextField(
                       readOnly: true,
@@ -362,7 +460,7 @@ class _CreateDOPState extends State<CreateDOP> {
                       // textEditingController: _controller.emailController,
                       validation: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Enter Start Date";
+                          return "Enter Schedule start";
                         }
                         return null;
                       },
@@ -370,7 +468,7 @@ class _CreateDOPState extends State<CreateDOP> {
                         Icons.calendar_month,
                         color: Color(0xff585A60),
                       ),
-                      hintText: "Start Date",
+                      hintText: "Schedule start",
                       color: const Color(0xff585A60)),
                   SizedBox(height: 6.h),
                   MyTextField(
@@ -397,7 +495,7 @@ class _CreateDOPState extends State<CreateDOP> {
                       // textEditingController: _controller.emailController,
                       validation: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Enter End Date";
+                          return "Enter Schedule end";
                         }
                         return null;
                       },
@@ -405,96 +503,319 @@ class _CreateDOPState extends State<CreateDOP> {
                         Icons.calendar_month,
                         color: Color(0xff585A60),
                       ),
-                      hintText: "End Date",
+                      hintText: "Schedule end",
                       color: const Color(0xff585A60)),
                   SizedBox(height: 6.h),
+                  // MyTextField(
+                  //     textEditingController: medium,
+                  //     readOnly: true,
+                  //     ontap: () {
+                  //       Navigator.of(context)
+                  //           .push(MaterialPageRoute(
+                  //               builder: (context) => AddWork()))
+                  //           .then((value) {
+                  //         if (value != null) {
+                  //           associate = value;
+                  //           setState(() {});
+                  //         }
+                  //       });
+                  //     },
+                  //     icon: Icon(
+                  //       Icons.add,
+                  //       color: Color(0xff585A60),
+                  //     ),
+                  //     hintText: "Add DOP team",
+                  //     color: const Color(0xff585A60)),
+
+                  RoundedButton(
+                      ontap: () {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(
+                                builder: (context) => AddWork()))
+                            .then((value) {
+                          if (value != null) {
+                            associate = value;
+                            setState(() {});
+                          }
+                        });
+                      },
+                      height: 37,
+                      title: "+ Add DOP Team",
+                      fontweigth: FontWeight.w600,
+                      color: Theme.of(context).primaryColor,
+                      textcolor: AppTheme.darkTextColor),
+
+                  SizedBox(height: 12.h),
+                  MyTextField(
+                      textEditingController: producer,
+                      fillcolor: Theme.of(context).cardColor,
+                      hintText: "Enter Producer name",
+                      color: const Color(0xff585A60)),
+                  SizedBox(height: 5.h),
 
                   MyTextField(
-                      textEditingController: notes,
+                      textEditingController: proHouse,
                       validation: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Enter Outdoor link details";
+                          return "Enter Production House";
                         }
                         return null;
                       },
-                      hintText: "Outdoor link",
+                      fillcolor: Theme.of(context).cardColor,
+                      hintText: "Enter Production House",
                       color: const Color(0xff585A60)),
-                      if(associate!=null)
-                  if (associate!.length != 0)
+                  SizedBox(height: 5.h),
+
+                  MyTextField(
+                      textEditingController: producerExt,
+                      validation: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Enter Production Executive/Manager name";
+                        }
+                        return null;
+                      },
+                      fillcolor: Theme.of(context).cardColor,
+                      hintText: "Enter Production Executive/Manager name",
+                      color: const Color(0xff585A60)),
+                  SizedBox(height: 5.h),
+
+                  MyTextField(
+                      textEditingController: producerExtContact,
+                      validation: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Enter Production Executive/Manager - Contact No.";
+                        }
+                        return null;
+                      },
+                      fillcolor: Theme.of(context).cardColor,
+                      hintText:
+                          "Enter Production Executive/Manager - Contact No.",
+                      color: const Color(0xff585A60)),
+                  SizedBox(height: 5.h),
+
+                  MyTextField(
+                      textEditingController: location,
+                      validation: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Enter Location";
+                        }
+                        return null;
+                      },
+                      fillcolor: Theme.of(context).cardColor,
+                      hintText: "Enter Location",
+                      color: const Color(0xff585A60)),
+                  SizedBox(height: 5.h),
+
+                  MyTextField(
+                      textEditingController: outdoorLink,
+                      validation: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Enter Outdoor Unit Name";
+                        }
+                        return null;
+                      },
+                      fillcolor: Theme.of(context).cardColor,
+                      hintText: "Enter Outdoor Unit Name",
+                      color: const Color(0xff585A60)),
+                  // MyTextField(
+                  //     textEditingController: notes,
+                  //     validation: (value) {
+                  //       if (value == null || value.isEmpty) {
+                  //         return "Enter Outdoor link details";
+                  //       }
+                  //       return null;
+                  //     },
+                  //     hintText: "Outdoor link",
+                  //     color: const Color(0xff585A60)),
+
+                  if (associate.isNotEmpty)
                     ListView.builder(
-                      itemCount: associate!.length,
+                      itemCount: associate.length,
                       primary: false,
                       padding: EdgeInsets.zero,
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         return Padding(
-                          padding: EdgeInsets.only(top: 20.h, bottom: 10.h),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                          padding: EdgeInsets.only(top: 12.h, bottom: 12.h),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 10.h),
+                            decoration: BoxDecoration(
+                                color: Theme.of(context).cardColor,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                    color: Colors.grey.withOpacity(0.3),
+                                    width: 1)),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "${associate[index]["name"]}",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .copyWith(fontSize: 15.sp),
+                                      ),
+                                      SizedBox(
+                                        height: 5.h,
+                                      ),
+                                      Text(
+                                        "${associate[index]["role"]}",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .displaySmall!
+                                            .copyWith(fontSize: 13.sp),
+                                      ),
+                                      SizedBox(
+                                        height: 6.h,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.phone,
+                                            size: 16,
+                                            color:
+                                                AppTheme.whiteBackgroundColor,
+                                          ),
+                                          SizedBox(
+                                            width: 6,
+                                          ),
+                                          Text(
+                                              "${associate[index]["mobile_number"]}",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .displaySmall!
+                                                  .copyWith(
+                                                    fontSize: 14,
+                                                  )),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10.w,
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Text(
-                                      "${associate![index]["name"]}",
+                                      "M No. ${associate[index]['member_number']}",
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodySmall!
-                                          .copyWith(fontSize: 15.sp),
-                                    ),
-                                    SizedBox(
-                                      height: 5.h,
-                                    ),
-                                    Text(
-                                      "${associate![index]["mobile_number"]}",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .displaySmall!
-                                          .copyWith(fontSize: 12.sp),
+                                          .copyWith(
+                                              fontSize: 13.sp,
+                                              color: Theme.of(context)
+                                                  .iconTheme
+                                                  .color),
                                     ),
                                   ],
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10.w,
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  // GestureDetector(
-                                  //   //  behavior: HitTestBehavior.opaque,
-                                  //   onTap: () {
-                                  //     Navigator.of(context).push(MaterialPageRoute(
-                                  //         builder: (context) => AddAssociate(
-                                  //               associate: widget.shootingdetials
-                                  //                   .associate![index],
-                                  //               shootingid: widget.shootingdetials
-                                  //                   .shootingDopDetails!.shootingId
-                                  //                   .toString(),
-                                  //             )));
-                                  //   },
-                                  //   child: Icon(Icons.edit,
-                                  //       size: 17.sp, color: Colors.white),
-                                  // ),
-                                  // SizedBox(
-                                  //   height: 5.h,
-                                  // ),
-                                  Text(
-                                    "M No. ${associate![index]['member_number']}",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall!
-                                        .copyWith(
-                                            fontSize: 13.sp,
-                                            color: Theme.of(context)
-                                                .iconTheme
-                                                .color),
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  if (oldassociate.isNotEmpty)
+                    ListView.builder(
+                      itemCount: oldassociate.length,
+                      primary: false,
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.only(top: 12.h, bottom: 12.h),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 10.h),
+                            decoration: BoxDecoration(
+                                color: Theme.of(context).cardColor,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                    color: Colors.grey.withOpacity(0.3),
+                                    width: 1)),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "${oldassociate[index]["name"]}",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .copyWith(fontSize: 15.sp),
+                                      ),
+                                      SizedBox(
+                                        height: 5.h,
+                                      ),
+                                      Text(
+                                        "${oldassociate[index]["role"]}",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .displaySmall!
+                                            .copyWith(fontSize: 13.sp),
+                                      ),
+                                      SizedBox(
+                                        height: 6.h,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.phone,
+                                            size: 16,
+                                            color:
+                                                AppTheme.whiteBackgroundColor,
+                                          ),
+                                          SizedBox(
+                                            width: 6,
+                                          ),
+                                          Text(
+                                              "${oldassociate[index]["mobile_number"]}",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .displaySmall!
+                                                  .copyWith(
+                                                    fontSize: 14,
+                                                  )),
+                                        ],
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              )
-                            ],
+                                ),
+                                SizedBox(
+                                  width: 10.w,
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      "M No. ${oldassociate[index]['member_number']}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall!
+                                          .copyWith(
+                                              fontSize: 13.sp,
+                                              color: Theme.of(context)
+                                                  .iconTheme
+                                                  .color),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
                         );
                       },

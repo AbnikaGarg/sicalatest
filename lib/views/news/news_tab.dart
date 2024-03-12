@@ -35,7 +35,7 @@ class NewsTabBarWidget extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.only(bottom: 10.h),
-                child: const Text("Recent Blog"),
+                child: const Text("Blogs"),
               ),
                Padding(
                 padding: EdgeInsets.only(bottom: 10.h),
@@ -45,7 +45,7 @@ class NewsTabBarWidget extends StatelessWidget {
           ),
         ),
         body: TabBarView(
-          children: <Widget>[NewsTab(),NewsTab(),NewsTab()],
+          children: <Widget>[NewsTab(index: 0,),NewsTab(index: 1,),NewsTab(index: 2,)],
         ),
       ),
     );

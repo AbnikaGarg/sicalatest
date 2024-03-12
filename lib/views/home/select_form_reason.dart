@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sica/services/member_repo.dart';
+import 'package:sica/views/home/shooting_diary_reason.dart';
 
 import '../../components/buton.dart';
 import '../../components/dynamic_modal_sheet.dart';
@@ -106,13 +107,23 @@ class _nameState extends State<SelectReason> {
                 child: RoundedButton(
                     ontap: () {
                       if (_formKey.currentState!.validate()) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                CreateDelayReport(reasonid: reasonid!),
-                          ),
-                        );
+                        if (reasonid == "3") {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  CreateShootingReport(reasonid: reasonid!),
+                            ),
+                          );
+                        } else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  CreateDelayReport(reasonid: reasonid!),
+                            ),
+                          );
+                        }
                       }
                     },
                     title: "Continue",

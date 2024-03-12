@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -5,13 +7,22 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sica/components/gallery_card.dart';
+import 'package:sica/models/BlogsModel.dart';
+import 'package:sica/models/JobSeekeModel.dart';
+import 'package:sica/models/NewsModel.dart';
+import 'package:sica/models/ShootingUpdateModel.dart';
+import 'package:sica/models/TechModels.dart';
 import 'package:sica/services/member_repo.dart';
+import 'package:sica/views/employeement_schema/add_provider.dart';
+import 'package:sica/views/employeement_schema/add_seeker.dart';
 import 'package:sica/views/employeement_schema/job_provider.dart';
 import 'package:sica/views/employeement_schema/job_seeker.dart';
+import 'package:sica/views/gallery/gallery.dart';
 import 'package:sica/views/home/seeAllFeatures.dart';
 import 'package:sica/views/home/select_form_reason.dart';
 import 'package:sica/views/shooting/dop_list.dart';
 import '../../components/buton.dart';
+import '../../models/OtherMemberProfile.dart';
 import '../../theme/theme.dart';
 import '../../utils/images.dart';
 import 'package:dots_indicator/dots_indicator.dart';
@@ -24,6 +35,7 @@ import '../news/news_tab.dart';
 import '../operators/operators.dart';
 import '../shooting/create_dop.dart';
 import '../shooting/create_shooting.dart';
+import '../shooting/shooting_approval.dart';
 import '../shooting/shooting_details.dart';
 import '../shooting/shooting_list.dart';
 import '../vendors/vendors.dart';
@@ -41,6 +53,7 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   int _currentIndex = 0;
+  List<OtherMemberProfile>? memberDetails;
   int _selectIndex = 0;
   List<Choice> guestChoice = <Choice>[
     Choice(title: 'About Sica', svg: "about", page: const AboutSica()),
@@ -68,10 +81,8 @@ class _HomepageState extends State<Homepage> {
     Choice(title: 'Support', svg: "viewall", page: SelectReason()),
   ];
   List forumType = [
-    {"title": "WEBSITE LAUNCH", "image": "assets/images/website.png"},
-    {"title": "SICA AGM 2021", "image": "assets/images/agm.png"},
-    {"title": "MEETING", "image": "assets/images/meeting.png"},
-    {"title": "WORKSHOP", "image": "assets/images/workshop.png"}
+    {"title": "Movies", "image": "assets/images/website.png"},
+    {"title": "Camera", "image": "assets/images/agm.png"}
   ];
   List newsList = [
     {
@@ -96,7 +107,7 @@ class _HomepageState extends State<Homepage> {
       "date": "Jul 15 2023"
     },
   ];
-  List _category = ["All", "News", "Blogs", "Tech Talks"];
+  List _category = ["News", "Blogs", "Tech Talks"];
   List events = [
     {
       "title": "Film Camera Training part1",
@@ -166,7 +177,7 @@ class _HomepageState extends State<Homepage> {
     },
   ];
   List bannerImages = [];
-  
+
   _launchURLBrowser() async {
     const url = 'http://thesica.in/';
     if (await canLaunch(url)) {
@@ -175,13 +186,13 @@ class _HomepageState extends State<Homepage> {
       throw 'Could not launch $url';
     }
   }
- 
+
   void getImages() {
     final service = MemberRepo();
     service.getBannerImages().then((value) {
       if (value.isNotEmpty) {
         bannerImages = value;
-      
+
         if (mounted) setState(() {});
       }
     });
@@ -205,8 +216,60 @@ class _HomepageState extends State<Homepage> {
         });
       });
     getDettails();
-     getImages();
+    getImages();
+    getNews();
+    getBlog();
+    getTechModels();
+    getMemberAllData();
     super.initState();
+  }
+
+  Future<void> getMemberAllData() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final service = MemberRepo();
+    service.getAllMemberData().then((value) {
+      if (value.isNotEmpty) {
+        memberDetails = value;
+        sharedPreferences.setString(
+            "memberList", json.encode(memberDetails!.first.memberBasicDetails));
+      }
+    });
+  }
+
+  List<BlogsModel>? blogsDataList;
+  Future<void> getBlog() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final service = MemberRepo();
+    service.getBlogs().then((value) {
+      if (value.isNotEmpty) {
+        blogsDataList = value;
+        setState(() {});
+      }
+    });
+  }
+
+  List<NewsModel>? newsDataList;
+  Future<void> getNews() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final service = MemberRepo();
+    service.getNews().then((value) {
+      if (value.isNotEmpty) {
+        newsDataList = value;
+        setState(() {});
+      }
+    });
+  }
+
+  List<TechModel>? techDataList;
+  Future<void> getTechModels() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final service = MemberRepo();
+    service.getTechNews().then((value) {
+      if (value.isNotEmpty) {
+        techDataList = value;
+        setState(() {});
+      }
+    });
   }
 
   String? accountType = "";
@@ -240,112 +303,109 @@ class _HomepageState extends State<Homepage> {
             ),
       drawer: NavBar(),
       appBar: AppBar(
-          elevation: 0,
-          centerTitle: true,
-          title: Image.asset(
-            Images.logo2,
-            fit: BoxFit.cover,
-            height: 40.h,
-          ),
-          actions: [
-            IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.notifications,
-                  // color: AppTheme.bodyTextColor,
-                )),
-          ]),
+        elevation: 0,
+        centerTitle: true,
+        title: Image.asset(
+          Images.logo2,
+          fit: BoxFit.cover,
+          height: 40.h,
+        ),
+       
+      ),
       body: SingleChildScrollView(
           controller: _scrollController,
           physics: BouncingScrollPhysics(),
           child: Column(
             children: [
-              if(bannerImages.isNotEmpty)
-              CarouselSlider.builder(
-                  itemCount: bannerImages[0].length,
-                  itemBuilder: (context, index, realIndex) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 5.w),
-                      child: Stack(
-                        children: [
-                          AspectRatio(
-                            aspectRatio: 16 / 7,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(16),
-                              child: Image.network(
-                                bannerImages[0][index]["photo_details"]["image"],
-                                fit: BoxFit.cover,
-                                // color: Color(0x66000000),
-                                // colorBlendMode: BlendMode.darken,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                  options: CarouselOptions(
-                    //  height: getProportionateScreenHeight(300),
-                    aspectRatio: 16 / 7,
-                    enlargeCenterPage: true,
+              // if (bannerImages.isNotEmpty)
+              //   CarouselSlider.builder(
+              //       itemCount: bannerImages[0].length,
+              //       itemBuilder: (context, index, realIndex) {
+              //         final image=base64.encode(bannerImages[0][index]
+              //                         ["image"]);
+              //         return Padding(
+              //           padding: EdgeInsets.symmetric(horizontal: 5.w),
+              //           child: Stack(
+              //             children: [
+              //               AspectRatio(
+              //                 aspectRatio: 16 / 7,
+              //                 child: ClipRRect(
+              //                   borderRadius: BorderRadius.circular(16),
+              //                   child: Image.memory(
+              //                     base64.decode(image)
+              //                     ,
+              //                     fit: BoxFit.cover,
+              //                     // color: Color(0x66000000),
+              //                     // colorBlendMode: BlendMode.darken,
+              //                   ),
+              //                 ),
+              //               ),
+              //             ],
+              //           ),
+              //         );
+              //       },
+              //       options: CarouselOptions(
+              //         //  height: getProportionateScreenHeight(300),
+              //         aspectRatio: 16 / 7,
+              //         enlargeCenterPage: true,
 
-                    viewportFraction: 0.9,
-                    initialPage: 0,
-                    onPageChanged: (index, reason) {
-                      setState(() {
-                        _currentIndex = index;
-                      });
-                    },
+              //         viewportFraction: 0.9,
+              //         initialPage: 0,
+              //         onPageChanged: (index, reason) {
+              //           setState(() {
+              //             _currentIndex = index;
+              //           });
+              //         },
 
-                    enableInfiniteScroll: true,
-                    reverse: false,
-                    autoPlay: true,
-                    autoPlayInterval: Duration(seconds: 3),
-                    autoPlayAnimationDuration: Duration(milliseconds: 800),
-                    // autoPlayCurve: Curves.fastOutSlowIn,
-                    autoPlayCurve: Curves.fastOutSlowIn,
-                    // onPageChanged: pageController,
-                    enlargeStrategy: CenterPageEnlargeStrategy.zoom,
+              //         enableInfiniteScroll: true,
+              //         reverse: false,
+              //         autoPlay: true,
+              //         autoPlayInterval: Duration(seconds: 3),
+              //         autoPlayAnimationDuration: Duration(milliseconds: 800),
+              //         // autoPlayCurve: Curves.fastOutSlowIn,
+              //         autoPlayCurve: Curves.fastOutSlowIn,
+              //         // onPageChanged: pageController,
+              //         enlargeStrategy: CenterPageEnlargeStrategy.zoom,
 
-                    scrollDirection: Axis.horizontal,
-                  )),
-                  if(bannerImages.isNotEmpty)
-              DotsIndicator(
-                dotsCount:  bannerImages[0].length,
-                position: _currentIndex,
-                decorator: DotsDecorator(
-                  size: const Size.square(9.0),
-                  activeColor: Theme.of(context).primaryColor,
-                  activeSize: const Size(18.0, 9.0),
-                  color: AppTheme.darkPrimaryColor.withOpacity(0.3),
-                  activeShape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0)),
-                ),
-              ),
-              if (accountType == "1")
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                  ),
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => SeeAllFeatures()));
-                      },
-                      child: Text(
-                        "View all",
-                        style: Theme.of(context)
-                            .textTheme
-                            .displaySmall!
-                            .copyWith(
-                                fontSize: 14.sp,
-                                color: const Color.fromRGBO(205, 192, 158, 1)),
-                      ),
-                    ),
-                  ),
-                ),
+              //         scrollDirection: Axis.horizontal,
+              //       )),
+              // if (bannerImages.isNotEmpty)
+              //   DotsIndicator(
+              //     dotsCount: bannerImages[0].length,
+              //     position: _currentIndex,
+              //     decorator: DotsDecorator(
+              //       size: const Size.square(9.0),
+              //       activeColor: Theme.of(context).primaryColor,
+              //       activeSize: const Size(18.0, 9.0),
+              //       color: AppTheme.darkPrimaryColor.withOpacity(0.3),
+              //       activeShape: RoundedRectangleBorder(
+              //           borderRadius: BorderRadius.circular(5.0)),
+              //     ),
+              //   ),
+              // if (accountType == "1")
+              //   Padding(
+              //     padding: EdgeInsets.symmetric(
+              //       horizontal: 16.w,
+              //     ),
+              //     child: Align(
+              //       alignment: Alignment.topRight,
+              //       child: GestureDetector(
+              //         onTap: () {
+              //           Navigator.of(context).push(MaterialPageRoute(
+              //               builder: (context) => SeeAllFeatures()));
+              //         },
+              //         child: Text(
+              //           "View all",
+              //           style: Theme.of(context)
+              //               .textTheme
+              //               .displaySmall!
+              //               .copyWith(
+              //                   fontSize: 14.sp,
+              //                   color: const Color.fromRGBO(205, 192, 158, 1)),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
               SizedBox(
                 height: 10.h,
               ),
@@ -492,23 +552,75 @@ class _HomepageState extends State<Homepage> {
                     SizedBox(
                       height: 10.h,
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12.w),
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: List.generate(newsList.length, (index) {
-                            return Padding(
-                                padding: EdgeInsets.only(
-                                    left: index == 0 ? 0 : 12.w,
-                                    bottom: 10.h,
-                                    top: 5.h),
-                                child: NewCard(news: newsList[index]));
-                          }),
+                    if (_selectIndex == 0)
+                      if (newsDataList != null)
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 12.w),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: List.generate(
+                                  newsDataList!.first.newsdata!.length,
+                                  (index) {
+                                return Padding(
+                                    padding: EdgeInsets.only(
+                                        left: index == 0 ? 0 : 12.w,
+                                        bottom: 10.h,
+                                        top: 5.h),
+                                    child: NewCard(
+                                        news: newsDataList!
+                                            .first.newsdata![index]));
+                              }),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
+                    if (_selectIndex == 2)
+                      if (techDataList != null)
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 12.w),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: List.generate(
+                                  techDataList!.first.techtalkVals!.length,
+                                  (index) {
+                                return Padding(
+                                    padding: EdgeInsets.only(
+                                        left: index == 0 ? 0 : 12.w,
+                                        bottom: 10.h,
+                                        top: 5.h),
+                                    child: NewCard(
+                                        news: techDataList!
+                                            .first.techtalkVals![index]));
+                              }),
+                            ),
+                          ),
+                        ),
+                        if (_selectIndex == 1)
+                      if (blogsDataList != null)
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 12.w),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: List.generate(
+                                  blogsDataList!.first.sicaBlogsVals!.length,
+                                  (index) {
+                                return Padding(
+                                    padding: EdgeInsets.only(
+                                        left: index == 0 ? 0 : 12.w,
+                                        bottom: 10.h,
+                                        top: 5.h),
+                                    child: NewCard(
+                                        news: blogsDataList!
+                                            .first.sicaBlogsVals![index]));
+                              }),
+                            ),
+                          ),
+                        ),
                   ],
                 ),
               ),
@@ -541,104 +653,104 @@ class _HomepageState extends State<Homepage> {
                 height: 10.h,
               ),
 
-              SizedBox(
-                height: 20.h,
-              ),
-              Divider(
-                color: AppTheme.darkTextColor,
-                height: 0,
-              ),
-              Container(
-                height: 130.h,
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage("assets/images/awards.png")),
-                ),
-              ),
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                ),
-                child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "SICA Awards",
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineLarge!
-                                .copyWith(
-                                    color: AppTheme.whiteBackgroundColor,
-                                    fontSize: 18.sp),
-                          ),
-                          Text(
-                            "Vote for your Favorite Artists",
-                            style: Theme.of(context)
-                                .textTheme
-                                .displaySmall!
-                                .copyWith(
-                                    color: AppTheme.whiteBackgroundColor,
-                                    fontSize: 10.sp),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Color.fromRGBO(0, 74, 144, 1),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10.w, vertical: 6.h),
-                          child: Text(
-                            "Vote now",
-                            style: GoogleFonts.inter(
-                                fontSize: 14.sp,
-                                color: AppTheme.whiteBackgroundColor),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              _buildHeadLine("Featured", () {}),
-              Container(
-                width: double.infinity,
-                //color: AppTheme.whiteBackgroundColor,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: List.generate(featured.length, (index) {
-                      return Padding(
-                          padding: EdgeInsets.only(left: 12.w, bottom: 10.h),
-                          child: FeaturedCard(featured: featured[index]));
-                    }),
-                  ),
-                ),
-              ),
+              //             SizedBox(
+              //               height: 20.h,
+              //             ),
+              //             Divider(
+              //               color: AppTheme.darkTextColor,
+              //               height: 0,
+              //             ),
+              //             Container(
+              //               height: 130.h,
+              //               width: double.infinity,
+              //               decoration: const BoxDecoration(
+              //                 image: DecorationImage(
+              //                     fit: BoxFit.cover,
+              //                     image: AssetImage("assets/images/awards.png")),
+              //               ),
+              //             ),
+              //             Container(
+              //               width: double.infinity,
+              //               decoration: BoxDecoration(
+              //                 color: Theme.of(context).primaryColor,
+              //               ),
+              //               child: Padding(
+              //                 padding:
+              //                     EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+              //                 child: Row(
+              //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //                   children: [
+              //                     Column(
+              //                       crossAxisAlignment: CrossAxisAlignment.start,
+              //                       children: [
+              //                         Text(
+              //                           "SICA Awards",
+              //                           style: Theme.of(context)
+              //                               .textTheme
+              //                               .headlineLarge!
+              //                               .copyWith(
+              //                                   color: AppTheme.whiteBackgroundColor,
+              //                                   fontSize: 18.sp),
+              //                         ),
+              //                         Text(
+              //                           "Vote for your Favorite Artists",
+              //                           style: Theme.of(context)
+              //                               .textTheme
+              //                               .displaySmall!
+              //                               .copyWith(
+              //                                   color: AppTheme.whiteBackgroundColor,
+              //                                   fontSize: 10.sp),
+              //                         ),
+              //                       ],
+              //                     ),
+              //                     Container(
+              //                       decoration: BoxDecoration(
+              //                         color: Color.fromRGBO(0, 74, 144, 1),
+              //                         borderRadius: BorderRadius.circular(5),
+              //                       ),
+              //                       child: Padding(
+              //                         padding: EdgeInsets.symmetric(
+              //                             horizontal: 10.w, vertical: 6.h),
+              //                         child: Text(
+              //                           "Vote now",
+              //                           style: GoogleFonts.inter(
+              //                               fontSize: 14.sp,
+              //                               color: AppTheme.whiteBackgroundColor),
+              //                         ),
+              //                       ),
+              //                     ),
+              //                   ],
+              //                 ),
+              //               ),
+              //             ),
+              //             SizedBox(
+              //               height: 20.h,
+              //             ),
+              //             _buildHeadLine("Featured", () {}),
+              //             Container(
+              //               width: double.infinity,
+              //               //color: AppTheme.whiteBackgroundColor,
+              //               child: SingleChildScrollView(
+              //                 scrollDirection: Axis.horizontal,
+              //                 child: Row(
+              //                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //                   children: List.generate(featured.length, (index) {
+              //                     return Padding(
+              //                         padding: EdgeInsets.only(left: 12.w, bottom: 10.h),
+              //                         child: FeaturedCard(featured: featured[index]));
+              //                   }),
+              //                 ),
+              //               ),
+              //             ),
 
-              SizedBox(
-                height: 10.h,
-              ),
+              //             SizedBox(
+              //               height: 10.h,
+              //             ),
 
-              _buildAwards(),
-              SizedBox(
-                height: 20.h,
-              ),
+              //             _buildAwards(),
+              //             SizedBox(
+              //               height: 20.h,
+              //             ),
               _buildHeadLine("Gallery", () {
                 Navigator.push(
                   context,
@@ -668,7 +780,16 @@ class _HomepageState extends State<Homepage> {
                           padding: EdgeInsets.only(
                             left: 12.w,
                           ),
-                          child: GalleryWidget(galleryList: forumType[index]));
+                          child: GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => GalleryScreen(
+                                          category: forumType[index]["title"],
+                                          categoryid: '',
+                                        )));
+                              },
+                              child: GalleryWidget(
+                                  galleryList: forumType[index])));
                     }),
                   ),
                 ),
@@ -798,8 +919,8 @@ class _HomepageState extends State<Homepage> {
                         left: 16.w,
                         bottom: MediaQuery.of(context).viewInsets.bottom),
                     child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           SizedBox(
                             height: 10.h,
@@ -813,28 +934,28 @@ class _HomepageState extends State<Homepage> {
                                   borderRadius: BorderRadius.circular(12)),
                             ),
                           ),
-                          // Padding(
-                          //   padding: EdgeInsets.symmetric(vertical: 12.h),
-                          //   child: Text(
-                          //     "Shooting Dairy",
-                          //     style: Theme.of(context)
-                          //         .textTheme
-                          //         .headlineLarge!
-                          //         .copyWith(fontSize: 18.sp),
-                          //   ),
-                          // ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 12.h),
+                            child: Text(
+                              "Shooting Dairy",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineLarge!
+                                  .copyWith(fontSize: 18.sp),
+                            ),
+                          ),
                           SizedBox(
-                            height: 30.h,
+                            height: 12.h,
                           ),
                           Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 GestureDetector(
                                   onTap: () {
                                     Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                 CreateShooting()));
+                                                CreateShooting(updatesShot: MemberShooting(),)));
                                   },
                                   child: Column(
                                     children: [
@@ -854,7 +975,7 @@ class _HomepageState extends State<Homepage> {
                                       SizedBox(
                                         height: 8.h,
                                       ),
-                                      Text("Shooting",
+                                      Text("Shooting Update",
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodySmall!
@@ -862,13 +983,17 @@ class _HomepageState extends State<Homepage> {
                                     ],
                                   ),
                                 ),
-                                SizedBox(width: 50,),
+                                SizedBox(
+                                  width: 30,
+                                ),
                                 GestureDetector(
                                   onTap: () {
-                                   Navigator.of(context).pushReplacement(
+                                    Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const CreateDOP(associateList: [],)));
+                                                const CreateDOP(
+                                                  associateList: [],
+                                                )));
                                   },
                                   child: Column(
                                     children: [
@@ -889,7 +1014,7 @@ class _HomepageState extends State<Homepage> {
                                       SizedBox(
                                         height: 8.h,
                                       ),
-                                      Text("DOP",
+                                      Text("DOP Update",
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodySmall!
@@ -930,13 +1055,15 @@ class _HomepageState extends State<Homepage> {
                                 //     ],
                                 //   ),
                                 // ),
-                                SizedBox(width: 50,),
+                                SizedBox(
+                                  width: 50,
+                                ),
                                 GestureDetector(
                                   onTap: () {
                                     Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                ShootingDopApproval()));
+                                                ShootingApprovalList()));
                                   },
                                   child: Column(
                                     children: [
@@ -964,7 +1091,7 @@ class _HomepageState extends State<Homepage> {
                                     ],
                                   ),
                                 ),
-                            ]),
+                              ]),
                           SizedBox(
                             height: 20.h,
                           ),
@@ -1037,7 +1164,7 @@ class _HomepageState extends State<Homepage> {
                                     Navigator.of(context).push(
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const JobSeeker()));
+                                                 AddJobSeeker(seeker: MemberJobSeeker(),)));
                                   },
                                   child: Column(
                                     children: [
@@ -1072,7 +1199,7 @@ class _HomepageState extends State<Homepage> {
                                     Navigator.of(context).push(
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const JobProviders()));
+                                                 AddProvider()));
                                   },
                                   child: Column(
                                     children: [
@@ -1134,7 +1261,7 @@ class NewCard extends StatelessWidget {
         width: 220.w,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: [if(news.image!=null)
             Container(
               height: 150.h,
               width: 220.w,
@@ -1142,7 +1269,7 @@ class NewCard extends StatelessWidget {
                   image: DecorationImage(
                       fit: BoxFit.cover,
                       alignment: Alignment.topCenter,
-                      image: AssetImage(news["image"])),
+                      image: NetworkImage(news.image)),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(12),
                     topRight: Radius.circular(12),
@@ -1154,7 +1281,7 @@ class NewCard extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 5.h),
               child: Text(
-                news["title"],
+                news.title,
                 style: Theme.of(context)
                     .textTheme
                     .headlineMedium!
@@ -1163,12 +1290,13 @@ class NewCard extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
+            if(news.description.toString()!="null")
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: 8.w,
               ),
               child: Text(
-                news["dis"],
+                news.description.toString(),
                 style: Theme.of(context)
                     .textTheme
                     .displaySmall!

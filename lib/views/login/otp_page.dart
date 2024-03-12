@@ -10,9 +10,10 @@ import '../../components/buton.dart';
 import '../../theme/theme.dart';
 
 class OtpScreen extends StatefulWidget {
-  OtpScreen({super.key, required this.access_token, required this.mobile, required this.accountType});
+  OtpScreen({super.key, required this.access_token, required this.mobile, required this.accountType, required this.name});
    String access_token;
   final String mobile;
+    final String name;
   final int accountType;
   @override
   State<OtpScreen> createState() => _OtpScreenState();
@@ -90,7 +91,7 @@ void resendOtp() async {
       final service = AuthService();
       service
           .login(mobile.toString(), memberid.toString(),
-              widget.accountType == 1 ? "MEMBER" : "GUEST")
+              widget.accountType == 1 ? "MEMBER" : "GUEST",widget.name)
           .then((value) {
         DialogHelp().hideLoading(context);
         if (value.isNotEmpty) {

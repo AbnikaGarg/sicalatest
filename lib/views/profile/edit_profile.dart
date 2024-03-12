@@ -31,7 +31,7 @@ class _EditProfileState extends State<EditProfile> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final mobile = TextEditingController();
-
+  bool contactInfo = false;  bool notesShow = false;
   final name = TextEditingController();
 
   final memberno = TextEditingController();
@@ -59,6 +59,10 @@ class _EditProfileState extends State<EditProfile> {
     medium.text = widget.details.medium.toString();
     portfiliolink.text = widget.details.portifolioLink.toString();
     notes.text = widget.details.notes.toString();
+    contactInfo =
+        widget.details.contact_show.toString() == "false" ? false : true;
+         notesShow =
+        widget.details.notes_show.toString() == "false" ? false : true;
     experience.text = widget.details.experience.toString();
   }
 
@@ -68,22 +72,23 @@ class _EditProfileState extends State<EditProfile> {
       DialogHelp.showLoading(context);
       service
           .updateMembers(
-              mobile.text,
-              name.text,
-              memberno.text,
-              designation.text,
-              skills.text,
-              medium.text,
-              experience.text,
+              widget.details.mobileNumber.toString(),
+              widget.details.name.toString(),
+              widget.details.membershipNo.toString(),
+              widget.details.designation.toString(),
+              widget.details.skills.toString(),
+              widget.details.medium.toString(),
+              widget.details.experience.toString(),
               portfiliolink.text,
-              notes.text)
+              notes.text.toString(),
+              contactInfo ? "True" : "False", notesShow ? "True" : "False")
           .then((value) {
         DialogHelp().hideLoading(context);
         if (value.isNotEmpty) {
           Fluttertoast.showToast(
-              msg: "Updated",
+              msg: "Updated Successfully",
               backgroundColor: Colors.green,
-              gravity: ToastGravity.TOP,
+              gravity: ToastGravity.CENTER,
               textColor: Colors.white);
           Navigator.pushAndRemoveUntil(
               context,
@@ -146,6 +151,7 @@ class _EditProfileState extends State<EditProfile> {
       appBar: AppBar(
         titleSpacing: 0,
         elevation: 1,
+        centerTitle: false,
         title: Text("Profile"),
         actions: [
           Center(
@@ -247,15 +253,36 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                 ),
                 SizedBox(height: 20.h),
-                Text(
-                  "Member Number",
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelSmall!
-                      .copyWith(fontSize: 13.sp),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Show Member Number",
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelSmall!
+                          .copyWith(fontSize: 13.sp),
+                    ),
+                    Transform.scale(
+                      scale: .7,
+                      child: CupertinoSwitch(
+                        value: contactInfo,
+                        onChanged: (value) {
+                          contactInfo = value;
+                          setState(
+                            () {},
+                          );
+                        },
+                        trackColor: CupertinoColors.systemGrey,
+                        thumbColor: CupertinoColors.systemGrey5,
+                        activeColor: Colors.blue,
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 2.h),
+
                 MyTextField(
+                    readOnly: true,
                     textEditingController: mobile,
                     validation: (value) {
                       if (value == null || value.isEmpty) {
@@ -275,6 +302,7 @@ class _EditProfileState extends State<EditProfile> {
                 ),
                 SizedBox(height: 2.h),
                 MyTextField(
+                    readOnly: true,
                     textEditingController: name,
                     validation: (value) {
                       if (value == null || value.isEmpty) {
@@ -294,6 +322,7 @@ class _EditProfileState extends State<EditProfile> {
                 ),
                 SizedBox(height: 2.h),
                 MyTextField(
+                    readOnly: true,
                     textEditingController: memberno,
                     validation: (value) {
                       if (value == null || value.isEmpty) {
@@ -303,82 +332,64 @@ class _EditProfileState extends State<EditProfile> {
                     },
                     hintText: "Membership No.",
                     color: const Color(0xff585A60)),
-                SizedBox(height: 8.h),
-                Text(
-                  "Designation/Grade",
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelSmall!
-                      .copyWith(fontSize: 13.sp),
-                ),
-                SizedBox(height: 2.h),
-                MyTextField(
-                    textEditingController: designation,
-                    validation: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Enter Designation/Grade";
-                      }
-                      return null;
-                    },
-                    hintText: "Designation/Grade",
-                    color: const Color(0xff585A60)),
-                SizedBox(height: 8.h),
-                Text(
-                  "Skills",
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelSmall!
-                      .copyWith(fontSize: 13.sp),
-                ),
-                SizedBox(height: 2.h),
-                MyTextField(
-                    textEditingController: skills,
-                    validation: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Enter Skills";
-                      }
-                      return null;
-                    },
-                    hintText: "Skills",
-                    color: const Color(0xff585A60)),
-                SizedBox(height: 8.h),
-                Text(
-                  "Medium",
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelSmall!
-                      .copyWith(fontSize: 13.sp),
-                ),
-                SizedBox(height: 2.h),
-                MyTextField(
-                    textEditingController: medium,
-                    validation: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Enter Medium";
-                      }
-                      return null;
-                    },
-                    hintText: "Medium",
-                    color: const Color(0xff585A60)),
-                SizedBox(height: 8.h),
-                Text(
-                  "Experience",
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelSmall!
-                      .copyWith(fontSize: 13.sp),
-                ),
-                SizedBox(height: 2.h),
-                MyTextField(
-                    textEditingController: experience,
-                    validation: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Enter Experience";
-                      }
-                      return null;
-                    },
-                    hintText: "Experience",
-                    color: const Color(0xff585A60)),
+
+                // Text(
+                //   "Designation/Grade",
+                //   style: Theme.of(context)
+                //       .textTheme
+                //       .labelSmall!
+                //       .copyWith(fontSize: 13.sp),
+                // ),
+                // SizedBox(height: 2.h),
+                // MyTextField(
+                //     textEditingController: designation,
+                //     validation: (value) {
+                //       if (value == null || value.isEmpty) {
+                //         return "Enter Designation/Grade";
+                //       }
+                //       return null;
+                //     },
+                //     hintText: "Designation/Grade",
+                //     color: const Color(0xff585A60)),
+                // SizedBox(height: 8.h),
+                // Text(
+                //   "Skills",
+                //   style: Theme.of(context)
+                //       .textTheme
+                //       .labelSmall!
+                //       .copyWith(fontSize: 13.sp),
+                // ),
+                // SizedBox(height: 2.h),
+                // MyTextField(
+                //     textEditingController: skills,
+                //     validation: (value) {
+                //       if (value == null || value.isEmpty) {
+                //         return "Enter Skills";
+                //       }
+                //       return null;
+                //     },
+                //     hintText: "Skills",
+                //     color: const Color(0xff585A60)),
+                // SizedBox(height: 8.h),
+                // Text(
+                //   "Medium",
+                //   style: Theme.of(context)
+                //       .textTheme
+                //       .labelSmall!
+                //       .copyWith(fontSize: 13.sp),
+                // ),
+                // SizedBox(height: 2.h),
+                // MyTextField(
+                //     textEditingController: medium,
+                //     validation: (value) {
+                //       if (value == null || value.isEmpty) {
+                //         return "Enter Medium";
+                //       }
+                //       return null;
+                //     },
+                //     hintText: "Medium",
+                //     color: const Color(0xff585A60)),
+
                 SizedBox(height: 8.h),
                 Text(
                   "Portfilio Link",
@@ -399,23 +410,45 @@ class _EditProfileState extends State<EditProfile> {
                     hintText: "Portfilio Link",
                     color: const Color(0xff585A60)),
                 SizedBox(height: 8.h),
-                Text(
-                  "Notes",
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelSmall!
-                      .copyWith(fontSize: 13.sp),
+
+                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Show About",
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelSmall!
+                          .copyWith(fontSize: 13.sp),
+                    ),
+                    Transform.scale(
+                      scale: .7,
+                      alignment: Alignment.center,
+                      child: CupertinoSwitch(
+                        
+                        value: notesShow,
+                        onChanged: (value) {
+                          notesShow = value;
+                          setState(
+                            () {},
+                          );
+                        },
+                        trackColor: CupertinoColors.systemGrey,
+                        thumbColor: CupertinoColors.systemGrey5,
+                        activeColor: Colors.blue,
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 2.h),
                 MyTextField(
                     textEditingController: notes,
                     validation: (value) {
                       if (value == null || value.isEmpty) {
-                        return "Enter Notes";
+                        return "Enter About";
                       }
                       return null;
                     },
-                    hintText: "Notes",
+                    hintText: "About",
                     color: const Color(0xff585A60)),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 20.h),

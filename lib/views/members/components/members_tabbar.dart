@@ -1,27 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sica/models/OtherMemberProfile.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sica/theme/theme.dart';
-import '../../events/events.dart';
+import '../../../models/MemberDetailModel.dart';
+import '../../../services/member_repo.dart';
 import '../commented_forum.dart';
 import '../films_tab.dart';
 import '../members_about_tab.dart';
 
-
-class MembersTabBar extends StatelessWidget {
-   final MemberBasicDetails memberdetail;
+class MembersTabBar extends StatefulWidget {
+   final String memberid;
   const MembersTabBar({
-    super.key, required this.memberdetail,
+    super.key, required this.memberid,
   });
 
   @override
+  State<MembersTabBar> createState() => _MembersTabBarState();
+}
+
+class _MembersTabBarState extends State<MembersTabBar> {
+List<MemberDetailModel>? memberDetails;
+
+  @override
+  void initState() {
+    super.initState();
+    getMemberDetails();
+  }
+
+  String? accountType;
+
+  void getMemberDetails() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  
+    if (mounted) setState(() {});
+    final service = MemberRepo();
+    service.getMemberDetails(widget.memberid).then((value) {
+      if (value.isNotEmpty) {
+        memberDetails = value;
+        if (mounted) setState(() {});
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
+    return memberDetails==null?Center(child: CircularProgressIndicator(),): DefaultTabController(
       initialIndex: 0,
-      length: 2,
+      length: 3,
       child: Scaffold(
-        //backgroundColor: AppTheme.backGround,
+        backgroundColor: AppTheme.blackColor,
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(kToolbarHeight),
           child: Container(
@@ -46,7 +73,7 @@ class MembersTabBar extends StatelessWidget {
                       Navigator.pop(context);
                     },
                     child: Padding(
-                      padding: EdgeInsets.only(left: 8.w),
+                      padding: EdgeInsets.only(left: 12),
                       child: const Icon(Icons.arrow_back),
                     ),
                   ),
@@ -58,17 +85,18 @@ class MembersTabBar extends StatelessWidget {
                           indicatorWeight: 2,
                           indicatorColor: Theme.of(context).primaryColor,
                           isScrollable: false,
+                          indicatorSize: TabBarIndicatorSize.label,
                           tabs: [
                             Padding(
-                              padding: EdgeInsets.only(bottom: 12.h),
+                              padding: EdgeInsets.only(bottom: 12.h,left: 10,right: 10),
                               child: const Text("About"),
                             ),
-                            // Padding(
-                            //   padding: EdgeInsets.only(bottom: 12.h),
-                            //   child: const Text("Forum"),
-                            // ),
                             Padding(
-                              padding: EdgeInsets.only(bottom: 12.h),
+                              padding: EdgeInsets.only(bottom: 12.h,left: 10,right: 10),
+                              child: const Text("Forum"),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 12.h,left: 10,right: 10),
                               child: const Text("Work"),
                             ),
                           ],
@@ -84,12 +112,13 @@ class MembersTabBar extends StatelessWidget {
         body:  TabBarView(
           physics: NeverScrollableScrollPhysics(),
           children: <Widget>[
-            MemberAboutTab(memberdetails: memberdetail),
-           // DiscussionCommented(),
-            FilmsTab(memberdetails: memberdetail),
+            MemberAboutTab(memberdetails: memberDetails![0].memberBasicDetails!),
+            DiscussionCommented(topicList: memberDetails![0].discussionForum!,),
+            FilmsTab(projectWork:memberDetails![0].projectWork!),
           ],
         ),
       ),
     );
   }
 }
+

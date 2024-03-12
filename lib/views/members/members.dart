@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sica/models/OtherMemberProfile.dart';
 import 'package:sica/services/member_repo.dart';
 import 'package:sica/views/members/components/members_tabbar.dart';
@@ -17,7 +20,7 @@ class Members extends StatefulWidget {
 }
 
 class _nameState extends State<Members> {
-  List<OtherMemberProfile>? memberDetails;
+  // List<OtherMemberProfile>? memberDetails;
   List<MemberBasicDetails>? memberBasicDetails;
   late ScrollController scrollController;
   bool isLoadedMore = false;
@@ -37,6 +40,7 @@ class _nameState extends State<Members> {
   }
 
   void loadMore() {
+    List<OtherMemberProfile>? memberDetails2;
     if (hasNextPage == true &&
         isLoadedMore == false &&
         scrollController.position.maxScrollExtent == scrollController.offset) {
@@ -46,10 +50,10 @@ class _nameState extends State<Members> {
       print(page);
       service.getAllMemberDetails(page.toString()).then((value) {
         if (value.isNotEmpty) {
-          memberDetails = value;
-          if (memberDetails!.first.memberBasicDetails!.isNotEmpty) {
+          memberDetails2 = value;
+          if (memberDetails2!.first.memberBasicDetails!.isNotEmpty) {
             memberBasicDetails =
-                memberBasicDetails! + memberDetails!.first.memberBasicDetails!;
+                memberBasicDetails! + memberDetails2!.first.memberBasicDetails!;
           } else {
             hasNextPage = false;
           }
@@ -101,33 +105,48 @@ class _nameState extends State<Members> {
     });
   }
 
-  void getMemberAllData() {
-    final service = MemberRepo();
-    service.getAllMemberData().then((value) {
-      if (value.isNotEmpty) {
-        memberDetails = value;
-        print("loaded");
-        //  totalNumber = value.first.memberBasicDetails!.length;
-        // memberBasicDetails = value.first.memberBasicDetails;
-        // memberBasicDetails = value.first.memberBasicDetails.sort((a, b) {
-        //   return a.memberDetails!.membershipNo!.compareTo(b.memberDetails!.membershipNo!);
-        // });
-        // memberBasicDetails!.sort((a, b) =>
-        //     int.parse(a.memberDetails!.membershipNo.toString()).compareTo(
-        //         int.parse(b.memberDetails!.membershipNo.toString())));
-        if (mounted) setState(() {});
-      }
-    });
+  // void getMemberAllData() {
+  //   final service = MemberRepo();
+  //   service.getAllMemberData().then((value) {
+  //     if (value.isNotEmpty) {
+  //       memberDetails = value;
+  //       print("loaded");
+  //       //  totalNumber = value.first.memberBasicDetails!.length;
+  //       // memberBasicDetails = value.first.memberBasicDetails;
+  //       // memberBasicDetails = value.first.memberBasicDetails.sort((a, b) {
+  //       //   return a.memberDetails!.membershipNo!.compareTo(b.memberDetails!.membershipNo!);
+  //       // });
+  //       // memberBasicDetails!.sort((a, b) =>
+  //       //     int.parse(a.memberDetails!.membershipNo.toString()).compareTo(
+  //       //         int.parse(b.memberDetails!.membershipNo.toString())));
+  //       if (mounted) setState(() {});
+  //     }
+  //   });
+  // }
+  List<MemberBasicDetails>? memberBasicDetails2;
+  Future<void> getMemberAllData() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final rawJson = sharedPreferences.getString('memberList') ?? '';
+    var jsonMap = json.decode(rawJson);
+    memberBasicDetails = List<MemberBasicDetails>.from(
+        jsonMap.map((x) => MemberBasicDetails.fromJson(x)));
+    memberBasicDetails2 = memberBasicDetails;
+    
+    print("loaded");
   }
 
   SearchList(String query) async {
     if (query.isNotEmpty) {
-      memberBasicDetails = memberDetails!.first.memberBasicDetails!
-          .where((elem) => elem.memberDetails!.name!
-              .toLowerCase()
-              .startsWith(query.toLowerCase()))
+      memberBasicDetails = memberBasicDetails2!
+          .where((elem) =>
+              elem.memberDetails!.name!
+                  .toLowerCase()
+                  .startsWith(query.toLowerCase()) ||
+              elem.memberDetails!.membershipNo!
+                  .toLowerCase()
+                  .startsWith(query.toLowerCase()))
           .toList();
-     // page = memberBasicDetails!.length;
+      // page = memberBasicDetails!.length;
       //totalNumber = memberBasicDetails!.length;
 
       isLoadedMore = true;
@@ -206,7 +225,7 @@ class _nameState extends State<Members> {
                     ),
                     suffixIconColor:
                         Theme.of(context).textTheme.headlineMedium!.color,
-                    hintText: 'Search',
+                    hintText: 'Search by Name or M no.',
                   ),
                 ),
               ),
@@ -224,7 +243,9 @@ class _nameState extends State<Members> {
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => MembersTabBar(
-                                    memberdetail: memberBasicDetails![index],
+                                    memberid: memberBasicDetails![index]
+                                        .memberDetails!
+                                        .membershipNo!,
                                   )));
                         },
                         child: MemberCard(

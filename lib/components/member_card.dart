@@ -56,15 +56,22 @@ class MemberCard extends StatelessWidget {
                       )),
                 ),
                 
-                placeholder: (context, url) => SizedBox(
-                  child: Center(
-                      child: const CircularProgressIndicator(
-                    color: Colors.yellow,
-                  )),
-                  height: 10.h,
-                  width: 10.h,
+                // placeholder: (context, url) => SizedBox(
+                //   child: Center(
+                //       child: const CircularProgressIndicator(
+                //     color: Colors.yellow,
+                //   )),
+                //   height: 10.h,
+                //   width: 10.h,
+                // ),
+                errorWidget: (context, url, error) =>Container(
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: AssetImage("assets/images/profile.jpeg"),
+                        fit: BoxFit.cover,
+                      )),
                 ),
-                errorWidget: (context, url, error) => Icon(Icons.error),
               )
             else
               Container(

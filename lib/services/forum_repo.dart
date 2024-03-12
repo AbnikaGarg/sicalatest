@@ -13,7 +13,7 @@ class Forum {
     List res = [];
     try {
       var ur = Uri.parse(
-          "${AppConstants.baseURL}${AppConstants.getCategories}?db=odoo_si&api_key=8f4f506e4b4022e154ac3651f9ee006e9b751261");
+          "${AppConstants.baseURL}${AppConstants.getCategories}?db=sicadop_02&api_key=8f4f506e4b4022e154ac3651f9ee006e9b751261");
       final response = await http.get(ur, headers: {
         "content-type": "text/html; charset=utf-8",
       });
@@ -36,7 +36,7 @@ class Forum {
     List<TopicModel> res = [];
     try {
       var ur = Uri.parse(
-          "${AppConstants.baseURL}${AppConstants.discussionTopic}?db=odoo_si&api_key=8f4f506e4b4022e154ac3651f9ee006e9b751261&category_id=$catid&offset=0&limit=20");
+          "${AppConstants.baseURL}${AppConstants.discussionTopic}?db=sicadop_02&api_key=8f4f506e4b4022e154ac3651f9ee006e9b751261&category_id=$catid&offset=0&limit=20");
       final response = await http.get(ur, headers: {
         "content-type": "text/html; charset=utf-8",
       });
@@ -61,7 +61,7 @@ Future<List> createCommment(String comment, int discussionid) async {
           await SharedPreferences.getInstance();
       var memberid = (sharedPreferences.getString('memberid') ?? "");
       var ur = Uri.parse(
-          "${AppConstants.baseURL}${AppConstants.createComment}?db=odoo_si&api_key=8f4f506e4b4022e154ac3651f9ee006e9b751261&MEMBERSHIP_ID=$memberid&data={'comment': '$comment'}&DISCUSSION_ID=$discussionid");
+          "${AppConstants.baseURL}${AppConstants.createComment}?db=sicadop_02&api_key=8f4f506e4b4022e154ac3651f9ee006e9b751261&MEMBERSHIP_ID=$memberid&data={'comment': '$comment'}&DISCUSSION_ID=$discussionid");
       final response = await http.post(ur, headers: {
         "content-type": "text/html; charset=utf-8",
       });
@@ -79,6 +79,30 @@ Future<List> createCommment(String comment, int discussionid) async {
       return res;
     }
   }
+  Future<List> updateCommment(String comment, int commentId) async {
+    List res = [];
+    try {
+       SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      var memberid = (sharedPreferences.getString('memberid') ?? "");
+      var ur = Uri.parse(
+          "${AppConstants.baseURL}${AppConstants.updateComment}?db=sicadop_02&api_key=8f4f506e4b4022e154ac3651f9ee006e9b751261&MEMBERSHIP_ID=$memberid&data={'comment': '$comment'}&COMMENT_ID=$commentId");
+      final response = await http.post(ur, headers: {
+        "content-type": "text/html; charset=utf-8",
+      });
+      print(response.statusCode);
+      switch (response.statusCode) {
+        case 200:
+          //final data = jsonDecode(response.body);
+          res.add(jsonDecode(response.body));
+          return res;
+
+        default:
+          return res;
+      }
+    } catch (e) {
+      return res;
+    }}
   Future<List> addTopic(String topic, String id) async {
     List userResponse = [];
     try {
@@ -86,7 +110,7 @@ Future<List> createCommment(String comment, int discussionid) async {
           await SharedPreferences.getInstance();
       var memberid = (sharedPreferences.getString('memberid') ?? "");
       var ur = Uri.parse(
-          "${AppConstants.baseURL}${AppConstants.createTopic}?db=odoo_si&api_key=8f4f506e4b4022e154ac3651f9ee006e9b751261&MEMBERSHIP_ID=$memberid&data={'discussion_topic': '$topic', 'category_id': '$id'}");
+          "${AppConstants.baseURL}${AppConstants.createTopic}?db=sicadop_02&api_key=8f4f506e4b4022e154ac3651f9ee006e9b751261&MEMBERSHIP_ID=$memberid&data={'discussion_topic': '$topic', 'category_id': '$id'}");
       final response = await http.post(ur, headers: {
         "content-type": "text/html; charset=utf-8",
       });
@@ -110,7 +134,7 @@ Future<List> createCommment(String comment, int discussionid) async {
           await SharedPreferences.getInstance();
       var memberid = (sharedPreferences.getString('memberid') ?? "");
       var ur = Uri.parse(
-          "${AppConstants.baseURL}${AppConstants.updateTopic}?db=odoo_si&api_key=8f4f506e4b4022e154ac3651f9ee006e9b751261&MEMBERSHIP_ID=$memberid&data={'topic': '$topic'}&DISCUSSION_ID=$id");
+          "${AppConstants.baseURL}${AppConstants.updateTopic}?db=sicadop_02&api_key=8f4f506e4b4022e154ac3651f9ee006e9b751261&MEMBERSHIP_ID=$memberid&data={'topic': '$topic'}&DISCUSSION_ID=$id");
       final response = await http.post(ur, headers: {
         "content-type": "text/html; charset=utf-8",
       });
@@ -134,7 +158,7 @@ Future<List> createCommment(String comment, int discussionid) async {
           await SharedPreferences.getInstance();
       var memberid = (sharedPreferences.getString('memberid') ?? "");
       var ur = Uri.parse(
-          "${AppConstants.baseURL}${AppConstants.deleteTopic}?db=odoo_si&api_key=8f4f506e4b4022e154ac3651f9ee006e9b751261&MEMBERSHIP_ID=$memberid&data={'topic': '$topic'}&DISCUSSION_ID=$id");
+          "${AppConstants.baseURL}${AppConstants.deleteTopic}?db=sicadop_02&api_key=8f4f506e4b4022e154ac3651f9ee006e9b751261&MEMBERSHIP_ID=$memberid&data={'topic': '$topic'}&DISCUSSION_ID=$id");
       final response = await http.delete(ur, headers: {
         "content-type": "text/html; charset=utf-8",
       });

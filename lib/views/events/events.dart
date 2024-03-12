@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sica/models/EventModel.dart';
+import 'package:sica/services/event_repo.dart';
 import 'package:sica/theme/theme.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -16,36 +18,71 @@ class EventsTab extends StatefulWidget {
 }
 
 class _nameState extends State<EventsTab> {
-  List _category = ["All", "Workshop", "Training", "Seminars"];
+  List _category = [];
   List _sort = ["Today", "Tomorrow", "This week", "This Month"];
   int _selectIndex = 0;
 
-  List events = [
-    {
-      "title": "Film Camera Training part1",
-      "date": "March 02 2023",
-      "duration": "6 Weeks",
-      "author": "By P.C.Sreeram",
-      "rupess": "800",
-      "image": "assets/images/sicaevent1.png"
-    },
-    {
-      "title": "Cinematography",
-      "date": "March 08 2023",
-      "duration": "1 Daye",
-      "author": "By Arul",
-      "rupess": "1000",
-      "image": "assets/images/sicaevent2.png"
-    },
-    {
-      "title": "Laser Projection",
-      "date": "March 15 2023",
-      "duration": "1 Weeks",
-      "author": "By M. Ilavarasu",
-      "rupess": "1800",
-      "image": "assets/images/sicaevent3.png"
-    }
-  ];
+  // List events = [
+  //   {
+  //     "title": "Film Camera Training part1",
+  //     "date": "March 02 2023",
+  //     "duration": "6 Weeks",
+  //     "author": "By P.C.Sreeram",
+  //     "rupess": "800",
+  //     "image": "assets/images/sicaevent1.png"
+  //   },
+  //   {
+  //     "title": "Cinematography",
+  //     "date": "March 08 2023",
+  //     "duration": "1 Daye",
+  //     "author": "By Arul",
+  //     "rupess": "1000",
+  //     "image": "assets/images/sicaevent2.png"
+  //   },
+  //   {
+  //     "title": "Laser Projection",
+  //     "date": "March 15 2023",
+  //     "duration": "1 Weeks",
+  //     "author": "By M. Ilavarasu",
+  //     "rupess": "1800",
+  //     "image": "assets/images/sicaevent3.png"
+  //   }
+  // ];
+  List<EventModel>? events;
+
+  @override
+  void initState() {
+    super.initState();
+    
+    getCategories();
+  }
+
+  void getCategories() {
+    final service = Eventrepo();
+    service.getCategory().then((value) {
+      if (value.isNotEmpty) {
+        _category = value[0];
+        getEventsData();
+        if (mounted) setState(() {});
+      }
+    });
+  }
+
+  String? accountType;
+  void getEventsData() async {
+    final service = Eventrepo();
+    service.getEvents(_category[_selectIndex]["category_id"]).then((value) {
+      if (value.isNotEmpty) {
+        events = value;
+        if (mounted) setState(() {});
+      }
+      else{
+           events = [];
+        if (mounted) setState(() {});
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -56,19 +93,19 @@ class _nameState extends State<EventsTab> {
             height: 20.h,
           ),
           Row(children: [
-            SizedBox(
-              width: 12.w,
-            ),
-            GestureDetector(
-              onTap: () {
-                showModal(context);
-              },
-              child: SvgPicture.asset(
-                'assets/icons/filter.svg',
-                color: Theme.of(context).iconTheme.color,
-                height: 30,
-              ),
-            ),
+            // SizedBox(
+            //   width: 12.w,
+            // ),
+            // GestureDetector(
+            //   onTap: () {
+            //     showModal(context);
+            //   },
+            //   child: SvgPicture.asset(
+            //     'assets/icons/filter.svg',
+            //     color: Theme.of(context).iconTheme.color,
+            //     height: 30,
+            //   ),
+            // ),
             SizedBox(
               width: 12.w,
             ),
@@ -77,17 +114,22 @@ class _nameState extends State<EventsTab> {
           SizedBox(
             height: 20.h,
           ),
-          ListView.builder(
-            itemCount: events.length,
-            shrinkWrap: true,
-            primary: false,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
-                child: EventCard(events: events[index]),
-              );
-            },
-          )
+          if (events == null)
+            const CircularProgressIndicator()
+          else
+          if(events!.isNotEmpty)
+            ListView.builder(
+              itemCount: events!.first.eventDetails!.length,
+              shrinkWrap: true,
+              primary: false,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
+                  child: EventCard(events: events!.first.eventDetails![index], category: _category[_selectIndex]["category_name"],),
+                );
+              },
+            )
         ],
       ),
     );
@@ -105,12 +147,14 @@ class _nameState extends State<EventsTab> {
                     onTap: () {
                       setState(() {
                         _selectIndex = index;
+                        events=null;
+                        getEventsData();
                       });
                     },
                     child: FilterBox(
                         index: index,
                         selectIndex: _selectIndex,
-                        category: _category[index],
+                        category: _category[index]["category_name"],
                         context: context),
                   )),
         ),

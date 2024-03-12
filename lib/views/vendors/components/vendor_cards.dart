@@ -1,6 +1,7 @@
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sica/theme/theme.dart';
 
 class VendorCardDetails extends StatelessWidget {
   VendorCardDetails({super.key, required this.vendor});
@@ -8,68 +9,105 @@ class VendorCardDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10.h),
       decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(color: Colors.grey.withOpacity(0.3), width: 1)),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            height: 50.h,
-            width: 50.h,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              image: DecorationImage(
-                image: AssetImage('assets/images/camera.jpg'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(left: 8.w),
-              child: Text(
-                  vendor["name"],
-                  style: Theme.of(context).textTheme.headlineMedium!,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis),
-            ),
-          ),
+          Text(vendor["vendor_name"],
+              style: Theme.of(context).textTheme.headlineMedium!,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis),
           SizedBox(
-            width: 10.w,
+            height: 8,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
+          Row(
             children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.star,
-                    size: 18.h,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  Text(' 4.1',
-                      style:
-                          Theme.of(context).textTheme.displaySmall!.copyWith(
-                                fontSize: 14.sp,
-                              )),
-                ],
+              Icon(
+                Icons.email_rounded,
+                size: 16,
+                color: AppTheme.whiteBackgroundColor,
               ),
               SizedBox(
-                height: 5.h,
+                width: 6,
               ),
-              Text(' (3.5k)',
+              Text(vendor["email"],
                   style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                      fontSize: 12.sp,
-                      color: Theme.of(context).iconTheme.color)),
+                        fontSize: 14,
+                      )),
             ],
           ),
+          SizedBox(
+            height: 8,
+          ),
+          Row(
+            children: [
+              Icon(
+                Icons.phone,
+                size: 16,
+                color: AppTheme.whiteBackgroundColor,
+              ),
+              SizedBox(
+                width: 6,
+              ),
+              Text(vendor["phone_number"],
+                  style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                        fontSize: 14,
+                      )),
+            ],
+          ),
+          SizedBox(
+            height: 8,
+          ),
+          Row(
+            children: [
+              Icon(
+                CupertinoIcons.globe,
+                size: 16,
+                color: AppTheme.whiteBackgroundColor,
+              ),
+               SizedBox(
+                width: 6,
+              ),
+              Text(vendor["website"],
+                  style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                        fontSize: 14,
+                      )),
+            ],
+          ),
+          SizedBox(
+            height: 8,
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(
+                CupertinoIcons.map_pin_ellipse,
+                size: 16,
+                color: AppTheme.whiteBackgroundColor,
+              ),
+             SizedBox(
+                width: 6,
+              ),
+              Flexible(
+                child: Text(vendor["address"],
+                    style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                          fontSize: 14,
+                        )),
+              ),
+            ],
+          ),
+          // SizedBox(
+          //   height: 8,
+          // ),
+          // Text("Type: ${vendor["vendor_type"]}",
+          //     style: Theme.of(context).textTheme.displaySmall!.copyWith(
+          //         fontSize: 12.sp, color: Theme.of(context).iconTheme.color)),
         ],
       ),
     );
   }
 }
-

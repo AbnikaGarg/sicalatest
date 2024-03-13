@@ -19,7 +19,7 @@ class AppConstants {
   //job_seeker
   static String addJobProvider = "/create/job_provider";
   static String createPayment = "/create/razorpay_order";
-  static String getEventPayment = "get/event/payment_link";
+  static String getEventPayment = "/get/event/payment_link";
   static String getCategories = "/get/all/discuss_category";
   static String discussionTopic = "/get/all/discussion_topic";
   static String createTopic = "/create/discussion_topic";
@@ -62,4 +62,5 @@ class AppConstants {
   static String galleryData = "/get/gallery";
   static String getJobsPost = "/get/job_post";
   static String getSkills = "/get/skills";
+   static String bookEventStatus ="/event/payment/callback";
 }

@@ -37,7 +37,7 @@ class _EventDetailState extends State<EventDetail> {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => MakePayment(
                 url: res[0].paymentlink!.shortUrl.toString(),
-                callBackurl: res[0].paymentlink!.callbackUrl.toString())));
+                callBackurl: res[0].paymentlink!.callbackUrl.toString(), type: 2, eventid: widget.events.eventId!,)));
       } else {
         Fluttertoast.showToast(
             msg: "Something went wrong",

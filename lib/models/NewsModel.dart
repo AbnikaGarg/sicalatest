@@ -38,7 +38,7 @@ class NewsData {
     date = json['date'];
     views = json['views'];
     link = json['link'];
-    image = json['image'];
+    image = json['image_url'];
     description=json['description'];
   }
   String? title;

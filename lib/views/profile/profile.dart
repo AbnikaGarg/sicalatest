@@ -81,7 +81,7 @@ class _ProfileState extends State<Profile> {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => MakePayment(
                 url: res[0].paymentlink!.shortUrl.toString(),
-                callBackurl: res[0].paymentlink!.callbackUrl.toString())));
+                callBackurl: res[0].paymentlink!.callbackUrl.toString(), type: 1, eventid: 0,)));
       } else {
         Fluttertoast.showToast(
             msg: "Something went wrong",

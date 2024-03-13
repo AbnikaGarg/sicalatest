@@ -15,6 +15,7 @@ class EventBook extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -36,16 +37,20 @@ class EventBook extends StatelessWidget {
                 .copyWith(fontSize: 20.sp, color: Colors.blueAccent),
           ),
           Padding(
-            padding:
-                EdgeInsets.only(top: 60.h, bottom: 20.h, left: 20.w, right: 20.w,),
+            padding: EdgeInsets.only(
+              top: 60.h,
+              bottom: 20.h,
+              left: 20.w,
+              right: 20.w,
+            ),
             child: RoundedButton(
               ontap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MyDashBoard(currentIndex: 0),
-                  ),
-                );
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            MyDashBoard(currentIndex: 1)),
+                    (_) => false);
               },
               textcolor: const Color(0xFFFFFFFF),
               title: "Continue",

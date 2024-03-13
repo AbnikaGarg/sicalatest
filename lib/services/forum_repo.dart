@@ -36,7 +36,7 @@ class Forum {
     List<TopicModel> res = [];
     try {
       var ur = Uri.parse(
-          "${AppConstants.baseURL}${AppConstants.discussionTopic}?db=sicadop_02&api_key=8f4f506e4b4022e154ac3651f9ee006e9b751261&category_id=$catid&offset=0&limit=20");
+          "${AppConstants.baseURL}${AppConstants.discussionTopic}?db=sicadop_02&api_key=8f4f506e4b4022e154ac3651f9ee006e9b751261&category_id=$catid&offset=0&limit=1000");
       final response = await http.get(ur, headers: {
         "content-type": "text/html; charset=utf-8",
       });

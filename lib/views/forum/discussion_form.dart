@@ -31,15 +31,39 @@ class _nameState extends State<DiscussionForm> {
   }
 
   List<TopicModel>? topicList;
+  List<DiscussionForumDetails>? topicListforum;
   void getTopics() {
     final service = Forum();
     service.getTopicList(widget.category["category_id"]).then((value) {
       if (value.isNotEmpty) {
         topicList = value;
-
+        topicListforum = value.first.discussionForumDetails;
         if (mounted) setState(() {});
       }
     });
+  }
+
+  SearchList(String query) async {
+    if (query.isNotEmpty) {
+      topicListforum = topicList!.first.discussionForumDetails!
+          .where((elem) => elem.discussionDetails!.topic!
+              .toLowerCase()
+              .startsWith(query.toLowerCase()))
+          .toList();
+      // page = memberBasicDetails!.length;
+      //totalNumber = memberBasicDetails!.length;
+
+      setState(() {});
+    } else {
+      // setState(() {
+      //   page = 0;
+      //   isLoadedMore = false;
+      //   hasNextPage = true;
+      // });
+      topicListforum = topicList!.first.discussionForumDetails;
+      setState(() {});
+      // getMemberDetails();
+    }
   }
 
   void submit() {
@@ -106,7 +130,7 @@ class _nameState extends State<DiscussionForm> {
                 ))
           ],
         ),
-        body: topicList == null
+        body: topicListforum == null
             ? Center(
                 child: CupertinoActivityIndicator(
                   radius: 16,
@@ -116,22 +140,70 @@ class _nameState extends State<DiscussionForm> {
             : Column(
                 children: [
                   SizedBox(
-                    height: 10.h,
+                    height: 20.h,
                   ),
-                  if (topicList!.first.discussionForumDetails!.isNotEmpty)
+                  if(topicList!.first.discussionForumDetails!.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal:16),
+                    child: TextFormField(
+                      //    controller: _serach,
+                      onChanged: (value) {
+                        SearchList(value);
+                      },
+                      style: TextStyle(
+                          fontSize: 14.sp,
+                          color: AppTheme.whiteBackgroundColor),
+                      cursorColor: AppTheme.primaryColor,
+                      textAlignVertical: TextAlignVertical.center,
+
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsetsDirectional.fromSTEB(
+                            10, 12, 12, 12),
+                        isDense: true,
+                        fillColor: const Color(0xFF121212),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: AppTheme.hintTextColor),
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: AppTheme.hintTextColor),
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: AppTheme.hintTextColor),
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        filled: true,
+                        hintStyle: Theme.of(context)
+                            .textTheme
+                            .displaySmall!
+                            .copyWith(
+                                color: AppTheme.hintTextColor, fontSize: 14.sp),
+                        suffixIcon: InkWell(
+                          //  onTap: _serach.clear,
+                          child: Icon(Icons.search),
+                        ),
+                        suffixIconColor:
+                            Theme.of(context).textTheme.headlineMedium!.color,
+                        hintText: 'Search by Topic',
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  if (topicListforum!.isNotEmpty)
                     Expanded(
                         child: ListView.builder(
-                      itemCount:
-                          topicList!.first.discussionForumDetails!.length,
+                      itemCount: topicListforum!.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
                             Navigator.of(context)
                                 .push(MaterialPageRoute(
                                     builder: (context) => DiscussionFormReply(
-                                          discussionTopicComments: topicList!
-                                              .first
-                                              .discussionForumDetails![index],
+                                          discussionTopicComments:
+                                              topicListforum![index],
                                         )))
                                 .then((val) => val ? getTopics() : null);
                           },
@@ -211,10 +283,7 @@ class _nameState extends State<DiscussionForm> {
                                               MainAxisAlignment.start,
                                           children: [
                                             Text(
-                                                topicList!
-                                                    .first
-                                                    .discussionForumDetails![
-                                                        index]
+                                                topicListforum![index]
                                                     .discussionDetails!
                                                     .topic
                                                     .toString(),
@@ -225,7 +294,7 @@ class _nameState extends State<DiscussionForm> {
                                               height: 4.h,
                                             ),
                                             Text(
-                                              "Created by: ${topicList!.first.discussionForumDetails![index].discussionDetails!.memberName.toString()} ",
+                                              "Created by: ${topicListforum![index].discussionDetails!.memberName.toString()} ",
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .displayLarge!
@@ -233,18 +302,26 @@ class _nameState extends State<DiscussionForm> {
                                                       color: AppTheme
                                                           .hintTextColor),
                                             ),
-                                             if(topicList!.first.discussionForumDetails![index].discussionDetails!.last_member_name.toString()!="false")
-                                            SizedBox(
-                                              height: 4.h,
-                                            ),
-                                            if(topicList!.first.discussionForumDetails![index].discussionDetails!.last_member_name.toString()!="false")
-                                            Text(
-                                              "Last Post by: ${topicList!.first.discussionForumDetails![index].discussionDetails!.last_member_name.toString()} | ${topicList!.first.discussionForumDetails![index].discussionDetails!.last_topic_create_date.toString()}",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodySmall!
-                                                  .copyWith(fontSize: 14),
-                                            ),
+                                            if (topicListforum![index]
+                                                    .discussionDetails!
+                                                    .last_member_name
+                                                    .toString() !=
+                                                "false")
+                                              SizedBox(
+                                                height: 4.h,
+                                              ),
+                                            if (topicListforum![index]
+                                                    .discussionDetails!
+                                                    .last_member_name
+                                                    .toString() !=
+                                                "false")
+                                              Text(
+                                                "Last Post by: ${topicListforum![index].discussionDetails!.last_member_name.toString()} | ${topicListforum![index].discussionDetails!.last_topic_create_date.toString()}",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodySmall!
+                                                    .copyWith(fontSize: 14),
+                                              ),
                                           ],
                                         ),
                                       ),
@@ -265,7 +342,7 @@ class _nameState extends State<DiscussionForm> {
                                           padding:
                                               const EdgeInsets.only(bottom: 3),
                                           child: Text(
-                                            " ${topicList!.first.discussionForumDetails![index].discussionComments!.length.toString()}",
+                                            " ${topicListforum![index].discussionComments!.length.toString()}",
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .headlineSmall!
@@ -361,66 +438,64 @@ class _nameState extends State<DiscussionForm> {
                               height: 10.h,
                             ),
                             Flexible(
-                          child: ConstrainedBox(
-                            constraints: BoxConstraints(
-                              minHeight: 25.0,
-                              maxHeight: 135.0,
-                            ),
-                            child: Scrollbar(
-                              child: TextFormField(
-                                cursorColor: Colors.blue,
-                                keyboardType: TextInputType.multiline,
-                                maxLines: null,
-                                
-                                style: TextStyle(
-                                    color: AppTheme.whiteBackgroundColor),
-                               controller: textTopic,
-                               validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return "Enter Topic";
-                                  }
-                                  return null;
-                                },
-                                maxLength: 50,
-                                //   _handleSubmitted : null,
-                                decoration: InputDecoration(
-                                   
-                                  counterStyle: TextStyle(
-                                    fontSize: 12,
-                                    color: AppTheme.whiteBackgroundColor),
-                                    
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(
-                                        12,
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  minHeight: 25.0,
+                                  maxHeight: 135.0,
+                                ),
+                                child: Scrollbar(
+                                  child: TextFormField(
+                                    cursorColor: Colors.blue,
+                                    keyboardType: TextInputType.multiline,
+                                    maxLines: null,
+
+                                    style: TextStyle(
+                                        color: AppTheme.whiteBackgroundColor),
+                                    controller: textTopic,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return "Enter Topic";
+                                      }
+                                      return null;
+                                    },
+                                    maxLength: 50,
+                                    //   _handleSubmitted : null,
+                                    decoration: InputDecoration(
+                                      counterStyle: TextStyle(
+                                          fontSize: 12,
+                                          color: AppTheme.whiteBackgroundColor),
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            12,
+                                          ),
+                                          borderSide: BorderSide(
+                                              color: AppTheme.backGround)),
+                                      enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            12,
+                                          ),
+                                          borderSide: BorderSide(
+                                              color: AppTheme.backGround)),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            12,
+                                          ),
+                                          borderSide: BorderSide(
+                                              color: AppTheme.backGround)),
+                                      contentPadding: EdgeInsets.only(
+                                          top: 2.0,
+                                          left: 13.0,
+                                          right: 13.0,
+                                          bottom: 2.0),
+                                      hintText: "Type your topic",
+                                      hintStyle: TextStyle(
+                                        color: Colors.white,
                                       ),
-                                      borderSide: BorderSide(
-                                          color: AppTheme.backGround)),
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(
-                                        12,
-                                      ),
-                                      borderSide: BorderSide(
-                                          color: AppTheme.backGround)),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(
-                                        12,
-                                      ),
-                                      borderSide: BorderSide(
-                                          color: AppTheme.backGround)),
-                                  contentPadding: EdgeInsets.only(
-                                      top: 2.0,
-                                      left: 13.0,
-                                      right: 13.0,
-                                      bottom: 2.0),
-                                  hintText: "Type your topic",
-                                  hintStyle: TextStyle(
-                                    color: Colors.white,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ),
                             // MyTextField(
                             //     textEditingController: textTopic,
                             //     validation: (value) {

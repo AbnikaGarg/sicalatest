@@ -317,95 +317,95 @@ class _HomepageState extends State<Homepage> {
           physics: BouncingScrollPhysics(),
           child: Column(
             children: [
-              // if (bannerImages.isNotEmpty)
-              //   CarouselSlider.builder(
-              //       itemCount: bannerImages[0].length,
-              //       itemBuilder: (context, index, realIndex) {
-              //         final image=base64.encode(bannerImages[0][index]
-              //                         ["image"]);
-              //         return Padding(
-              //           padding: EdgeInsets.symmetric(horizontal: 5.w),
-              //           child: Stack(
-              //             children: [
-              //               AspectRatio(
-              //                 aspectRatio: 16 / 7,
-              //                 child: ClipRRect(
-              //                   borderRadius: BorderRadius.circular(16),
-              //                   child: Image.memory(
-              //                     base64.decode(image)
-              //                     ,
-              //                     fit: BoxFit.cover,
-              //                     // color: Color(0x66000000),
-              //                     // colorBlendMode: BlendMode.darken,
-              //                   ),
-              //                 ),
-              //               ),
-              //             ],
-              //           ),
-              //         );
-              //       },
-              //       options: CarouselOptions(
-              //         //  height: getProportionateScreenHeight(300),
-              //         aspectRatio: 16 / 7,
-              //         enlargeCenterPage: true,
+              if (bannerImages.isNotEmpty)
+                CarouselSlider.builder(
+                    itemCount: bannerImages[0].length,
+                    itemBuilder: (context, index, realIndex) {
+               
+                      return Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 5.w),
+                        child: Stack(
+                          children: [
+                            AspectRatio(
+                              aspectRatio: 16 / 7,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(16),
+                                child: Image.network(
+                                  bannerImages[0][index]
+                                      ["image_url"]
+                                  ,
+                                  fit: BoxFit.cover,
+                                  // color: Color(0x66000000),
+                                  // colorBlendMode: BlendMode.darken,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    options: CarouselOptions(
+                      //  height: getProportionateScreenHeight(300),
+                      aspectRatio: 16 / 7,
+                      enlargeCenterPage: true,
 
-              //         viewportFraction: 0.9,
-              //         initialPage: 0,
-              //         onPageChanged: (index, reason) {
-              //           setState(() {
-              //             _currentIndex = index;
-              //           });
-              //         },
+                      viewportFraction: 0.9,
+                      initialPage: 0,
+                      onPageChanged: (index, reason) {
+                        setState(() {
+                          _currentIndex = index;
+                        });
+                      },
 
-              //         enableInfiniteScroll: true,
-              //         reverse: false,
-              //         autoPlay: true,
-              //         autoPlayInterval: Duration(seconds: 3),
-              //         autoPlayAnimationDuration: Duration(milliseconds: 800),
-              //         // autoPlayCurve: Curves.fastOutSlowIn,
-              //         autoPlayCurve: Curves.fastOutSlowIn,
-              //         // onPageChanged: pageController,
-              //         enlargeStrategy: CenterPageEnlargeStrategy.zoom,
+                      enableInfiniteScroll: true,
+                      reverse: false,
+                      autoPlay: true,
+                      autoPlayInterval: Duration(seconds: 3),
+                      autoPlayAnimationDuration: Duration(milliseconds: 800),
+                      // autoPlayCurve: Curves.fastOutSlowIn,
+                      autoPlayCurve: Curves.fastOutSlowIn,
+                      // onPageChanged: pageController,
+                      enlargeStrategy: CenterPageEnlargeStrategy.zoom,
 
-              //         scrollDirection: Axis.horizontal,
-              //       )),
-              // if (bannerImages.isNotEmpty)
-              //   DotsIndicator(
-              //     dotsCount: bannerImages[0].length,
-              //     position: _currentIndex,
-              //     decorator: DotsDecorator(
-              //       size: const Size.square(9.0),
-              //       activeColor: Theme.of(context).primaryColor,
-              //       activeSize: const Size(18.0, 9.0),
-              //       color: AppTheme.darkPrimaryColor.withOpacity(0.3),
-              //       activeShape: RoundedRectangleBorder(
-              //           borderRadius: BorderRadius.circular(5.0)),
-              //     ),
-              //   ),
-              // if (accountType == "1")
-              //   Padding(
-              //     padding: EdgeInsets.symmetric(
-              //       horizontal: 16.w,
-              //     ),
-              //     child: Align(
-              //       alignment: Alignment.topRight,
-              //       child: GestureDetector(
-              //         onTap: () {
-              //           Navigator.of(context).push(MaterialPageRoute(
-              //               builder: (context) => SeeAllFeatures()));
-              //         },
-              //         child: Text(
-              //           "View all",
-              //           style: Theme.of(context)
-              //               .textTheme
-              //               .displaySmall!
-              //               .copyWith(
-              //                   fontSize: 14.sp,
-              //                   color: const Color.fromRGBO(205, 192, 158, 1)),
-              //         ),
-              //       ),
-              //     ),
-              //   ),
+                      scrollDirection: Axis.horizontal,
+                    )),
+              if (bannerImages.isNotEmpty)
+                DotsIndicator(
+                  dotsCount: bannerImages[0].length,
+                  position: _currentIndex,
+                  decorator: DotsDecorator(
+                    size: const Size.square(9.0),
+                    activeColor: Theme.of(context).primaryColor,
+                    activeSize: const Size(18.0, 9.0),
+                    color: AppTheme.darkPrimaryColor.withOpacity(0.3),
+                    activeShape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0)),
+                  ),
+                ),
+              if (accountType == "1")
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                  ),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => SeeAllFeatures()));
+                      },
+                      child: Text(
+                        "View all",
+                        style: Theme.of(context)
+                            .textTheme
+                            .displaySmall!
+                            .copyWith(
+                                fontSize: 14.sp,
+                                color: const Color.fromRGBO(205, 192, 158, 1)),
+                      ),
+                    ),
+                  ),
+                ),
               SizedBox(
                 height: 10.h,
               ),

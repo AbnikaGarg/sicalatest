@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:sica/services/event_repo.dart';
 import 'package:sica/views/home/dashboard.dart';
 import 'package:sica/views/profile/payment_success.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -9,10 +11,20 @@ import 'package:webview_flutter_android/webview_flutter_android.dart';
 // Import for iOS features.
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
+import '../../utils/config.dart';
+import '../events/event_book.dart';
 
 class MakePayment extends StatefulWidget {
-  const MakePayment({Key? key, required this.url, required this.callBackurl}) : super(key: key);
+  const MakePayment(
+      {Key? key,
+      required this.url,
+      required this.callBackurl,
+      required this.type,
+      required this.eventid})
+      : super(key: key);
   final String url;
+  final int type;
+  final int eventid;
   final String callBackurl;
   @override
   State<MakePayment> createState() => _MainPageState();
@@ -66,9 +78,9 @@ class _MainPageState extends State<MakePayment> {
           onPageStarted: (String url) {
             if (this.mounted) {
               setState(() {
-               // if (widget.url.toString() == widget.url.toString()) {
-                  _isLoading = true; // Show loader when page starts loading
-               // }
+                // if (widget.url.toString() == widget.url.toString()) {
+                _isLoading = true; // Show loader when page starts loading
+                // }
               });
             }
           },
@@ -87,18 +99,37 @@ class _MainPageState extends State<MakePayment> {
               //       context,
               //       MaterialPageRoute(
               //           builder: (BuildContext context) => TransactionStatus(type: 2,)),
-                  
+
               //       );
-             // flutter: launchaahttps://www.codingcrown.com/?razorpay_payment_id=pay_N5Ahv1uI5SB3S1&razorpay_payment_link_id=plink_N5Ag0kOnHScGHZ&razorpay_payment_link_reference_id=&razorpay_payment_link_status=paid&razorpay_signature=0cbe8ea4b70489ab4a2829f8a90b26858b198aaf66455e533a06f0e51ed1692d
+              // flutter: launchaahttps://www.codingcrown.com/?razorpay_payment_id=pay_N5Ahv1uI5SB3S1&razorpay_payment_link_id=plink_N5Ag0kOnHScGHZ&razorpay_payment_link_reference_id=&razorpay_payment_link_status=paid&razorpay_signature=0cbe8ea4b70489ab4a2829f8a90b26858b198aaf66455e533a06f0e51ed1692d
               return NavigationDecision.prevent;
-            } else if (request.url.contains("orderStatus=SUCCESS")) {
-                print("Success" + request.url);
-                 Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => paymentSuccess()),
-                  
-                    );
+            } else if (request.url
+                .contains("razorpay_payment_link_status=paid")) {
+              print("Success" + request.url);
+              if (widget.type == 2) {
+                final service = Eventrepo();
+                DialogHelp.showLoading(context);
+                service
+                    .verifyEvent("Booked", widget.eventid, "Paid")
+                    .then((value) {
+                  DialogHelp().hideLoading(context);
+                  if (value.isNotEmpty) {
+                    List res = value;
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => EventBook()),
+                        (_) => false);
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: "Something went wrong",
+                        backgroundColor: Colors.red,
+                        gravity: ToastGravity.TOP,
+                        textColor: Colors.white);
+                  }
+                });
+              }
+
               return NavigationDecision.prevent;
             } else if (request.url.startsWith('tel:') ||
                 request.url.startsWith('whatsapp:') ||
@@ -108,8 +139,7 @@ class _MainPageState extends State<MakePayment> {
                 await launch(request.url);
               }
               return NavigationDecision.prevent;
-            }
-            else{
+            } else {
               return NavigationDecision.navigate;
             }
             return NavigationDecision.navigate;
@@ -167,14 +197,27 @@ class _MainPageState extends State<MakePayment> {
             if (this.mounted) {
               setState(() {
                 showFloat = false;
-                // context.pushReplacement("/home");
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => MyDashBoard(currentIndex: 3,)),
-                    ModalRoute.withName(
-                        '/') // Replace this with your root screen's route name (usually '/')
-                    );
+                if (widget.type == 1) {
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => MyDashBoard(
+                                currentIndex: 3,
+                              )),
+                      ModalRoute.withName(
+                          '/') // Replace this with your root screen's route name (usually '/')
+                      );
+                } else {
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => MyDashBoard(
+                                currentIndex: 1,
+                              )),
+                      ModalRoute.withName(
+                          '/') // Replace this with your root screen's route name (usually '/')
+                      );
+                }
               });
             }
           },

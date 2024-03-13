@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sica/utils/app_urls.dart';
 import 'package:http/http.dart' as http;
 
@@ -58,5 +59,23 @@ class Eventrepo {
     } catch (e) {
       return res;
     }
+  }
+   Future<List> verifyEvent(String status, int eventid, String payment) async {
+    List userResponse = [];
+        SharedPreferences sharedPreferences =   await SharedPreferences.getInstance();
+      var memberid = (sharedPreferences.getString('memberid') ?? "");
+    try {
+      var ur = Uri.parse("${AppConstants.baseURL}${AppConstants.bookEventStatus}?db=sicadop_02&api_key=8f4f506e4b4022e154ac3651f9ee006e9b751261&MEMBERSHIP_ID=$memberid&data={'payment_status': '$payment', 'booking_status': '$status', 'event_id': '$eventid'}");
+      final response = await http.post(ur);
+      print(response.statusCode);
+      switch (response.statusCode) {
+        case 200:
+          userResponse.add(jsonDecode(response.body));
+          return userResponse;
+
+        default:
+          return userResponse;
+      }
+    } catch (e) { return userResponse;}
   }
 }

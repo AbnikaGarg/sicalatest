@@ -41,7 +41,7 @@ class EventDetails {
     coachName = json['coach_name'];
     amount = json['amount'];
     eventId = json['event_id'];
-    image = json['image'];
+    image = json['image_url'];
   }
   String? title;
   String? description;

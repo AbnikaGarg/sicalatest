@@ -35,7 +35,7 @@ class SicaBlogsVals {
     date = json['date'];
     views = json['views'];
     link = json['link'];
-    image = json['image']; description=json['description'];
+    image = json['image_url']; description=json['description'];
   }
   String? title;
   String? date;
@@ -51,7 +51,7 @@ class SicaBlogsVals {
     map['views'] = views;
 map['description']=description;
     map['link'] = link;
-    map['image'] = image;
+    map['image_url'] = image;
     return map;
   }
 

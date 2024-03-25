@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -581,7 +582,7 @@ class _HomepageState extends State<Homepage> {
                                         bottom: 10.h,
                                         top: 5.h),
                                     child: GestureDetector(
-                                       onTap: () {
+                                      onTap: () {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -618,17 +619,17 @@ class _HomepageState extends State<Homepage> {
                                         top: 5.h),
                                     child: GestureDetector(
                                       onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => NewsDetails(
-                                              news: techDataList!
-                                                  .first.techtalkVals![index],
-                                            ),
-                                          ),
-                                        );
+                                        // Navigator.push(
+                                        //   context,
+                                        //   MaterialPageRoute(
+                                        //     builder: (context) => NewsDetails(
+                                        //       news: techDataList!
+                                        //           .first.techtalkVals![index],
+                                        //     ),
+                                        //   ),
+                                        // );
                                       },
-                                      child: NewCard(
+                                      child: TechCard(
                                           news: techDataList!
                                               .first.techtalkVals![index]),
                                     ));
@@ -653,7 +654,7 @@ class _HomepageState extends State<Homepage> {
                                         bottom: 10.h,
                                         top: 5.h),
                                     child: GestureDetector(
-                                       onTap: () {
+                                      onTap: () {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -1297,6 +1298,144 @@ class _HomepageState extends State<Homepage> {
   }
 }
 
+class TechCard extends StatelessWidget {
+  TechCard({super.key, required this.news});
+  var news;
+  
+  String? convertUrlToId(String url, {bool trimWhitespaces = true}) {
+    // if (!url.contains("http") && (url.length == 11)) return url;
+    print(url);
+    // if (trimWhitespaces) url = url.trim();https://youtu.be/84RbcJ58jyY
+    RegExp regExp = RegExp(
+        r"^https:\/\/(?:www\.|m\.)?youtube\.com\/watch\?v=([_\-a-zA-Z0-9]{11}).*$");
+    RegExp regExp2 =
+        RegExp(r"^https:\/\/(?:www\.|m\.)?youtu.be\/([_\-a-zA-Z0-9]{11}).*$");
+    // for (var exp in [
+    //   RegExp(
+    //       r"^https:\/\/(?:www\.|m\.)?youtube\.com\/watch\?v=([_\-a-zA-Z0-9]{11}).*$"),
+
+    // ]) {
+    Iterable<Match>? matches = regExp.allMatches(url);
+
+    //  if (matches.isNotEmpty) {
+    for (Match match in matches) {
+      return match.group(1);
+
+      //   }
+      // && match.first.groupCount >= 1
+
+      //}
+    }
+
+    return null;
+  }
+
+  getyoutubelink(url) {
+    String? videoId = convertUrlToId(url);
+    String thumbnailUrl = getThumbnail(videoId: videoId ?? "");
+    print(thumbnailUrl);
+    return videoId == null ? "" : thumbnailUrl;
+  }
+
+  String getThumbnail({
+    required String videoId,
+    String quality = "sddefault",
+    bool webp = true,
+  }) =>
+      webp
+          ? 'https://i3.ytimg.com/vi_webp/$videoId/$quality.webp'
+          : 'https://i3.ytimg.com/vi/$videoId/$quality.jpg';
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(12),
+          // boxShadow: [
+          //   BoxShadow(
+          //     color: Colors.grey.shade300,
+          //     offset: Offset(
+          //       0.0,
+          //       0.0,
+          //     ),
+          //     blurRadius: 2.0,
+          //   ),
+          // ],
+        ),
+        width: 220.w,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image.network(
+              getyoutubelink(
+               news.link.toString(),
+              ),
+              fit: BoxFit.cover,
+             height: 150.h,
+              width: double.infinity,
+            ),
+            SizedBox(
+              height: 5.h,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 5.h),
+              child: Text(
+                news.title,
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineMedium!
+                    .copyWith(fontSize: 14.sp),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            if (news.link.toString() != "null")
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 8.w,
+                ),
+                child: Linkify(
+                  options: LinkifyOptions(humanize: false),
+                  onOpen: (link) async {
+                    if (!await launchUrl(Uri.parse(link.url))) {
+                      throw Exception('Could not launch ${link.url}');
+                    }
+                  },
+                  text: news.link.toString(),
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineMedium!
+                      .copyWith(fontSize: 14),
+                  linkStyle: TextStyle(color: Colors.blue),
+                ),
+              ),
+            SizedBox(
+              height: 2.h,
+            ),
+            // Padding(
+            //   padding: EdgeInsets.symmetric(horizontal: 10.w),
+            //   child: RoundedButton(
+            //       height: 40,
+            //       ontap: () {
+            //         // Navigator.push(
+            //         //   context,
+            //         //   MaterialPageRoute(
+            //         //     builder: (context) => OtpScreen(),
+            //         //   ),
+            //         // );
+            //       },
+            //       title: "Read more",
+            //       color: Theme.of(context).primaryColor,
+            //       textcolor: AppTheme.whiteBackgroundColor),
+            // ),
+            SizedBox(
+              height: 12.h,
+            ),
+          ],
+        ));
+  }
+}
+
 class NewCard extends StatelessWidget {
   NewCard({super.key, required this.news});
   var news;
@@ -1366,24 +1505,24 @@ class NewCard extends StatelessWidget {
                 ),
               ),
             SizedBox(
-              height: 12.h,
+              height: 2.h,
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.w),
-              child: RoundedButton(
-                  height: 40,
-                  ontap: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => OtpScreen(),
-                    //   ),
-                    // );
-                  },
-                  title: "Read more",
-                  color: Theme.of(context).primaryColor,
-                  textcolor: AppTheme.whiteBackgroundColor),
-            ),
+            // Padding(
+            //   padding: EdgeInsets.symmetric(horizontal: 10.w),
+            //   child: RoundedButton(
+            //       height: 40,
+            //       ontap: () {
+            //         // Navigator.push(
+            //         //   context,
+            //         //   MaterialPageRoute(
+            //         //     builder: (context) => OtpScreen(),
+            //         //   ),
+            //         // );
+            //       },
+            //       title: "Read more",
+            //       color: Theme.of(context).primaryColor,
+            //       textcolor: AppTheme.whiteBackgroundColor),
+            // ),
             SizedBox(
               height: 12.h,
             ),

@@ -68,7 +68,7 @@ class EventsTabBar extends StatelessWidget {
         ),
         body: const TabBarView(
           physics: NeverScrollableScrollPhysics(),
-          children: <Widget>[EventsTab(), EventsTab(), EventsTab()],
+          children: <Widget>[EventsTab(type: 1), EventsTab(type: 2,), EventsTab(type: 3,)],
         ),
       ),
     );

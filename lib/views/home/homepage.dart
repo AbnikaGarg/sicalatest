@@ -20,9 +20,11 @@ import 'package:sica/views/employeement_schema/job_seeker.dart';
 import 'package:sica/views/gallery/gallery.dart';
 import 'package:sica/views/home/seeAllFeatures.dart';
 import 'package:sica/views/home/select_form_reason.dart';
+import 'package:sica/views/news/news_details.dart';
 import 'package:sica/views/shooting/dop_list.dart';
 import '../../components/buton.dart';
 import '../../models/OtherMemberProfile.dart';
+import '../../services/gallery_repo.dart';
 import '../../theme/theme.dart';
 import '../../utils/images.dart';
 import 'package:dots_indicator/dots_indicator.dart';
@@ -80,10 +82,23 @@ class _HomepageState extends State<Homepage> {
     Choice(title: 'Fund', svg: "hand", page: const Funds()),
     Choice(title: 'Support', svg: "viewall", page: SelectReason()),
   ];
-  List forumType = [
-    {"title": "Movies", "image": "assets/images/website.png"},
-    {"title": "Camera", "image": "assets/images/agm.png"}
-  ];
+  // List forumType = [
+  //   {"title": "Movies", "image": "assets/images/website.png"},
+  //   {"title": "Camera", "image": "assets/images/agm.png"}
+  // ];
+  List galleryListCategory = [];
+
+  void getGalleryCat() {
+    final service = GalleryRepo();
+    service.getGalleryCategory().then((value) {
+      if (value.isNotEmpty) {
+        galleryListCategory = value[0];
+
+        if (mounted) setState(() {});
+      }
+    });
+  }
+
   List newsList = [
     {
       "title": "Christopher Nolan and Imax Film!",
@@ -217,6 +232,7 @@ class _HomepageState extends State<Homepage> {
       });
     getDettails();
     getImages();
+    getGalleryCat();
     getNews();
     getBlog();
     getTechModels();
@@ -310,7 +326,6 @@ class _HomepageState extends State<Homepage> {
           fit: BoxFit.cover,
           height: 40.h,
         ),
-       
       ),
       body: SingleChildScrollView(
           controller: _scrollController,
@@ -321,7 +336,6 @@ class _HomepageState extends State<Homepage> {
                 CarouselSlider.builder(
                     itemCount: bannerImages[0].length,
                     itemBuilder: (context, index, realIndex) {
-               
                       return Padding(
                         padding: EdgeInsets.symmetric(horizontal: 5.w),
                         child: Stack(
@@ -331,9 +345,7 @@ class _HomepageState extends State<Homepage> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(16),
                                 child: Image.network(
-                                  bannerImages[0][index]
-                                      ["image_url"]
-                                  ,
+                                  bannerImages[0][index]["image_url"],
                                   fit: BoxFit.cover,
                                   // color: Color(0x66000000),
                                   // colorBlendMode: BlendMode.darken,
@@ -568,9 +580,22 @@ class _HomepageState extends State<Homepage> {
                                         left: index == 0 ? 0 : 12.w,
                                         bottom: 10.h,
                                         top: 5.h),
-                                    child: NewCard(
-                                        news: newsDataList!
-                                            .first.newsdata![index]));
+                                    child: GestureDetector(
+                                       onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => NewsDetails(
+                                              news: newsDataList!
+                                                  .first.newsdata![index],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: NewCard(
+                                          news: newsDataList!
+                                              .first.newsdata![index]),
+                                    ));
                               }),
                             ),
                           ),
@@ -591,14 +616,27 @@ class _HomepageState extends State<Homepage> {
                                         left: index == 0 ? 0 : 12.w,
                                         bottom: 10.h,
                                         top: 5.h),
-                                    child: NewCard(
-                                        news: techDataList!
-                                            .first.techtalkVals![index]));
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => NewsDetails(
+                                              news: techDataList!
+                                                  .first.techtalkVals![index],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: NewCard(
+                                          news: techDataList!
+                                              .first.techtalkVals![index]),
+                                    ));
                               }),
                             ),
                           ),
                         ),
-                        if (_selectIndex == 1)
+                    if (_selectIndex == 1)
                       if (blogsDataList != null)
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 12.w),
@@ -614,9 +652,22 @@ class _HomepageState extends State<Homepage> {
                                         left: index == 0 ? 0 : 12.w,
                                         bottom: 10.h,
                                         top: 5.h),
-                                    child: NewCard(
-                                        news: blogsDataList!
-                                            .first.sicaBlogsVals![index]));
+                                    child: GestureDetector(
+                                       onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => NewsDetails(
+                                              news: blogsDataList!
+                                                  .first.sicaBlogsVals![index],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: NewCard(
+                                          news: blogsDataList!
+                                              .first.sicaBlogsVals![index]),
+                                    ));
                               }),
                             ),
                           ),
@@ -775,7 +826,8 @@ class _HomepageState extends State<Homepage> {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: List.generate(forumType.length, (index) {
+                    children:
+                        List.generate(galleryListCategory.length, (index) {
                       return Padding(
                           padding: EdgeInsets.only(
                             left: 12.w,
@@ -784,12 +836,15 @@ class _HomepageState extends State<Homepage> {
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => GalleryScreen(
-                                          category: forumType[index]["title"],
-                                          categoryid: '',
+                                          category: galleryListCategory[index]
+                                              ["category_name"],
+                                          categoryid: galleryListCategory[index]
+                                                  ["category_id"]
+                                              .toString(),
                                         )));
                               },
                               child: GalleryWidget(
-                                  galleryList: forumType[index])));
+                                  galleryList: galleryListCategory[index])));
                     }),
                   ),
                 ),
@@ -920,7 +975,8 @@ class _HomepageState extends State<Homepage> {
                         bottom: MediaQuery.of(context).viewInsets.bottom),
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           SizedBox(
                             height: 10.h,
@@ -955,7 +1011,9 @@ class _HomepageState extends State<Homepage> {
                                     Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                CreateShooting(updatesShot: MemberShooting(),)));
+                                                CreateShooting(
+                                                  updatesShot: MemberShooting(),
+                                                )));
                                   },
                                   child: Column(
                                     children: [
@@ -1161,10 +1219,11 @@ class _HomepageState extends State<Homepage> {
                               children: [
                                 GestureDetector(
                                   onTap: () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                 AddJobSeeker(seeker: MemberJobSeeker(),)));
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                            builder: (context) => AddJobSeeker(
+                                                  seeker: MemberJobSeeker(),
+                                                )));
                                   },
                                   child: Column(
                                     children: [
@@ -1199,7 +1258,7 @@ class _HomepageState extends State<Homepage> {
                                     Navigator.of(context).push(
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                 AddProvider()));
+                                                AddProvider()));
                                   },
                                   child: Column(
                                     children: [
@@ -1261,20 +1320,21 @@ class NewCard extends StatelessWidget {
         width: 220.w,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [if(news.image!=null)
-            Container(
-              height: 150.h,
-              width: 220.w,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      fit: BoxFit.cover,
-                      alignment: Alignment.topCenter,
-                      image: NetworkImage(news.image)),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(12),
-                    topRight: Radius.circular(12),
-                  )),
-            ),
+          children: [
+            if (news.image != null)
+              Container(
+                height: 150.h,
+                width: 220.w,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        fit: BoxFit.cover,
+                        alignment: Alignment.topCenter,
+                        image: NetworkImage(news.image)),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(12),
+                      topRight: Radius.circular(12),
+                    )),
+              ),
             SizedBox(
               height: 5.h,
             ),
@@ -1290,21 +1350,21 @@ class NewCard extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            if(news.description.toString()!="null")
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 8.w,
+            if (news.description.toString() != "null")
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 8.w,
+                ),
+                child: Text(
+                  news.description.toString(),
+                  style: Theme.of(context)
+                      .textTheme
+                      .displaySmall!
+                      .copyWith(fontSize: 12.sp),
+                  maxLines: 6,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
-              child: Text(
-                news.description.toString(),
-                style: Theme.of(context)
-                    .textTheme
-                    .displaySmall!
-                    .copyWith(fontSize: 12.sp),
-                maxLines: 6,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
             SizedBox(
               height: 12.h,
             ),

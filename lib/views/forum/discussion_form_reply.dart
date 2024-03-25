@@ -1,6 +1,7 @@
+import 'dart:convert';
+import 'dart:io' as io;
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sica/models/TopicModel.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:sica/services/forum_repo.dart';
@@ -68,22 +70,18 @@ class _nameState extends State<DiscussionFormReply> {
     return youTubeUrl;
   }
 
+  File? images;
+  String imageurl = "";
   pickFiles() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['jpg', 'pdf', 'doc'],
+    final image = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
     );
-    if (result != null) {
-      PlatformFile file = result.files.first;
+    if (image == null) return;
 
-      print(file.name);
-      print(file.bytes);
-      print(file.size);
-      print(file.extension);
-      print(file.path);
-    } else {
-      // User canceled the picker
-    }
+    images = File(
+      image.path,
+    );
+    setState(() {});
   }
 
   String? convertUrlToId(String url, {bool trimWhitespaces = true}) {
@@ -156,12 +154,21 @@ class _nameState extends State<DiscussionFormReply> {
     // if (formKey.currentState!.validate()) {
     final service = Forum();
     DialogHelp.showLoading(context);
+    String img64 = "";
+    if (images != "" && images != null) {
+      final bytes = io.File(images!.path).readAsBytesSync();
+
+      img64 = base64Encode(bytes);
+    }
     service
-        .createCommment(commentText.text,
-            widget.discussionTopicComments.discussionDetails!.discussionId!)
+        .createCommment(
+            commentText.text,
+            widget.discussionTopicComments.discussionDetails!.discussionId!,
+            img64)
         .then((value) {
       DialogHelp().hideLoading(context);
       if (value.isNotEmpty) {
+        images = null;
         if (value[0]['error'] != null) {
           Fluttertoast.showToast(
               msg: "Something went wrong",
@@ -199,11 +206,18 @@ class _nameState extends State<DiscussionFormReply> {
     // if (formKey.currentState!.validate()) {
     final service = Forum();
     DialogHelp.showLoading(context);
+    String img64 = "";
+    if (images != "" && images != null) {
+      final bytes = io.File(images!.path).readAsBytesSync();
+
+      img64 = base64Encode(bytes);
+    }
     service
-        .updateCommment(commentText.text, int.parse(commentid))
+        .updateCommment(commentText.text, int.parse(commentid), img64)
         .then((value) {
       DialogHelp().hideLoading(context);
       if (value.isNotEmpty) {
+        images = null;
         if (value[0]['error'] != null) {
           Fluttertoast.showToast(
               msg: "Something went wrong",
@@ -212,10 +226,9 @@ class _nameState extends State<DiscussionFormReply> {
               textColor: Colors.white);
         } else {
           commentText.clear();
-          commentid="";
-          setState(() {
-            
-          });
+          commentid = "";
+          imageurl = "";
+          setState(() {});
           Fluttertoast.showToast(
               msg: "Comment Updated Successfully",
               backgroundColor: Colors.green,
@@ -633,6 +646,13 @@ class _nameState extends State<DiscussionFormReply> {
                                             .discussionComments![index]
                                             .commentId
                                             .toString();
+                                        imageurl = discussionTopicCommentsList!
+                                            .discussionComments![index]
+                                            .image_url
+                                            .toString()=="null"?"": discussionTopicCommentsList!
+                                            .discussionComments![index]
+                                            .image_url
+                                            .toString();
                                       });
                                     },
                                     backgroundColor: AppTheme.darkTextColor,
@@ -755,25 +775,24 @@ class _nameState extends State<DiscussionFormReply> {
                                             linkStyle:
                                                 TextStyle(color: Colors.blue),
                                           ),
-                                          // GestureDetector(
-                                          //   onTap: () {
-                                          //     _launchURL(getYouTubeUrl(
-                                          //         discussionTopicCommentsList!
-                                          //             .discussionComments![
-                                          //                 index]
-                                          //             .comment
-                                          //             .toString()));
-                                          //   },
-                                          //   child: Text(
-                                          //     style: Theme.of(context)
-                                          //         .textTheme
-                                          //         .bodySmall!,
-                                          //     discussionTopicCommentsList!
-                                          //         .discussionComments![index]
-                                          //         .comment
-                                          //         .toString(),
-                                          //   ),
-                                          // ),
+                                          SizedBox(
+                                            height: 5.h,
+                                          ),
+                                          if (discussionTopicCommentsList!
+                                                  .discussionComments![index]
+                                                  .image_url
+                                                  .toString() !=
+                                              "null")
+                                            Container(
+                                              height: 130,
+                                              child: Image.network(
+                                                discussionTopicCommentsList!
+                                                    .discussionComments![index]
+                                                    .image_url
+                                                    .toString(),
+                                                fit: BoxFit.contain,
+                                              ),
+                                            ),
                                           if (getyoutubelink(
                                                 discussionTopicCommentsList!
                                                     .discussionComments![index]
@@ -924,21 +943,92 @@ class _nameState extends State<DiscussionFormReply> {
                         //       hintText: "Add Comment",
                         //       color: const Color(0xff585A60)),
                         // ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 8),
-                          child: GestureDetector(
-                            onTap: () {
-                              pickFiles();
-                            },
-                            child: Icon(
-                              Icons.attach_file,
-                              size: 30,
+                        if (images == null && imageurl == "")
+                          Padding(
+                            padding: EdgeInsets.only(top: 8, right: 10),
+                            child: GestureDetector(
+                              onTap: () {
+                                pickFiles();
+                              },
+                              child: Icon(
+                                Icons.attach_file,
+                                size: 30,
+                              ),
+                            ),
+                          )
+                        else if (imageurl != ""&&imageurl != "null")
+                          Container(
+                            padding: EdgeInsets.only(right: 10),
+                            height: 45,
+                            width: 50,
+                            child: Stack(
+                              clipBehavior: Clip.none,
+                              fit: StackFit.expand,
+                              children: [
+                                Image.network(
+                                  imageurl,
+                                  fit: BoxFit.cover,
+                                ),
+                                Positioned(
+                                    right: -8,
+                                    top: -6,
+                                    child: GestureDetector(
+                                      behavior: HitTestBehavior.opaque,
+                                      onTap: () {
+                                        setState(() {
+                                          imageurl = "";
+                                        });
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: AppTheme.backGround2),
+                                        child: Icon(
+                                          Icons.close_sharp,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ))
+                              ],
+                            ),
+                          )
+                        else if(images != null)
+                          Container(
+                            padding: EdgeInsets.only(right: 10),
+                            height: 45,
+                            width: 50,
+                            child: Stack(
+                              clipBehavior: Clip.none,
+                              fit: StackFit.expand,
+                              children: [
+                                Image.file(
+                                  images!,
+                                  fit: BoxFit.cover,
+                                ),
+                                Positioned(
+                                    right: -8,
+                                    top: -6,
+                                    child: GestureDetector(
+                                      behavior: HitTestBehavior.opaque,
+                                      onTap: () {
+                                        setState(() {
+                                          images = null;
+                                        });
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: AppTheme.backGround2),
+                                        child: Icon(
+                                          Icons.close_sharp,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ))
+                              ],
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
+
                         Flexible(
                           child: ConstrainedBox(
                             constraints: BoxConstraints(

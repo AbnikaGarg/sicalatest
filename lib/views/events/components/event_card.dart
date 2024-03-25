@@ -10,10 +10,11 @@ import '../../../theme/theme.dart';
 class EventCard extends StatelessWidget {
   EventCard({
     required this.events,
-    super.key, required this.category,
+    super.key,
+    required this.category,
   });
   final EventDetails events;
-    final String category;
+  final String category;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -21,7 +22,10 @@ class EventCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => EventDetail(events: events, category: category,),
+            builder: (context) => EventDetail(
+              events: events,
+              category: category,
+            ),
           ),
         );
       },
@@ -37,17 +41,17 @@ class EventCard extends StatelessWidget {
             children: [
               Padding(
                 padding: EdgeInsets.symmetric(
-                  horizontal: 8.w,
+                  horizontal: 10.w,
                 ),
                 child: Stack(
                   children: [
                     Container(
-                      height: 120,
+                      height: 110,
                       width: 110,
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                              fit: BoxFit.contain,
-                              image: NetworkImage(events.image.toString())),
+                              fit: BoxFit.cover,
+                              image: NetworkImage(events.imageUrl.toString())),
                           borderRadius: BorderRadius.circular(8)),
                     ),
                     // Positioned(
@@ -124,13 +128,13 @@ class EventCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(
-                      height: 10.h,
+                      height: 10,
                     ),
                     Row(
                       children: [
                         SvgPicture.asset(
                           "assets/icons/callender.svg",
-                           color: AppTheme.whiteBackgroundColor,
+                          color: AppTheme.whiteBackgroundColor,
                         ),
                         Text(
                           " ${events.startDate.toString()}",
@@ -142,25 +146,26 @@ class EventCard extends StatelessWidget {
                       ],
                     ),
                     SizedBox(
-                      height: 10.h,
+                      height: 12,
                     ),
-                    Row(
+                     Row(
                       children: [
-                        SvgPicture.asset(
-                          "assets/icons/clock.svg",
-                         color: AppTheme.whiteBackgroundColor,
+                        Icon(
+                          Icons.watch_later_outlined,
+                          color: AppTheme.whiteBackgroundColor,
+                          size: 16,
                         ),
                         Text(
-                          " 2 days event",
+                          " Time: ${events.time.toString().replaceAll(RegExp(r'([.]*0)(?!.*\d)'), '')}",
                           style: Theme.of(context)
                               .textTheme
                               .labelSmall!
-                              .copyWith(fontSize: 12.sp),
+                              .copyWith(fontSize: 15),
                         )
                       ],
                     ),
                     SizedBox(
-                      height: 10.h,
+                      height: 8,
                     ),
                     Row(
                       children: [
@@ -170,7 +175,7 @@ class EventCard extends StatelessWidget {
                         ),
                         Expanded(
                           child: Text(
-                            " ${events.coachName.toString()}",
+                            " ${events.programPresenters.toString()}",
                             style: Theme.of(context)
                                 .textTheme
                                 .labelSmall!
@@ -193,7 +198,9 @@ class EventCard extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.all(4),
                               child: Text(
-                                " INR ${events.amount.toString()} ",
+                                events.amount! > 0
+                                    ? " INR ${events.amount.toString()} "
+                                    : " Free ",
                                 style: GoogleFonts.inter(
                                     fontSize: 12.sp,
                                     color: Theme.of(context).primaryColor),

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sica/components/gallery_card.dart';
-import 'package:sica/models/gallerModel.dart';
+
 import 'package:sica/services/gallery_repo.dart';
 import 'package:sica/theme/theme.dart';
 import '../../components/filter_box.dart';
+import '../../models/GalleryModel.dart';
 import 'grid_view.dart';
 
 class GalleryScreen extends StatefulWidget {
@@ -28,7 +29,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
   }
    void getData() {
     final service = GalleryRepo();
-    service.getGalleryData("").then((value) {
+    service.getGalleryData(widget.categoryid).then((value) {
       if (value.isNotEmpty) {
         galleryList = value;
         print("loaded");
@@ -100,32 +101,32 @@ class _GalleryScreenState extends State<GalleryScreen> {
               //     ),
               //   ],
               // ),
-              SizedBox(
-                height: 10.h,
-              ),
-              Wrap(
-                children: [
-                  Text(
-                    "Lorem Ipsum is simply dummy text of the printing and "
-                    "typesetting industry. Lorem Ipsum has been the "
-                    "industry's standard dummy text ever since the 1500s, "
-                    "when an unknown printer took a galley of type and "
-                    "scrambled it to make a type specimen book. It has "
-                    "survived not only five centuries",
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                  SizedBox(
-                    height: 4.h,
-                  ),
-                  // GestureDetector(
-                  //   child: Text('see more',
-                  //       style: TextStyle(
-                  //         color: Theme.of(context).primaryColor,
-                  //         fontSize: 12.sp,
-                  //       )),
-                  // )
-                ],
-              ),
+              // SizedBox(
+              //   height: 10.h,
+              // ),
+              // // Wrap(
+              //   children: [
+              //     Text(
+              //       "Lorem Ipsum is simply dummy text of the printing and "
+              //       "typesetting industry. Lorem Ipsum has been the "
+              //       "industry's standard dummy text ever since the 1500s, "
+              //       "when an unknown printer took a galley of type and "
+              //       "scrambled it to make a type specimen book. It has "
+              //       "survived not only five centuries",
+              //       style: Theme.of(context).textTheme.bodySmall,
+              //     ),
+              //     SizedBox(
+              //       height: 4.h,
+              //     ),
+              //     // GestureDetector(
+              //     //   child: Text('see more',
+              //     //       style: TextStyle(
+              //     //         color: Theme.of(context).primaryColor,
+              //     //         fontSize: 12.sp,
+              //     //       )),
+              //     // )
+              //   ],
+              // ),
              // SizedBox(
               //   height: 20.h,
               // ),

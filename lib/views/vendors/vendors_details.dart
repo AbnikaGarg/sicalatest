@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sica/views/vendors/vendors_requipements.dart';
 
+import '../../services/member_repo.dart';
 import '../../services/vendorsrepo.dart';
 import '../../theme/theme.dart';
 import 'components/vendor_cards.dart';
@@ -19,17 +20,18 @@ class VendorsDetails extends StatefulWidget {
 
 class _nameState extends State<VendorsDetails> {
    int _currentIndex = 0;
-  List bannerImages = [
-    {"images": "assets/images/banner1.png"},
-    {"images": "assets/images/banner2.png"},
-    {"images": "assets/images/banner3.png"},
-    {"images": "assets/images/banner4.png"},
-    {"images": "assets/images/banner5.png"}
-  ];
+   List bannerImages = [];
+  //   {"images": "assets/images/banner1.png"},
+  //   {"images": "assets/images/banner2.png"},
+  //   {"images": "assets/images/banner3.png"},
+  //   {"images": "assets/images/banner4.png"},
+  //   {"images": "assets/images/banner5.png"}
+  // ];
   @override
   void initState() {
     super.initState();
     getVendors();
+    getImages();
   }
 
   String? accountType;
@@ -42,7 +44,16 @@ class _nameState extends State<VendorsDetails> {
       }
     });
   }
+  void getImages() {
+    final service = MemberRepo();
+    service.getBannerImages().then((value) {
+      if (value.isNotEmpty) {
+        bannerImages = value[0];
 
+        if (mounted) setState(() {});
+      }
+    });
+  }
   List vendorList = [];
   @override
   Widget build(BuildContext context) {
@@ -65,6 +76,7 @@ class _nameState extends State<VendorsDetails> {
         body: SingleChildScrollView(
           child: Column(
             children: [
+              if(bannerImages.isNotEmpty)
                         CarouselSlider.builder(
                             itemCount: bannerImages.length,
                             itemBuilder: (context, index, realIndex) {
@@ -76,8 +88,8 @@ class _nameState extends State<VendorsDetails> {
                                       aspectRatio: 16 / 5,
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(16),
-                                        child: Image.asset(
-                                          bannerImages[index]["images"],
+                                        child: Image.network(
+                                          bannerImages[index]["image_url"],
                                           fit: BoxFit.cover,
                                           // color: Color(0x66000000),
                                           // colorBlendMode: BlendMode.darken,
@@ -113,6 +125,7 @@ class _nameState extends State<VendorsDetails> {
 
                               scrollDirection: Axis.horizontal,
                             )),
+                              if(bannerImages.isNotEmpty)
                         DotsIndicator(
                           dotsCount: bannerImages.length,
                           position: _currentIndex,

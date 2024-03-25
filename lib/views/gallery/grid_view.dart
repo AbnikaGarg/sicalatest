@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_share/flutter_share.dart';
-import 'package:sica/models/gallerModel.dart';
+
+import '../../models/GalleryModel.dart';
 import 'detail_screen.dart';
 import 'grid_data.dart';
 
@@ -48,7 +49,7 @@ final  List<GalleryModel>? galleryList;
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: Image.network(
-              gridList.image,
+              gridList.imageUrl,
               fit: BoxFit.cover,
             ),
           ),

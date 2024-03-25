@@ -48,7 +48,7 @@ class _nameState extends State<DiscussionForm> {
       topicListforum = topicList!.first.discussionForumDetails!
           .where((elem) => elem.discussionDetails!.topic!
               .toLowerCase()
-              .startsWith(query.toLowerCase()))
+              .contains(query.toLowerCase()))
           .toList();
       // page = memberBasicDetails!.length;
       //totalNumber = memberBasicDetails!.length;

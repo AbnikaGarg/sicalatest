@@ -11,8 +11,8 @@ import '../../components/filter_box.dart';
 import 'components/event_card.dart';
 
 class EventsTab extends StatefulWidget {
-  const EventsTab({super.key});
-
+  const EventsTab({super.key, required this.type});
+  final int type;
   @override
   State<EventsTab> createState() => _nameState();
 }
@@ -48,12 +48,12 @@ class _nameState extends State<EventsTab> {
   //     "image": "assets/images/sicaevent3.png"
   //   }
   // ];
-  List<EventModel>? events;
+  List<EventDetails>? events;
 
   @override
   void initState() {
     super.initState();
-    
+
     getCategories();
   }
 
@@ -73,11 +73,20 @@ class _nameState extends State<EventsTab> {
     final service = Eventrepo();
     service.getEvents(_category[_selectIndex]["category_id"]).then((value) {
       if (value.isNotEmpty) {
-        events = value;
+        if (widget.type == 1) {
+          events = value.first.eventDetails;
+        } else if (widget.type == 3) {
+          events = value.first.eventDetails!
+              .where((element) => element.isCompleted == true)
+              .toList();
+        } else {
+          events = value.first.eventDetails!
+              .where((element) => element.is_member_booked == true)
+              .toList();
+        }
         if (mounted) setState(() {});
-      }
-      else{
-           events = [];
+      } else {
+        events = [];
         if (mounted) setState(() {});
       }
     });
@@ -116,17 +125,19 @@ class _nameState extends State<EventsTab> {
           ),
           if (events == null)
             const CircularProgressIndicator()
-          else
-          if(events!.isNotEmpty)
+          else if (events!.isNotEmpty)
             ListView.builder(
-              itemCount: events!.first.eventDetails!.length,
+              itemCount: events!.length,
               shrinkWrap: true,
               primary: false,
               itemBuilder: (context, index) {
                 return Padding(
                   padding:
                       EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
-                  child: EventCard(events: events!.first.eventDetails![index], category: _category[_selectIndex]["category_name"],),
+                  child: EventCard(
+                    events: events![index],
+                    category: _category[_selectIndex]["category_name"],
+                  ),
                 );
               },
             )
@@ -147,7 +158,7 @@ class _nameState extends State<EventsTab> {
                     onTap: () {
                       setState(() {
                         _selectIndex = index;
-                        events=null;
+                        events = null;
                         getEventsData();
                       });
                     },

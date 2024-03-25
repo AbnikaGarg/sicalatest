@@ -32,7 +32,7 @@ class GalleryWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            galleryList["title"],
+            galleryList["category_name"],
             style: GoogleFonts.inter(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,

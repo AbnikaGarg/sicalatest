@@ -29,6 +29,8 @@ class AppConstants {
   static String updateComment = "/update/discussion_comment";
   static String createShooting = "/create/update_shooting";
   static String createDop = "/create/shooting_dop";
+  static String getShootingImages =
+      "/get/shooting_image?db=odoo_si&api_key=8f4f506e4b4022e154ac3651f9ee006e9b751261";
   static String getShootingdop = "/get/member/shooting_dop";
   static String getShooting = "/get/all/shooting_details";
   static String medium = "/get/all/medium";
@@ -49,7 +51,7 @@ class AppConstants {
       "get/all/medium?db=sicadop_02&api_key=8f4f506e4b4022e154ac3651f9ee006e9b751261";
   static String getEvents =
       "/get/all/events?db=sicadop_02&api_key=8f4f506e4b4022e154ac3651f9ee006e9b751261";
-      static String getEventsCategory =
+  static String getEventsCategory =
       "/get/all/category/events?db=sicadop_02&api_key=8f4f506e4b4022e154ac3651f9ee006e9b751261";
   static String getCategory =
       "/get/all/event/category?db=odoo_si&api_key=8f4f506e4b4022e154ac3651f9ee006e9b751261";
@@ -62,5 +64,9 @@ class AppConstants {
   static String galleryData = "/get/gallery";
   static String getJobsPost = "/get/job_post";
   static String getSkills = "/get/skills";
-   static String bookEventStatus ="/event/payment/callback";
+  static String bookEventStatus = "/event/payment/callback";
+  static String getVendorsImages =
+      "/get/spd/banner?db=odoo_si&api_key=8f4f506e4b4022e154ac3651f9ee006e9b751261";
+  static String getGalleryCategory =
+      "/get/all/gallery/category?db=odoo_si&api_key=8f4f506e4b4022e154ac3651f9ee006e9b751261";
 }

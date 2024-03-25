@@ -81,4 +81,26 @@ class VendorRepo {
       return res;
     }
   }
+   Future<List> getBannerVendorImages() async {
+    List res = [];
+    try {
+      var ur = Uri.parse(
+          "${AppConstants.baseURL}${AppConstants.getVendorsImages}");
+      final response = await http.get(ur, headers: {
+        "content-type": "text/html; charset=utf-8",
+      });
+      print(response.body);
+      switch (response.statusCode) {
+        case 200:
+          final data = jsonDecode(response.body);
+          res.add(data["spd_banner"]);
+          return res;
+
+        default:
+          return res;
+      }
+    } catch (e) {
+      return res;
+    }
+  }
 }

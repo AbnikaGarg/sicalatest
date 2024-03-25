@@ -68,6 +68,7 @@ class _CreateShootingState extends State<CreateShooting> {
     getMedium();
     getMemberAllData();
     super.initState();
+    getShootingImage();
     if (widget.updatesShot.updateShooingId != null) {
       updateid = widget.updatesShot.updateShooingId.toString();
       memberno.text = widget.updatesShot.memberNumber.toString();
@@ -207,6 +208,17 @@ class _CreateShootingState extends State<CreateShooting> {
     });
   }
 
+  List shootingImages = [];
+  void getShootingImage() {
+    final service = MemberRepo();
+    service.getShootingImages().then((value) {
+      if (value.isNotEmpty) {
+        shootingImages = value;
+        if (mounted) setState(() {});
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -217,27 +229,28 @@ class _CreateShootingState extends State<CreateShooting> {
         centerTitle: false,
         title: const Text("Update Shooting"),
         actions: [
-          if(updateid==null)
-          Center(
-            child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => ShootingList()));
-              },
-              child: Container(
-                margin: EdgeInsets.only(right: 10),
-                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
-                decoration: BoxDecoration(
-                    color: AppTheme.yelloDarkColor,
-                    borderRadius: BorderRadius.circular(5)),
-                child: Text(
-                  "History",
-                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                      fontSize: 16.sp, color: AppTheme.whiteBackgroundColor),
+          if (updateid == null)
+            Center(
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => ShootingList()));
+                },
+                child: Container(
+                  margin: EdgeInsets.only(right: 10),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+                  decoration: BoxDecoration(
+                      color: AppTheme.yelloDarkColor,
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Text(
+                    "History",
+                    style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                        fontSize: 16.sp, color: AppTheme.whiteBackgroundColor),
+                  ),
                 ),
               ),
             ),
-          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -248,16 +261,21 @@ class _CreateShootingState extends State<CreateShooting> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Text("Shooting Details",
-                //     style: Theme.of(context).textTheme.headlineMedium!),
-                // SizedBox(
-                //   height: 16.h,
-                // ),
+                if (shootingImages.isNotEmpty)
+                  Image.network(
+                    shootingImages[0][0]["image_url"],
+                    fit: BoxFit.contain,
+                  ),
+                if (shootingImages.isNotEmpty) SizedBox(height: 12.h),
+                if (shootingImages.isNotEmpty)
+                  Text(shootingImages[0][0]["title"],
+                      style: Theme.of(context).textTheme.headlineMedium!),
+                SizedBox(height: 12.h),
                 MyTextField(
                     readOnly: true,
                     textEditingController: date,
                     ontap: () async {
-                       if(updateid != null){
+                      if (updateid != null) {
                         return;
                       }
                       DateTime? pickedDate = await showDatePicker(
@@ -398,9 +416,10 @@ class _CreateShootingState extends State<CreateShooting> {
                         }
                         return null;
                       },
-                      ontap: () { if(updateid != null){
-                        return;
-                      }
+                      ontap: () {
+                        if (updateid != null) {
+                          return;
+                        }
                         ModalSheet.showModal(
                             context, mediumList[0], "format_name", (value) {
                           setState(() {
@@ -430,7 +449,7 @@ class _CreateShootingState extends State<CreateShooting> {
                       return null;
                     },
                     ontap: () {
-                      if(updateid != null){
+                      if (updateid != null) {
                         return;
                       }
                       ModalSheet.showModal(context, postTypes, "type", (value) {

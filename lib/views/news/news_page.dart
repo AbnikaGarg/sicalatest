@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sica/views/news/news_details.dart';
 
 import '../../models/BlogsModel.dart';
 import '../../models/NewsModel.dart';
@@ -74,66 +75,80 @@ class _NewsTabState extends State<NewsTab> {
             itemBuilder: (context, index) {
               return Padding(
                 padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 14.w),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                        child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          newsDataList!.first.newsdata![index].date.toString(),
-                          style: Theme.of(context)
-                              .textTheme
-                              .displayLarge!
-                              .copyWith(fontSize: 12.sp),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NewsDetails(
+                          news: newsDataList!.first.newsdata![index],
                         ),
-                        SizedBox(
-                          height: 3.h,
-                        ),
-                        Text(
-                          newsDataList!.first.newsdata![index].title.toString(),
-                          style: Theme.of(context).textTheme.displayMedium!,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        Text(
-                          newsDataList!.first.newsdata![index].description
-                              .toString(),
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall!
-                              .copyWith(fontSize: 12.sp),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        SizedBox(
-                          height: 8.h,
-                        ),
-                      ],
-                    )),
-                    SizedBox(
-                      width: 10.w,
-                    ),
-                    Container(
-                      height: 70.h,
-                      width: 100.w,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              fit: BoxFit.contain,
-                              alignment: Alignment.topCenter,
-                              image: NetworkImage(
-                                newsDataList!.first.newsdata![index].image
-                                    .toString(),
-                              )),
-                          borderRadius: BorderRadius.circular(12)),
-                    ),
-                  ],
+                      ),
+                    );
+                  },
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                          child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            newsDataList!.first.newsdata![index].date
+                                .toString(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .displayLarge!
+                                .copyWith(fontSize: 12.sp),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          SizedBox(
+                            height: 3.h,
+                          ),
+                          Text(
+                            newsDataList!.first.newsdata![index].title
+                                .toString(),
+                            style: Theme.of(context).textTheme.displayMedium!,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          Text(
+                            newsDataList!.first.newsdata![index].description
+                                .toString(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall!
+                                .copyWith(fontSize: 12.sp),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          SizedBox(
+                            height: 8.h,
+                          ),
+                        ],
+                      )),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Container(
+                        height: 70.h,
+                        width: 100.w,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                fit: BoxFit.contain,
+                                alignment: Alignment.topCenter,
+                                image: NetworkImage(
+                                  newsDataList!.first.newsdata![index].image
+                                      .toString(),
+                                )),
+                            borderRadius: BorderRadius.circular(12)),
+                      ),
+                    ],
+                  ),
                 ),
               );
             },
@@ -145,68 +160,81 @@ class _NewsTabState extends State<NewsTab> {
             itemBuilder: (context, index) {
               return Padding(
                 padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 14.w),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                        child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          blogsDataList!.first.sicaBlogsVals![index].date
-                              .toString(),
-                          style: Theme.of(context)
-                              .textTheme
-                              .displayLarge!
-                              .copyWith(fontSize: 12.sp),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NewsDetails(
+                          news: blogsDataList!.first.sicaBlogsVals![index],
                         ),
-                        SizedBox(
-                          height: 3.h,
-                        ),
-                        Text(
-                          blogsDataList!.first.sicaBlogsVals![index].title
-                              .toString(),
-                          style: Theme.of(context).textTheme.displayMedium!,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        Text(
-                          blogsDataList!.first.sicaBlogsVals![index].description
-                              .toString(),
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall!
-                              .copyWith(fontSize: 12.sp),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        SizedBox(
-                          height: 8.h,
-                        ),
-                      ],
-                    )),
-                    SizedBox(
-                      width: 10.w,
-                    ),
-                    Container(
-                      height: 70.h,
-                      width: 100.w,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              fit: BoxFit.contain,
-                              alignment: Alignment.topCenter,
-                              image: NetworkImage(
-                                blogsDataList!.first.sicaBlogsVals![index].image
-                                    .toString(),
-                              )),
-                          borderRadius: BorderRadius.circular(12)),
-                    ),
-                  ],
+                      ),
+                    );
+                  },
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                          child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            blogsDataList!.first.sicaBlogsVals![index].date
+                                .toString(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .displayLarge!
+                                .copyWith(fontSize: 12.sp),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          SizedBox(
+                            height: 3.h,
+                          ),
+                          Text(
+                            blogsDataList!.first.sicaBlogsVals![index].title
+                                .toString(),
+                            style: Theme.of(context).textTheme.displayMedium!,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          Text(
+                            blogsDataList!
+                                .first.sicaBlogsVals![index].description
+                                .toString(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall!
+                                .copyWith(fontSize: 12.sp),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          SizedBox(
+                            height: 8.h,
+                          ),
+                        ],
+                      )),
+                      // SizedBox(
+                      //   width: 10.w,
+                      // ),
+                      // Container(
+                      //   height: 70.h,
+                      //   width: 100.w,
+                      //   decoration: BoxDecoration(
+                      //       image: DecorationImage(
+                      //           fit: BoxFit.contain,
+                      //           alignment: Alignment.topCenter,
+                      //           image: NetworkImage(
+                      //             blogsDataList!.first.sicaBlogsVals![index].image
+                      //                 .toString(),
+                      //           )),
+                      //       borderRadius: BorderRadius.circular(12)),
+                      // ),
+                    ],
+                  ),
                 ),
               );
             },
@@ -218,55 +246,67 @@ class _NewsTabState extends State<NewsTab> {
             itemBuilder: (context, index) {
               return Padding(
                 padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 14.w),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                        child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          techDataList!.first.techtalkVals![index].date
-                              .toString(),
-                          style: Theme.of(context)
-                              .textTheme
-                              .displayLarge!
-                              .copyWith(fontSize: 12.sp),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NewsDetails(
+                          news: techDataList!.first.techtalkVals![index],
                         ),
-                        SizedBox(
-                          height: 3.h,
-                        ),
-                        Text(
-                          techDataList!.first.techtalkVals![index].title
-                              .toString(),
-                          style: Theme.of(context).textTheme.displayMedium!,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        SizedBox(
-                          height: 8.h,
-                        ),
-                      ],
-                    )),
-                    SizedBox(
-                      width: 10.w,
-                    ),
-                    Container(
-                      height: 70.h,
-                      width: 100.w,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              fit: BoxFit.contain,
-                              alignment: Alignment.topCenter,
-                              image: NetworkImage(
-                                techDataList!.first.techtalkVals![index].image
-                                    .toString(),
-                              )),
-                          borderRadius: BorderRadius.circular(12)),
-                    ),
-                  ],
+                      ),
+                    );
+                  },
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                          child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            techDataList!.first.techtalkVals![index].date
+                                .toString(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .displayLarge!
+                                .copyWith(fontSize: 12.sp),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          SizedBox(
+                            height: 3.h,
+                          ),
+                          Text(
+                            techDataList!.first.techtalkVals![index].title
+                                .toString(),
+                            style: Theme.of(context).textTheme.displayMedium!,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          SizedBox(
+                            height: 8.h,
+                          ),
+                        ],
+                      )),
+                      // SizedBox(
+                      //   width: 10.w,
+                      // ),
+                      // Container(
+                      //   height: 70.h,
+                      //   width: 100.w,
+                      //   decoration: BoxDecoration(
+                      //       image: DecorationImage(
+                      //           fit: BoxFit.contain,
+                      //           alignment: Alignment.topCenter,
+                      //           image: NetworkImage(
+                      //             techDataList!.first.techtalkVals![index].image
+                      //                 .toString(),
+                      //           )),
+                      //       borderRadius: BorderRadius.circular(12)),
+                      // ),
+                    ],
+                  ),
                 ),
               );
             },

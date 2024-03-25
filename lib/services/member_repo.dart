@@ -611,7 +611,8 @@ class MemberRepo {
       return res;
     }
   }
-Future<List<PaymentResponse>> createEventPayment(eventid) async {
+
+  Future<List<PaymentResponse>> createEventPayment(eventid) async {
     List<PaymentResponse> res = [];
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var memberid = (sharedPreferences.getString('memberid') ?? "");
@@ -620,10 +621,11 @@ Future<List<PaymentResponse>> createEventPayment(eventid) async {
         'db': 'sicadop_02',
         'api_key': '8f4f506e4b4022e154ac3651f9ee006e9b751261',
         'MEMBERSHIP_ID': "$memberid",
-        'event_id':eventid
+        'event_id': eventid
       };
-      var ur = Uri.parse("${AppConstants.baseURL}${AppConstants.getEventPayment}")
-          .replace(queryParameters: queryParameters);
+      var ur =
+          Uri.parse("${AppConstants.baseURL}${AppConstants.getEventPayment}")
+              .replace(queryParameters: queryParameters);
       final response = await http.get(ur);
       print(response.statusCode);
       switch (response.statusCode) {
@@ -752,6 +754,29 @@ Future<List<PaymentResponse>> createEventPayment(eventid) async {
         case 200:
           final data = jsonDecode(response.body);
           res.add(data["medium_details"]);
+          return res;
+
+        default:
+          return res;
+      }
+    } catch (e) {
+      return res;
+    }
+  }
+
+  Future<List> getShootingImages() async {
+    List res = [];
+    try {
+      var ur =
+          Uri.parse("${AppConstants.baseURL}${AppConstants.getShootingImages}");
+      final response = await http.get(ur, headers: {
+        "content-type": "text/html; charset=utf-8",
+      });
+      print(response.statusCode);
+      switch (response.statusCode) {
+        case 200:
+          final data = jsonDecode(response.body);
+          res.add(data["Shooting Image"]);
           return res;
 
         default:

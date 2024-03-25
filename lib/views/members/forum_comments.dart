@@ -58,7 +58,7 @@ class _nameState extends State<ForumComments> {
     DialogHelp.showLoading(context);
     service
         .createCommment(commentText.text,
-           widget.discussionTopicComments.topic!.discussionId!)
+           widget.discussionTopicComments.topic!.discussionId!,"")
         .then((value) {
       DialogHelp().hideLoading(context);
       if (value.isNotEmpty) {

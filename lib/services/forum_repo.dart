@@ -54,14 +54,14 @@ class Forum {
       return res;
     }
   }
-Future<List> createCommment(String comment, int discussionid) async {
+Future<List> createCommment(String comment, int discussionid,String image) async {
     List res = [];
     try {
        SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
       var memberid = (sharedPreferences.getString('memberid') ?? "");
       var ur = Uri.parse(
-          "${AppConstants.baseURL}${AppConstants.createComment}?db=sicadop_02&api_key=8f4f506e4b4022e154ac3651f9ee006e9b751261&MEMBERSHIP_ID=$memberid&data={'comment': '$comment'}&DISCUSSION_ID=$discussionid");
+          "${AppConstants.baseURL}${AppConstants.createComment}?db=sicadop_02&api_key=8f4f506e4b4022e154ac3651f9ee006e9b751261&MEMBERSHIP_ID=$memberid&data={'document': '$image' , 'comment': '$comment'}&DISCUSSION_ID=$discussionid");
       final response = await http.post(ur, headers: {
         "content-type": "text/html; charset=utf-8",
       });
@@ -79,14 +79,14 @@ Future<List> createCommment(String comment, int discussionid) async {
       return res;
     }
   }
-  Future<List> updateCommment(String comment, int commentId) async {
+  Future<List> updateCommment(String comment, int commentId,String image) async {
     List res = [];
     try {
        SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
       var memberid = (sharedPreferences.getString('memberid') ?? "");
       var ur = Uri.parse(
-          "${AppConstants.baseURL}${AppConstants.updateComment}?db=sicadop_02&api_key=8f4f506e4b4022e154ac3651f9ee006e9b751261&MEMBERSHIP_ID=$memberid&data={'comment': '$comment'}&COMMENT_ID=$commentId");
+          "${AppConstants.baseURL}${AppConstants.updateComment}?db=sicadop_02&api_key=8f4f506e4b4022e154ac3651f9ee006e9b751261&MEMBERSHIP_ID=$memberid&data={'document': '$image' ,'membership_no': '$memberid', 'comment': '$comment'}&COMMENT_ID=$commentId");
       final response = await http.post(ur, headers: {
         "content-type": "text/html; charset=utf-8",
       });

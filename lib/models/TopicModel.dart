@@ -57,6 +57,7 @@ class DiscussionComments {
       this.profileImage, 
       this.comment, 
       this.commentCreateDate, 
+      this.image_url,
       this.memberName, 
       this.designation, 
       this.commentId,});
@@ -64,6 +65,7 @@ class DiscussionComments {
   DiscussionComments.fromJson(dynamic json) {
     profileImage = json['profile_image'];
     comment = json['comment'];
+    image_url= json['image_url'];
     commentCreateDate = json['comment_create_date'];
     memberName = json['member_name'];
     designation = json['designation'].toString();
@@ -74,12 +76,14 @@ class DiscussionComments {
   String? commentCreateDate;
   String? memberName;
   String? designation;
+   String? image_url;
   int? commentId;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['profile_image'] = profileImage;
     map['comment'] = comment;
+    map['image_url'] = image_url;
     map['comment_create_date'] = commentCreateDate;
     map['member_name'] = memberName;
     map['designation'] = designation;

@@ -8,13 +8,16 @@ import '../models/EventModel.dart';
 
 class Eventrepo {
   Future<List<EventModel>> getEvents(cat) async {
-    List<EventModel> res = [];
+    List<EventModel> res = []; SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
     var ur;
+     var memberid = (sharedPreferences.getString('memberid') ?? "");
     try {
       final queryParameters = {
         'db': 'sicadop_02',
         'api_key': '8f4f506e4b4022e154ac3651f9ee006e9b751261',
-        'category_id':cat==1?"1": '$cat'
+        'category_id':cat==1?"1": '$cat',
+        'member_number':'$memberid'
       };
       if (cat == 1) {
         ur = Uri.parse(

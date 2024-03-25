@@ -184,44 +184,80 @@ class _MainPageState extends State<MakePayment> {
         // }
       },
       child: Scaffold(
-        floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
-        floatingActionButton: FloatingActionButton.small(
-          shape: const CircleBorder(),
-          // isExtended: true,
-          child: Icon(
-            Icons.close,
-            color: Colors.white,
-          ),
-          backgroundColor: Colors.red,
-          onPressed: () {
-            if (this.mounted) {
-              setState(() {
-                showFloat = false;
-                if (widget.type == 1) {
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => MyDashBoard(
-                                currentIndex: 3,
-                              )),
-                      ModalRoute.withName(
-                          '/') // Replace this with your root screen's route name (usually '/')
-                      );
-                } else {
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => MyDashBoard(
-                                currentIndex: 1,
-                              )),
-                      ModalRoute.withName(
-                          '/') // Replace this with your root screen's route name (usually '/')
-                      );
+        appBar: AppBar(
+          elevation: 0.3,
+          leading: GestureDetector(
+              onTap: () {
+                if (this.mounted) {
+                  setState(() {
+                    showFloat = false;
+                    if (widget.type == 1) {
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => MyDashBoard(
+                                    currentIndex: 3,
+                                  )),
+                          ModalRoute.withName(
+                              '/') // Replace this with your root screen's route name (usually '/')
+                          );
+                    } else {
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => MyDashBoard(
+                                    currentIndex: 1,
+                                  )),
+                          ModalRoute.withName(
+                              '/') // Replace this with your root screen's route name (usually '/')
+                          );
+                    }
+                  });
                 }
-              });
-            }
-          },
+              },
+              child: Icon(Icons.arrow_back_ios_new)),
+          actions: [
+            IconButton(onPressed: () {}, icon: Icon(Icons.info_outline_rounded))
+          ],
         ),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
+        // floatingActionButton: FloatingActionButton.small(
+        //   shape: const CircleBorder(),
+        //   // isExtended: true,
+        //   child: Icon(
+        //     Icons.close,
+        //     color: Colors.white,
+        //   ),
+        //   backgroundColor: Colors.red,
+        //   onPressed: () {
+        //     if (this.mounted) {
+        //       setState(() {
+        //         showFloat = false;
+        //         if (widget.type == 1) {
+        //           Navigator.pushAndRemoveUntil(
+        //               context,
+        //               MaterialPageRoute(
+        //                   builder: (BuildContext context) => MyDashBoard(
+        //                         currentIndex: 3,
+        //                       )),
+        //               ModalRoute.withName(
+        //                   '/') // Replace this with your root screen's route name (usually '/')
+        //               );
+        //         } else {
+        //           Navigator.pushAndRemoveUntil(
+        //               context,
+        //               MaterialPageRoute(
+        //                   builder: (BuildContext context) => MyDashBoard(
+        //                         currentIndex: 1,
+        //                       )),
+        //               ModalRoute.withName(
+        //                   '/') // Replace this with your root screen's route name (usually '/')
+        //               );
+        //         }
+        //       });
+        //     }
+        //   },
+        // ),
         body: Stack(
           children: [
             SafeArea(

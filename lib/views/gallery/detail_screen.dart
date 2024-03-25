@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sica/models/gallerModel.dart';
+
 import 'package:sica/theme/theme.dart';
+
+import '../../components/buton.dart';
+import '../../models/GalleryModel.dart';
 
 class DetailScreen extends StatefulWidget {
   const DetailScreen({Key? key, required this.data}) : super(key: key);
@@ -26,7 +29,7 @@ class _DetailScreenState extends State<DetailScreen> {
           fit: StackFit.expand,
           children: [
             Image.network(
-              widget.data.image.toString(),
+              widget.data.imageUrl.toString(),
               alignment: Alignment.center,
               //  height: double.infinity,
               width: double.infinity,
@@ -79,13 +82,25 @@ class _DetailScreenState extends State<DetailScreen> {
                     const SizedBox(
                       height: 6,
                     ),
-                    Text(
-                      widget.data.description.toString(),
-                      maxLines: 4,
-                      overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.montserrat(
-                          fontSize: 14, fontWeight: FontWeight.w500),
-                    ),
+                    Padding(
+                        padding: const EdgeInsets.only(
+                          left: 1,
+                          top: 2,
+                          bottom: 8,
+                        ),
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(
+                            minHeight: 25.0,
+                            maxHeight: 100.0,
+                          ),
+                          child: SingleChildScrollView(
+                            child: Text(
+                              widget.data.description.toString(),
+                              style: GoogleFonts.montserrat(
+                                  fontSize: 14, fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                        ))
                   ],
                 ),
               ),
@@ -157,4 +172,7 @@ class _DetailScreenState extends State<DetailScreen> {
           ],
         ));
   }
+   
+
+  
 }

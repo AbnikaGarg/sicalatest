@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sica/services/event_repo.dart';
+import 'package:sica/services/member_repo.dart';
 import 'package:sica/views/home/dashboard.dart';
 import 'package:sica/views/profile/payment_success.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -11,6 +13,7 @@ import 'package:webview_flutter_android/webview_flutter_android.dart';
 // Import for iOS features.
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
+import '../../theme/theme.dart';
 import '../../utils/config.dart';
 import '../events/event_book.dart';
 
@@ -47,7 +50,22 @@ class _MainPageState extends State<MakePayment> {
   void initState() {
     super.initState();
     loadurl();
-    // Initialize the WebViewController and load the URL
+    if (widget.type == 1) {
+      getPayments();
+    }
+  }
+
+  List paymentDetils = [];
+
+  void getPayments() {
+    final service = MemberRepo();
+    service.getPayments().then((value) {
+      if (value.isNotEmpty) {
+        paymentDetils = value[0];
+
+        if (mounted) setState(() {});
+      }
+    });
   }
 
   loadurl() {
@@ -217,7 +235,11 @@ class _MainPageState extends State<MakePayment> {
               },
               child: Icon(Icons.arrow_back_ios_new)),
           actions: [
-            IconButton(onPressed: () {}, icon: Icon(Icons.info_outline_rounded))
+            IconButton(
+                onPressed: () {
+                  showModal2(context);
+                },
+                icon: Icon(Icons.info_outline_rounded))
           ],
         ),
         // floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
@@ -273,6 +295,156 @@ class _MainPageState extends State<MakePayment> {
         ),
       ),
     );
+  }
+
+  void showModal2(context) {
+    showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (context) {
+          return GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: (() {
+                Navigator.of(context).pop();
+              }),
+              child: SingleChildScrollView(
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(12.0.r),
+                      topRight: Radius.circular(12.0.r),
+                    ),
+                    color: Theme.of(context).cardColor,
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        right: 20.w,
+                        left: 20.w,
+                        bottom: MediaQuery.of(context).viewInsets.bottom),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Center(
+                            child: Container(
+                              width: 40.w,
+                              height: 4.h,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey[600],
+                                  borderRadius: BorderRadius.circular(12)),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 12.h),
+                            child: Text(
+                              "Subscription Fee details",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineLarge!
+                                  .copyWith(fontSize: 16),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 12.h,
+                          ),
+                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Paid Till:",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineLarge!
+                                    .copyWith(fontSize: 16),
+                              ),
+                              Text(
+                                "2024",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineLarge!
+                                    .copyWith(fontSize: 16),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Total Fee:",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineLarge!
+                                    .copyWith(fontSize: 16),
+                              ),
+                              Text(
+                                "400",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineLarge!
+                                    .copyWith(fontSize: 16),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Payment Gateway charges:",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineLarge!
+                                    .copyWith(fontSize: 16),
+                              ),
+                              Text(
+                                "400",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineLarge!
+                                    .copyWith(fontSize: 16),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Total Payment:",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineLarge!
+                                    .copyWith(fontSize: 16),
+                              ),
+                              Text(
+                                "400",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineLarge!
+                                    .copyWith(fontSize: 16),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                        ]),
+                  ),
+                ),
+              ));
+        });
   }
 }
 

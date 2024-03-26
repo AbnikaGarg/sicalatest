@@ -647,12 +647,15 @@ class _nameState extends State<DiscussionFormReply> {
                                             .commentId
                                             .toString();
                                         imageurl = discussionTopicCommentsList!
-                                            .discussionComments![index]
-                                            .image_url
-                                            .toString()=="null"?"": discussionTopicCommentsList!
-                                            .discussionComments![index]
-                                            .image_url
-                                            .toString();
+                                                    .discussionComments![index]
+                                                    .image_url
+                                                    .toString() ==
+                                                "null"
+                                            ? ""
+                                            : discussionTopicCommentsList!
+                                                .discussionComments![index]
+                                                .image_url
+                                                .toString();
                                       });
                                     },
                                     backgroundColor: AppTheme.darkTextColor,
@@ -751,33 +754,40 @@ class _nameState extends State<DiscussionFormReply> {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(
-                                            height: 5.h,
-                                          ),
-                                          Linkify(
-                                            options:
-                                                LinkifyOptions(humanize: false),
-                                            onOpen: (link) async {
-                                              if (!await launchUrl(
-                                                  Uri.parse(link.url))) {
-                                                throw Exception(
-                                                    'Could not launch ${link.url}');
-                                              }
-                                            },
-                                            text: discussionTopicCommentsList!
-                                                .discussionComments![index]
-                                                .comment
-                                                .toString(),
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headlineMedium!
-                                                .copyWith(fontSize: 14),
-                                            linkStyle:
-                                                TextStyle(color: Colors.blue),
-                                          ),
-                                          SizedBox(
-                                            height: 5.h,
-                                          ),
+                                          
+                                            SizedBox(
+                                              height: 5.h,
+                                            ),
+                                          if (discussionTopicCommentsList!
+                                                  .discussionComments![index]
+                                                  .comment
+                                                  .toString() !=
+                                              "")
+                                            Linkify(
+                                              options: LinkifyOptions(
+                                                  humanize: false),
+                                              onOpen: (link) async {
+                                                if (!await launchUrl(
+                                                    Uri.parse(link.url))) {
+                                                  throw Exception(
+                                                      'Could not launch ${link.url}');
+                                                }
+                                              },
+                                              text: discussionTopicCommentsList!
+                                                  .discussionComments![index]
+                                                  .comment
+                                                  .toString(),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headlineMedium!
+                                                  .copyWith(fontSize: 14),
+                                              linkStyle:
+                                                  TextStyle(color: Colors.blue),
+                                            ),
+                                         
+                                            SizedBox(
+                                              height: 10.h,
+                                            ),
                                           if (discussionTopicCommentsList!
                                                   .discussionComments![index]
                                                   .image_url
@@ -956,7 +966,7 @@ class _nameState extends State<DiscussionFormReply> {
                               ),
                             ),
                           )
-                        else if (imageurl != ""&&imageurl != "null")
+                        else if (imageurl != "" && imageurl != "null")
                           Container(
                             padding: EdgeInsets.only(right: 10),
                             height: 45,
@@ -992,7 +1002,7 @@ class _nameState extends State<DiscussionFormReply> {
                               ],
                             ),
                           )
-                        else if(images != null)
+                        else if (images != null)
                           Container(
                             padding: EdgeInsets.only(right: 10),
                             height: 45,
@@ -1086,7 +1096,7 @@ class _nameState extends State<DiscussionFormReply> {
                         ),
                         InkWell(
                           onTap: () {
-                            if (commentText.text.isNotEmpty) {
+                            if (commentText.text.isNotEmpty || images != null) {
                               if (commentid != '') {
                                 updatesubmit();
                               } else {

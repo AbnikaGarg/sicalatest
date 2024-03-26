@@ -947,6 +947,32 @@ class MemberRepo {
     }
   }
 
+  Future<List> getPayments() async {
+    List res = [];
+    try {
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      var memberid = (sharedPreferences.getString('memberid') ?? "");
+      var ur = Uri.parse(
+          "${AppConstants.baseURL}/member/payment_information/$memberid");
+      final response = await http.get(ur, headers: {
+        "content-type": "text/html; charset=utf-8",
+      });
+      print(response.body);
+      switch (response.statusCode) {
+        case 200:
+          final data = jsonDecode(response.body);
+          res.add(data["member_payment_details"]);
+          return res;
+
+        default:
+          return res;
+      }
+    } catch (e) {
+      return res;
+    }
+  }
+
   Future<List> getReasons() async {
     List res = [];
     try {

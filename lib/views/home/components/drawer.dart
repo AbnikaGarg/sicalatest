@@ -11,6 +11,7 @@ import 'package:sica/views/gallery/gallery_list.dart';
 import 'package:sica/views/login/login.dart';
 import 'package:sica/views/members/members.dart';
 import 'package:sica/views/vendors/vendors.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../utils/images.dart';
 import '../../forum/select_forum_type.dart';
@@ -36,6 +37,19 @@ class _NavBarState extends State<NavBar> {
       ),
       (Route route) => false,
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getDettails();
+  }
+
+  String? accountType = "";
+  Future<void> getDettails() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    accountType = (sharedPreferences.getString('accounttype') ?? "");
+    setState(() {});
   }
 
   @override
@@ -134,75 +148,85 @@ class _NavBarState extends State<NavBar> {
                 //   },
                 //   child: _buildIconwithText("Employment", "employement", context),
                 // ),
-
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => Members()));
-                  },
-                  child: _buildIconwithText("Members", "member", context),
-                ),
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => Vendors()));
-                  },
-                  child: _buildIconwithText("Vendors", "vendors", context),
-                ),
+                if (accountType == "1")
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => Members()));
+                    },
+                    child: _buildIconwithText("Members", "member", context),
+                  ),
+                if (accountType == "1")
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const Vendors()));
+                    },
+                    child: _buildIconwithText("Vendors", "vendors", context),
+                  ),
+                  
+              
 
                 SizedBox(
                   height: 30.h,
                 ),
                 Text("Account",
                     style: Theme.of(context).textTheme.headlineMedium!),
-                _buildIconwithText("Support", "support", context),
-                Padding(
-                  padding: EdgeInsets.only(top: 18.h),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.privacy_tip_outlined,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      SizedBox(
-                        width: 6.w,
-                      ),
-                      Text(
-                        "Privacy Policy",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall!
-                            .copyWith(fontSize: 15.sp),
-                      )
-                    ],
+                //  _buildIconwithText("Support", "support", context),
+                GestureDetector(
+                  onTap: () {
+                    launchUrl(Uri.parse("https://thesica.in/privacy-policy/"));
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 18.h),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.privacy_tip_outlined,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        SizedBox(
+                          width: 6.w,
+                        ),
+                        Text(
+                          "Privacy Policy",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(fontSize: 15.sp),
+                        )
+                      ],
+                    ),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 18.h),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.edit_document,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      SizedBox(
-                        width: 6.w,
-                      ),
-                      Text(
-                        "Terms & Conditions",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall!
-                            .copyWith(fontSize: 15.sp),
-                      )
-                    ],
-                  ),
-                ),
-               
+
+                //if (accountType == "1")
+                // Padding(
+                //   padding: EdgeInsets.only(top: 18.h),
+                //   child: Row(
+                //     children: [
+                //       Icon(
+                //         Icons.edit_document,
+                //         color: Theme.of(context).primaryColor,
+                //       ),
+                //       SizedBox(
+                //         width: 6.w,
+                //       ),
+                //       Text(
+                //         "Terms & Conditions",
+                //         style: Theme.of(context)
+                //             .textTheme
+                //             .bodySmall!
+                //             .copyWith(fontSize: 15.sp),
+                //       )
+                //     ],
+                //   ),
+                // ),
+
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () {

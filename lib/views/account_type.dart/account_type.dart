@@ -1,8 +1,10 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sica/components/buton.dart';
 import 'package:sica/theme/theme.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../utils/images.dart';
 import '../login/login.dart';
@@ -170,11 +172,16 @@ class _AccountTypeState extends State<AccountType> {
                       .textTheme
                       .displayLarge!
                       .copyWith(fontSize: 10.sp),
-                  children: const <TextSpan>[
+                  children: <TextSpan>[
                     TextSpan(
                       text: 'By continuing, you agree to our ',
                     ),
                     TextSpan(
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            launchUrl(Uri.parse(
+                                "https://thesica.in/privacy-policy/"));
+                          },
                         text: 'Terms of use & Privacy Policy',
                         style: TextStyle(decoration: TextDecoration.underline)),
                   ],

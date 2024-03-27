@@ -544,7 +544,7 @@ class _nameState extends State<DiscussionFormReply> {
                                 Text(
                                     widget.discussionTopicComments
                                         .discussionDetails!.topic
-                                        .toString(),
+                                       .toString().toUpperCase(),
                                     style: Theme.of(context)
                                         .textTheme
                                         .headlineMedium!),

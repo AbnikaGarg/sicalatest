@@ -61,9 +61,9 @@ class _HomepageState extends State<Homepage> {
   List<Choice> guestChoice = <Choice>[
     Choice(title: 'About Sica', svg: "about", page: const AboutSica()),
     Choice(
-        title: 'Employment schema',
-        svg: "employement",
-        page: const SelectForumType()),
+        title: 'Gallery',
+        svg: "camera2",
+        page: const GalleryList()),
     Choice(
         title: 'Discussion Forum', svg: "forum", page: const SelectForumType()),
   ];
@@ -456,15 +456,9 @@ class _HomepageState extends State<Homepage> {
                         : List.generate(guestChoice.length, (index) {
                             return GestureDetector(
                               onTap: () {
-                                if (index == 1) {
-                                  showModal(context);
-                                } else if (index == 3) {
-                                  showModal2(context);
-                                } else {
-                                  Navigator.of(context).push(MaterialPageRoute(
+                                Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) =>
                                           guestChoice[index].page));
-                                }
                               },
                               child: SelectCard(
                                 title: guestChoice[index].title,

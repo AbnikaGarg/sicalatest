@@ -652,51 +652,51 @@ class _nameState extends State<ForumComments> {
                         child: Text('No Comments yet'),
                       ),
                     ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        left: 14.w, bottom: 12.h, right: 14.w, top: 12.h),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: MyTextField(
-                              textEditingController: commentText,
-                              labelText: "",
-                              float: FloatingLabelBehavior.always,
-                              hintText: "Add Comment",
-                              color: const Color(0xff585A60)),
-                        ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            if (commentText.text.isNotEmpty) {
-                              submit();
-                            }
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(bottom: 5),
-                            decoration: BoxDecoration(
-                              color: const Color.fromRGBO(37, 40, 54, 0.6),
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 10.h, horizontal: 10.w),
-                              child: Text(
-                                "Post",
-                                style: GoogleFonts.inter(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppTheme.primaryColor),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
+                  // Padding(
+                  //   padding: EdgeInsets.only(
+                  //       left: 14.w, bottom: 12.h, right: 14.w, top: 12.h),
+                  //   child: Row(
+                  //     crossAxisAlignment: CrossAxisAlignment.center,
+                  //     children: [
+                  //       Expanded(
+                  //         child: MyTextField(
+                  //             textEditingController: commentText,
+                  //             labelText: "",
+                  //             float: FloatingLabelBehavior.always,
+                  //             hintText: "Add Comment",
+                  //             color: const Color(0xff585A60)),
+                  //       ),
+                  //       SizedBox(
+                  //         width: 10.w,
+                  //       ),
+                  //       InkWell(
+                  //         onTap: () {
+                  //           if (commentText.text.isNotEmpty) {
+                  //             submit();
+                  //           }
+                  //         },
+                  //         child: Container(
+                  //           margin: EdgeInsets.only(bottom: 5),
+                  //           decoration: BoxDecoration(
+                  //             color: const Color.fromRGBO(37, 40, 54, 0.6),
+                  //             borderRadius: BorderRadius.circular(6),
+                  //           ),
+                  //           child: Padding(
+                  //             padding: EdgeInsets.symmetric(
+                  //                 vertical: 10.h, horizontal: 10.w),
+                  //             child: Text(
+                  //               "Post",
+                  //               style: GoogleFonts.inter(
+                  //                   fontSize: 14.sp,
+                  //                   fontWeight: FontWeight.w600,
+                  //                   color: AppTheme.primaryColor),
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // )
                 ],
               ),
       ),

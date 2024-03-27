@@ -42,43 +42,43 @@ class _DetailScreenState extends State<DetailScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {},
-                          child: Padding(
-                            padding: const EdgeInsets.all(6.0),
-                            child: Container(
-                              height: 30,
-                              alignment: Alignment.center,
-                              width: 30,
-                              child: Icon(Icons.thumb_up_alt,
-                                  size: 20,
-                                  color: AppTheme.whiteBackgroundColor),
-                            ),
-                          ),
-                        ),
-                        Text("2"),
-                        const SizedBox(
-                          width: 30,
-                        ),
-                        GestureDetector(
-                          onTap: () {},
-                          child: Padding(
-                            padding: const EdgeInsets.all(6.0),
-                            child: Container(
-                              height: 30,
-                              alignment: Alignment.center,
-                              width: 30,
-                              child: Icon(Icons.comment_outlined,
-                                  size: 20,
-                                  color: AppTheme.whiteBackgroundColor),
-                            ),
-                          ),
-                        ),
-                        Text("1"),
-                      ],
-                    ),
+                    // Row(
+                    //   children: [
+                    //     GestureDetector(
+                    //       onTap: () {},
+                    //       child: Padding(
+                    //         padding: const EdgeInsets.all(6.0),
+                    //         child: Container(
+                    //           height: 30,
+                    //           alignment: Alignment.center,
+                    //           width: 30,
+                    //           child: Icon(Icons.thumb_up_alt,
+                    //               size: 20,
+                    //               color: AppTheme.whiteBackgroundColor),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     Text("2"),
+                    //     const SizedBox(
+                    //       width: 30,
+                    //     ),
+                    //     GestureDetector(
+                    //       onTap: () {},
+                    //       child: Padding(
+                    //         padding: const EdgeInsets.all(6.0),
+                    //         child: Container(
+                    //           height: 30,
+                    //           alignment: Alignment.center,
+                    //           width: 30,
+                    //           child: Icon(Icons.comment_outlined,
+                    //               size: 20,
+                    //               color: AppTheme.whiteBackgroundColor),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     Text("1"),
+                    //   ],
+                    // ),
                     const SizedBox(
                       height: 6,
                     ),

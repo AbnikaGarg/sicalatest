@@ -286,7 +286,7 @@ class _nameState extends State<DiscussionForm> {
                                                 topicListforum![index]
                                                     .discussionDetails!
                                                     .topic
-                                                    .toString(),
+                                                    .toString().toUpperCase(),
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .headlineMedium!),

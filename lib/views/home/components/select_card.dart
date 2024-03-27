@@ -31,11 +31,17 @@ class SelectCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              SvgPicture.asset(
-                "assets/icons/$svg.svg",
-                height: 24.h,
-                color: Theme.of(context).primaryColor,
-              ),
+              if (svg == "camera2")
+                Icon(
+                  Icons.photo_library_outlined,
+                  color: Theme.of(context).primaryColor,
+                )
+              else
+                SvgPicture.asset(
+                  "assets/icons/$svg.svg",
+                  height: 24.h,
+                  color: Theme.of(context).primaryColor,
+                ),
               SizedBox(
                 height: 5.h,
               ),

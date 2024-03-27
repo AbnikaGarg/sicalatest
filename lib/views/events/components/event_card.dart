@@ -156,7 +156,7 @@ class EventCard extends StatelessWidget {
                           size: 16,
                         ),
                         Text(
-                          " Time: ${events.time.toString().replaceAll(RegExp(r'([.]*0)(?!.*\d)'), '')}",
+                          " Time: ${events.time.toString()}",
                           style: Theme.of(context)
                               .textTheme
                               .labelSmall!

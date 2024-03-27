@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sica/services/event_repo.dart';
 import 'package:sica/services/member_repo.dart';
 import 'package:sica/views/home/dashboard.dart';
@@ -235,11 +236,12 @@ class _MainPageState extends State<MakePayment> {
               },
               child: Icon(Icons.arrow_back_ios_new)),
           actions: [
-            IconButton(
-                onPressed: () {
-                  showModal2(context);
-                },
-                icon: Icon(Icons.info_outline_rounded))
+            if (widget.type == 1)
+              IconButton(
+                  onPressed: () {
+                    showModal2(context);
+                  },
+                  icon: Icon(Icons.info_outline_rounded))
           ],
         ),
         // floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
@@ -282,11 +284,23 @@ class _MainPageState extends State<MakePayment> {
         // ),
         body: Stack(
           children: [
-            SafeArea(
-              child: WebViewWidget(
+            if (widget.type == 1)
+              SafeArea(
+                child: paymentDetils.isNotEmpty
+                    ? paymentDetils[0]["is_member_debar"]
+                        ? Center(
+                            child: Text("Please Contact your adminstrator"),
+                          )
+                        : WebViewWidget(
+                            controller: _controller,
+                          )
+                    : const Center(child: CircularProgressIndicator()),
+              )
+            else
+              SafeArea(
+                  child: WebViewWidget(
                 controller: _controller,
-              ),
-            ),
+              )),
             if (_isLoading)
               const Center(
                 child: LoadingPage(), // Loader widget
@@ -309,140 +323,251 @@ class _MainPageState extends State<MakePayment> {
                 Navigator.of(context).pop();
               }),
               child: SingleChildScrollView(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(12.0.r),
-                      topRight: Radius.circular(12.0.r),
-                    ),
-                    color: Theme.of(context).cardColor,
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        right: 20.w,
-                        left: 20.w,
-                        bottom: MediaQuery.of(context).viewInsets.bottom),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: 10.h,
+                child: paymentDetils.isNotEmpty
+                    ? Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12.0.r),
+                            topRight: Radius.circular(12.0.r),
                           ),
-                          Center(
-                            child: Container(
-                              width: 40.w,
-                              height: 4.h,
-                              decoration: BoxDecoration(
-                                  color: Colors.grey[600],
-                                  borderRadius: BorderRadius.circular(12)),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 12.h),
-                            child: Text(
-                              "Subscription Fee details",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineLarge!
-                                  .copyWith(fontSize: 16),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 12.h,
-                          ),
-                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Paid Till:",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineLarge!
-                                    .copyWith(fontSize: 16),
-                              ),
-                              Text(
-                                "2024",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineLarge!
-                                    .copyWith(fontSize: 16),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 20.h,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Total Fee:",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineLarge!
-                                    .copyWith(fontSize: 16),
-                              ),
-                              Text(
-                                "400",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineLarge!
-                                    .copyWith(fontSize: 16),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 20.h,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Payment Gateway charges:",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineLarge!
-                                    .copyWith(fontSize: 16),
-                              ),
-                              Text(
-                                "400",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineLarge!
-                                    .copyWith(fontSize: 16),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 20.h,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Total Payment:",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineLarge!
-                                    .copyWith(fontSize: 16),
-                              ),
-                              Text(
-                                "400",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineLarge!
-                                    .copyWith(fontSize: 16),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 20.h,
-                          ),
-                        ]),
-                  ),
-                ),
+                          color: Theme.of(context).cardColor,
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              right: 20.w,
+                              left: 20.w,
+                              bottom: MediaQuery.of(context).viewInsets.bottom),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                Center(
+                                  child: Container(
+                                    width: 40.w,
+                                    height: 4.h,
+                                    decoration: BoxDecoration(
+                                        color: Colors.grey[600],
+                                        borderRadius:
+                                            BorderRadius.circular(12)),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 12.h),
+                                  child: Text(
+                                    "Subscription Fee details",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineLarge!
+                                        .copyWith(fontSize: 16),
+                                  ),
+                                ),
+                                 SizedBox(
+                                  height: 6,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Paid Till:",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(fontSize: 16),
+                                    ),
+                                    Text(
+                                      "${paymentDetils[0]["paid_till"]}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(fontSize: 16),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 20.h,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "YEAR",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(fontSize: 16),
+                                    ),
+                                    Text(
+                                      "SICA",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(fontSize: 16),
+                                    ),
+                                    Text(
+                                      "CBT",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(fontSize: 16),
+                                    ),
+                                    Text(
+                                      "TOTAL",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(fontSize: 16),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                for (var video in paymentDetils[0]
+                                    ["subscription_years"])
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 10),
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(video["year"].toString(),
+                                              style: GoogleFonts.montserrat(
+                                                fontSize: 15,
+                                                color: Colors.green,
+                                                fontWeight: FontWeight.w600,
+                                              )),
+                                          Text(video["sica_fee"].toString(),
+                                              style: GoogleFonts.montserrat(
+                                                fontSize: 15,
+                                                color: Colors.green,
+                                                fontWeight: FontWeight.w600,
+                                              )),
+                                          Text(video["cbt_amount"].toString(),
+                                              style: GoogleFonts.montserrat(
+                                                fontSize: 15,
+                                                color: Colors.green,
+                                                fontWeight: FontWeight.w600,
+                                              )),
+                                          Text(
+                                              video["subscription_amount"]
+                                                  .toString(),
+                                              style: GoogleFonts.montserrat(
+                                                fontSize: 15,
+                                                color: Colors.green,
+                                                fontWeight: FontWeight.w600,
+                                              )),
+                                        ]),
+                                  ),
+                             
+                                Divider(
+                                  color: AppTheme.hintTextColor,
+                                ),
+                                SizedBox(
+                                  height: 6,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Total Fee:",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(fontSize: 16),
+                                    ),
+                                    Text(
+                                      "${paymentDetils[0]["subscription_total_fee"]}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(fontSize: 16),
+                                    ),
+                                  ],
+                                ),
+                                if (paymentDetils[0]["gateway_note"] != "")
+                                  SizedBox(
+                                    height: 20.h,
+                                  ),
+                                if (paymentDetils[0]["gateway_note"] != "")
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "Payment Gateway note:",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineLarge!
+                                            .copyWith(fontSize: 16),
+                                      ),
+                                      Text(
+                                        "${paymentDetils[0]["gateway_note"]}",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineLarge!
+                                            .copyWith(fontSize: 16),
+                                      ),
+                                    ],
+                                  ),
+                                SizedBox(
+                                  height: 20.h,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Penalty:",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(fontSize: 16),
+                                    ),
+                                    Text(
+                                      "${paymentDetils[0]["penalty_fee"]}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(fontSize: 16),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 20.h,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Total Payment:",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(fontSize: 16),
+                                    ),
+                                    Text(
+                                      "${paymentDetils[0]["total_fee"]}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(fontSize: 16),
+                                    ),
+                                  ],
+                                ), SizedBox(
+                                  height: 30,
+                                ),
+                              ]),
+                        ),
+                      )
+                    : CircularProgressIndicator(),
               ));
         });
   }

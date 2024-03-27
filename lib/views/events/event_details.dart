@@ -240,7 +240,7 @@ class _EventDetailState extends State<EventDetail> {
                           size: 16,
                         ),
                         Text(
-                          "  Time: ${widget.events.time.toString().replaceAll(RegExp(r'([.]*0)(?!.*\d)'), '')}",
+                          "  Time: ${widget.events.time.toString()}",
                           style: Theme.of(context)
                               .textTheme
                               .labelSmall!

@@ -18,6 +18,7 @@ import 'package:sica/views/employeement_schema/add_provider.dart';
 import 'package:sica/views/employeement_schema/add_seeker.dart';
 import 'package:sica/views/employeement_schema/job_provider.dart';
 import 'package:sica/views/employeement_schema/job_seeker.dart';
+import 'package:sica/views/events/events.dart';
 import 'package:sica/views/gallery/gallery.dart';
 import 'package:sica/views/home/seeAllFeatures.dart';
 import 'package:sica/views/home/select_form_reason.dart';
@@ -30,6 +31,7 @@ import '../../theme/theme.dart';
 import '../../utils/images.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../events/tabbar/tab_bar.dart';
 import '../forum/select_forum_type.dart';
 import '../funds/funds.dart';
 import '../gallery/gallery_list.dart';
@@ -81,7 +83,7 @@ class _HomepageState extends State<Homepage> {
     Choice(title: 'Vendors', svg: "vendors", page: const Vendors()),
     Choice(title: 'Operators', svg: "member", page: const Operators()),
     Choice(title: 'Fund', svg: "hand", page: const Funds()),
-    Choice(title: 'Support', svg: "viewall", page: SelectReason()),
+    Choice(title: 'Event', svg: "callender", page: EventsTabBar()),
   ];
   // List forumType = [
   //   {"title": "Movies", "image": "assets/images/website.png"},

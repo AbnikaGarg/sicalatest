@@ -21,8 +21,8 @@ import '../../theme/theme.dart';
 import 'add_socialsLinks.dart';
 
 class Profile extends StatefulWidget {
-  Profile({super.key});
-
+  Profile({super.key, required this.memberid});
+  final String memberid;
   @override
   State<Profile> createState() => _ProfileState();
 }
@@ -51,7 +51,7 @@ class _ProfileState extends State<Profile> {
     accountType = (sharedPreferences.getString('accounttype') ?? "");
     if (mounted) setState(() {});
     final service = MemberRepo();
-    service.getMemberDetails("").then((value) {
+    service.getMemberDetails(widget.memberid).then((value) {
       if (value.isNotEmpty) {
         memberDetails = value;
         if (mounted) setState(() {});
@@ -80,8 +80,11 @@ class _ProfileState extends State<Profile> {
         List<PaymentResponse> res = value;
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => MakePayment(
-                url: res[0].paymentlink!.shortUrl.toString(),
-                callBackurl: res[0].paymentlink!.callbackUrl.toString(), type: 1, eventid: 0,)));
+                  url: res[0].paymentlink!.shortUrl.toString(),
+                  callBackurl: res[0].paymentlink!.callbackUrl.toString(),
+                  type: 1,
+                  eventid: 0,
+                )));
       } else {
         Fluttertoast.showToast(
             msg: "Something went wrong",
@@ -96,28 +99,30 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return  Scaffold(
       //backgroundColor: AppTheme.backGround2,
-      appBar: AppBar(
+      appBar: memberDetails != null? AppBar(
         titleSpacing: 12,
-        automaticallyImplyLeading: false,
+       // automaticallyImplyLeading: false,
         elevation: 1,
         title: Text("Profile"),
         actions: [
           if (accountType == "1")
-            IconButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => EditProfile(
-                            details: memberDetails![0].memberBasicDetails!,
-                          )));
-                },
-                icon: Icon(
-                  Icons.edit,
-                  // color: AppTheme.bodyTextColor,
-                ))
+            if (widget.memberid ==
+                memberDetails![0].memberBasicDetails!.membershipNo.toString())
+              IconButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => EditProfile(
+                              details: memberDetails![0].memberBasicDetails!,
+                            )));
+                  },
+                  icon: Icon(
+                    Icons.edit,
+                    // color: AppTheme.bodyTextColor,
+                  ))
         ],
-      ),
+      ):AppBar(),
       body: accountType == "1"
           ? memberDetails != null
               ? SingleChildScrollView(
@@ -313,20 +318,24 @@ class _ProfileState extends State<Profile> {
                                         .textTheme
                                         .headlineMedium!),
                                 GestureDetector(
-                                  onTap: () {
-                                 
-                                  },
+                                  onTap: () {},
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 12, vertical: 8),
                                     decoration: BoxDecoration(
                                         color: memberDetails![0]
-                                          .memberBasicDetails!
-                                          .state
-                                          .toString()=="Live"? Colors.green:memberDetails![0]
-                                          .memberBasicDetails!
-                                          .state
-                                          .toString()=="Debar"?Colors.orange:Colors.red,
+                                                    .memberBasicDetails!
+                                                    .state
+                                                    .toString() ==
+                                                "Live"
+                                            ? Colors.green
+                                            : memberDetails![0]
+                                                        .memberBasicDetails!
+                                                        .state
+                                                        .toString() ==
+                                                    "Debar"
+                                                ? Colors.orange
+                                                : Colors.red,
                                         borderRadius: BorderRadius.circular(4)),
                                     child: Text(
                                       memberDetails![0]
@@ -665,41 +674,46 @@ class _ProfileState extends State<Profile> {
                                 style: Theme.of(context)
                                     .textTheme
                                     .headlineMedium!),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => SocialLinksPage(
-                                          facebook: memberDetails![0]
-                                              .memberBasicDetails!
-                                              .facebookLink
-                                              .toString(),
-                                          insta: memberDetails![0]
-                                              .memberBasicDetails!
-                                              .instagramLink
-                                              .toString(),
-                                          linkedin: memberDetails![0]
-                                              .memberBasicDetails!
-                                              .linkedinLink
-                                              .toString(),
-                                          twiter: memberDetails![0]
-                                              .memberBasicDetails!
-                                              .twitterLink
-                                              .toString(),
-                                          youtube: memberDetails![0]
-                                              .memberBasicDetails!
-                                              .youtubeLink
-                                              .toString(),
-                                          imdb: memberDetails![0]
-                                              .memberBasicDetails!
-                                              .imdb_link
-                                              .toString(),
-                                        )));
-                              },
-                              child: Text("+Add",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .displaySmall!),
-                            ),
+                            if (widget.memberid ==
+                                memberDetails![0]
+                                    .memberBasicDetails!
+                                    .membershipNo
+                                    .toString())
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => SocialLinksPage(
+                                            facebook: memberDetails![0]
+                                                .memberBasicDetails!
+                                                .facebookLink
+                                                .toString(),
+                                            insta: memberDetails![0]
+                                                .memberBasicDetails!
+                                                .instagramLink
+                                                .toString(),
+                                            linkedin: memberDetails![0]
+                                                .memberBasicDetails!
+                                                .linkedinLink
+                                                .toString(),
+                                            twiter: memberDetails![0]
+                                                .memberBasicDetails!
+                                                .twitterLink
+                                                .toString(),
+                                            youtube: memberDetails![0]
+                                                .memberBasicDetails!
+                                                .youtubeLink
+                                                .toString(),
+                                            imdb: memberDetails![0]
+                                                .memberBasicDetails!
+                                                .imdb_link
+                                                .toString(),
+                                          )));
+                                },
+                                child: Text("+Add",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displaySmall!),
+                              ),
                           ],
                         ),
                         SizedBox(
@@ -864,15 +878,20 @@ class _ProfileState extends State<Profile> {
                                     .textTheme
                                     .headlineMedium!),
                             if (memberDetails![0].projectWork!.length != 0)
-                              GestureDetector(
-                                  onTap: () {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                            builder: (context) => AddProject(
-                                                  projectList: ProjectWork(),
-                                                )));
-                                  },
-                                  child: Icon(Icons.add))
+                              if (widget.memberid ==
+                                  memberDetails![0]
+                                      .memberBasicDetails!
+                                      .membershipNo
+                                      .toString())
+                                GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                              builder: (context) => AddProject(
+                                                    projectList: ProjectWork(),
+                                                  )));
+                                    },
+                                    child: Icon(Icons.add))
                           ],
                         ),
                         SizedBox(
@@ -927,22 +946,28 @@ class _ProfileState extends State<Profile> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.end,
                                       children: [
-                                        GestureDetector(
-                                          //  behavior: HitTestBehavior.opaque,
-                                          onTap: () {
-                                            Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        AddProject(
-                                                            projectList:
-                                                                memberDetails![
-                                                                            0]
-                                                                        .projectWork![
-                                                                    index])));
-                                          },
-                                          child: Icon(Icons.edit,
-                                              size: 17.sp, color: Colors.white),
-                                        ),
+                                        if (widget.memberid ==
+                                            memberDetails![0]
+                                                .memberBasicDetails!
+                                                .membershipNo
+                                                .toString())
+                                          GestureDetector(
+                                            //  behavior: HitTestBehavior.opaque,
+                                            onTap: () {
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          AddProject(
+                                                              projectList:
+                                                                  memberDetails![
+                                                                              0]
+                                                                          .projectWork![
+                                                                      index])));
+                                            },
+                                            child: Icon(Icons.edit,
+                                                size: 17.sp,
+                                                color: Colors.white),
+                                          ),
                                         SizedBox(
                                           height: 5.h,
                                         ),

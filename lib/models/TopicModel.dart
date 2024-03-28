@@ -59,6 +59,7 @@ class DiscussionComments {
       this.commentCreateDate, 
       this.image_url,
       this.memberName, 
+      this.membership_no,
       this.designation, 
       this.commentId,});
 
@@ -70,6 +71,7 @@ class DiscussionComments {
     memberName = json['member_name'];
     designation = json['designation'].toString();
     commentId = json['comment_id'];
+    membership_no=json["membership_no"];
   }
   String? profileImage;
   String? comment;
@@ -78,6 +80,7 @@ class DiscussionComments {
   String? designation;
    String? image_url;
   int? commentId;
+  String? membership_no;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -87,6 +90,7 @@ class DiscussionComments {
     map['comment_create_date'] = commentCreateDate;
     map['member_name'] = memberName;
     map['designation'] = designation;
+    map['membership_no'] = membership_no;
     map['comment_id'] = commentId;
     return map;
   }

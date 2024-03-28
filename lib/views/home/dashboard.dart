@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sica/theme/theme.dart';
 import 'package:sica/views/home/homepage.dart';
 import 'package:sica/views/shooting/shooting_list.dart';
@@ -23,7 +24,21 @@ class MyDashBoard extends StatefulWidget {
 
 class _MyDashBoardState extends State<MyDashBoard> {
   //int _currentIndex = 0;
-
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getMemberDetails();
+  }
+  String? memberid;
+  void getMemberDetails() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    memberid = (sharedPreferences.getString('memberid') ?? "");
+    if(mounted)
+   setState(() {
+     
+   });
+  }
   final _inactiveColor = Color.fromARGB(255, 245, 241, 241);
   @override
   Widget build(BuildContext context) {
@@ -52,13 +67,13 @@ class _MyDashBoardState extends State<MyDashBoard> {
           inactiveColor: _inactiveColor,
           textAlign: TextAlign.center,
         ),
-        BottomNavyBarItem(
-          icon: const Icon(Icons.event_rounded),
-          title: const Text('Events'),
-          activeColor: activeColor,
-          inactiveColor: _inactiveColor,
-          textAlign: TextAlign.center,
-        ),
+        // BottomNavyBarItem(
+        //   icon: const Icon(Icons.event_rounded),
+        //   title: const Text('Events'),
+        //   activeColor: activeColor,
+        //   inactiveColor: _inactiveColor,
+        //   textAlign: TextAlign.center,
+        // ),
         BottomNavyBarItem(
           icon: const Icon(CupertinoIcons.photo),
           title: const Text(
@@ -218,9 +233,9 @@ class _MyDashBoardState extends State<MyDashBoard> {
   Widget getBody() {
     List<Widget> pages = [
       const Homepage(),
-      EventsTabBar(),
+    //  EventsTabBar(),
       GalleryList(),
-      Profile(),
+      Profile(memberid: "0024",),
     ];
     return IndexedStack(
       index: widget.currentIndex,

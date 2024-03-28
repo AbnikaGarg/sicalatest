@@ -16,6 +16,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../utils/images.dart';
 import '../../forum/select_forum_type.dart';
 import '../../polls/polls.dart';
+import '../select_form_reason.dart';
 
 class NavBar extends StatefulWidget {
   @override
@@ -168,15 +169,20 @@ class _NavBarState extends State<NavBar> {
                     },
                     child: _buildIconwithText("Vendors", "vendors", context),
                   ),
-                  
-              
 
                 SizedBox(
                   height: 30.h,
                 ),
                 Text("Account",
                     style: Theme.of(context).textTheme.headlineMedium!),
-                //  _buildIconwithText("Support", "support", context),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => SelectReason()));
+                  },
+                  child: _buildIconwithText("Support", "support", context),
+                ),
                 GestureDetector(
                   onTap: () {
                     launchUrl(Uri.parse("https://thesica.in/privacy-policy/"));

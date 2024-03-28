@@ -1,3 +1,5 @@
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,6 +31,7 @@ class EventDetail extends StatefulWidget {
 }
 
 class _EventDetailState extends State<EventDetail> {
+  int _currentIndex = 0;
   void createPayment(eventid) {
     final service = MemberRepo();
     DialogHelp.showLoading(context);
@@ -87,7 +90,6 @@ class _EventDetailState extends State<EventDetail> {
                 textcolor: Color.fromARGB(255, 255, 254, 254),
                 title: "Already Booked",
                 ontap: () {
-                 
                   // Navigator.push(
                   //   context,
                   //   MaterialPageRoute(
@@ -126,12 +128,73 @@ class _EventDetailState extends State<EventDetail> {
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Stack(
           children: [
-            AspectRatio(
-              aspectRatio: 16 / 9,
-              child: Image.network(
-                widget.events.imageUrl.toString(),
-                fit: BoxFit.cover,
-                colorBlendMode: BlendMode.dstATop,
+            CarouselSlider.builder(
+                itemCount: widget.events.imagesUrl!.length,
+                itemBuilder: (context, index, realIndex) {
+                  return Stack(
+                    children: [
+                      AspectRatio(
+                        aspectRatio: 16 / 9,
+                        child: Image.network(
+                          widget.events.imagesUrl![index],
+                          fit: BoxFit.cover,
+                          // color: Color(0x66000000),
+                          // colorBlendMode: BlendMode.darken,
+                        ),
+                      ),
+                    ],
+                  );
+                },
+                options: CarouselOptions(
+                  //  height: getProportionateScreenHeight(300),
+                  aspectRatio: 16 / 9,
+                  //  enlargeCenterPage: true,
+
+                  viewportFraction: 1,
+                  initialPage: 0,
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      _currentIndex = index;
+                    });
+                  },
+
+                  enableInfiniteScroll: true,
+                  reverse: false,
+                  autoPlay: true,
+                  autoPlayInterval: Duration(seconds: 3),
+                  autoPlayAnimationDuration: Duration(milliseconds: 800),
+                  // autoPlayCurve: Curves.fastOutSlowIn,
+                  autoPlayCurve: Curves.fastOutSlowIn,
+                  // onPageChanged: pageController,
+                  enlargeStrategy: CenterPageEnlargeStrategy.zoom,
+
+                  scrollDirection: Axis.horizontal,
+                )),
+
+            // AspectRatio(
+            //   aspectRatio: 16 / 9,
+            //   child: Image.network(
+            //     widget.events.imageUrl.toString(),
+            //     fit: BoxFit.cover,
+            //     colorBlendMode: BlendMode.dstATop,
+            //   ),
+            // ),
+
+            Positioned(
+              bottom: 10,
+              right: 0,
+              left: 0,
+              child: DotsIndicator(
+                dotsCount: widget.events.imagesUrl!.length,
+                position: _currentIndex,
+                decorator: DotsDecorator(
+                  size: const Size.square(9.0),
+                  activeColor: Theme.of(context).primaryColor,
+                  activeSize: const Size(18.0, 9.0),
+                  color: AppTheme.darkTextColor.withOpacity(0.3),
+                  activeShape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0)),
+                ),
               ),
             ),
             Positioned(
@@ -145,21 +208,9 @@ class _EventDetailState extends State<EventDetail> {
                         Navigator.pop(context);
                       },
                       child: Icon(Icons.arrow_back,
-                          color: AppTheme.whiteBackgroundColor),
+                          color: AppTheme.blackColor),
                     ),
-                    Expanded(
-                      child: Text(
-                        "  ${widget.events.title.toString()}",
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineLarge!
-                            .copyWith(
-                                color: AppTheme.whiteBackgroundColor,
-                                fontSize: 20.sp),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
+                   
                     //   Icon(Icons.share, color: AppTheme.w),
                   ],
                 ))
@@ -173,6 +224,16 @@ class _EventDetailState extends State<EventDetail> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(
+                "${widget.events.title.toString()}",
+                style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                    color: AppTheme.whiteBackgroundColor, fontSize: 16),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              SizedBox(
+                height: 20,
+              ),
               if (!widget.events.isCompleted!)
                 Column(
                   children: [

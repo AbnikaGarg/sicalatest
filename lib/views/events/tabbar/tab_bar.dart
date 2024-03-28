@@ -33,6 +33,15 @@ class EventsTabBar extends StatelessWidget {
             child: SafeArea(
               child: Row(
                 children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 12, top: 10),
+                      child:  Icon(Icons.arrow_back, color: AppTheme.whiteBackgroundColor,),
+                    ),
+                  ),
                   Expanded(
                     child: Column(
                       children: <Widget>[
@@ -43,6 +52,7 @@ class EventsTabBar extends StatelessWidget {
                           labelStyle: AppTheme.text14Px,
                           indicatorColor: AppTheme.darkPrimaryColor,
                           isScrollable: false,
+                       indicatorSize: TabBarIndicatorSize.label,
                           tabs: [
                             Padding(
                               padding: EdgeInsets.only(bottom: 12.h),
@@ -68,7 +78,15 @@ class EventsTabBar extends StatelessWidget {
         ),
         body: const TabBarView(
           physics: NeverScrollableScrollPhysics(),
-          children: <Widget>[EventsTab(type: 1), EventsTab(type: 2,), EventsTab(type: 3,)],
+          children: <Widget>[
+            EventsTab(type: 1),
+            EventsTab(
+              type: 2,
+            ),
+            EventsTab(
+              type: 3,
+            )
+          ],
         ),
       ),
     );

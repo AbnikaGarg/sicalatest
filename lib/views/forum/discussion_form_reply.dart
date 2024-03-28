@@ -14,6 +14,9 @@ import 'package:sica/models/TopicModel.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:sica/services/forum_repo.dart';
 import 'package:sica/utils/config.dart';
+import 'package:sica/views/forum/image_fullview.dart';
+import 'package:sica/views/members/components/members_tabbar.dart';
+import 'package:sica/views/profile/profile.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../components/buton.dart';
 import '../../components/input_feild.dart';
@@ -544,7 +547,8 @@ class _nameState extends State<DiscussionFormReply> {
                                 Text(
                                     widget.discussionTopicComments
                                         .discussionDetails!.topic
-                                       .toString().toUpperCase(),
+                                        .toString()
+                                        .toUpperCase(),
                                     style: Theme.of(context)
                                         .textTheme
                                         .headlineMedium!),
@@ -683,45 +687,76 @@ class _nameState extends State<DiscussionFormReply> {
                                             .profileImage
                                             .toString() !=
                                         "")
-                                      CachedNetworkImage(
-                                        height: 36.h,
-                                        width: 36.h,
-                                        imageUrl: discussionTopicCommentsList!
-                                            .discussionComments![index]
-                                            .profileImage
-                                            .toString(),
-                                        imageBuilder:
-                                            (context, imageProvider) =>
-                                                Container(
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              image: DecorationImage(
-                                                image: imageProvider,
-                                                fit: BoxFit.cover,
-                                              )),
+                                      GestureDetector(
+                                        onTap: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) => MembersTabBar(
+                                                            memberid:
+                                                                discussionTopicCommentsList!
+                                                                    .discussionComments![
+                                                                        index]
+                                                                    .membership_no
+                                                                    .toString()),
+                                                      ),
+                                                    );
+                                                  },
+                                        child: CachedNetworkImage(
+                                          height: 36.h,
+                                          width: 36.h,
+                                          imageUrl: discussionTopicCommentsList!
+                                              .discussionComments![index]
+                                              .profileImage
+                                              .toString(),
+                                          imageBuilder:
+                                              (context, imageProvider) =>
+                                                  Container(
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                image: DecorationImage(
+                                                  image: imageProvider,
+                                                  fit: BoxFit.cover,
+                                                )),
+                                          ),
+                                          placeholder: (context, url) => SizedBox(
+                                            child: Center(
+                                                child: CircularProgressIndicator(
+                                              color: Colors.yellow,
+                                            )),
+                                            height: 10.h,
+                                            width: 10.h,
+                                          ),
+                                          errorWidget: (context, url, error) =>
+                                              Icon(Icons.error),
                                         ),
-                                        placeholder: (context, url) => SizedBox(
-                                          child: Center(
-                                              child:
-                                                  const CircularProgressIndicator(
-                                            color: Colors.yellow,
-                                          )),
-                                          height: 10.h,
-                                          width: 10.h,
-                                        ),
-                                        errorWidget: (context, url, error) =>
-                                            Icon(Icons.error),
                                       )
                                     else
-                                      Container(
-                                        height: 50.h,
-                                        width: 50.h,
-                                        decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          image: DecorationImage(
-                                            image: AssetImage(
-                                                "assets/images/profile.jpeg"),
-                                            fit: BoxFit.cover,
+                                      GestureDetector(
+                                        onTap: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) => MembersTabBar(
+                                                            memberid:
+                                                                discussionTopicCommentsList!
+                                                                    .discussionComments![
+                                                                        index]
+                                                                    .membership_no
+                                                                    .toString()),
+                                                      ),
+                                                    );
+                                                  },
+                                        child: Container(
+                                          height: 50.h,
+                                          width: 50.h,
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            image: DecorationImage(
+                                              image: AssetImage(
+                                                  "assets/images/profile.jpeg"),
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -740,24 +775,40 @@ class _nameState extends State<DiscussionFormReply> {
                                                 MainAxisAlignment.start,
                                             children: [
                                               Expanded(
-                                                child: Text(
-                                                    discussionTopicCommentsList!
-                                                        .discussionComments![
-                                                            index]
-                                                        .memberName
-                                                        .toString(),
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headlineMedium!
-                                                        .copyWith(
-                                                            fontSize: 14)),
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) => MembersTabBar(
+                                                            memberid:
+                                                                discussionTopicCommentsList!
+                                                                    .discussionComments![
+                                                                        index]
+                                                                    .membership_no
+                                                                    .toString()),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: Text(
+                                                      discussionTopicCommentsList!
+                                                          .discussionComments![
+                                                              index]
+                                                          .memberName
+                                                          .toString(),
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .headlineMedium!
+                                                          .copyWith(
+                                                              fontSize: 14)),
+                                                ),
                                               ),
                                             ],
                                           ),
-                                          
-                                            SizedBox(
-                                              height: 5.h,
-                                            ),
+
+                                          SizedBox(
+                                            height: 5.h,
+                                          ),
                                           if (discussionTopicCommentsList!
                                                   .discussionComments![index]
                                                   .comment
@@ -784,23 +835,38 @@ class _nameState extends State<DiscussionFormReply> {
                                               linkStyle:
                                                   TextStyle(color: Colors.blue),
                                             ),
-                                         
-                                            SizedBox(
-                                              height: 10.h,
-                                            ),
+
+                                          SizedBox(
+                                            height: 10.h,
+                                          ),
                                           if (discussionTopicCommentsList!
                                                   .discussionComments![index]
                                                   .image_url
                                                   .toString() !=
                                               "null")
-                                            Container(
-                                              height: 130,
-                                              child: Image.network(
-                                                discussionTopicCommentsList!
-                                                    .discussionComments![index]
-                                                    .image_url
-                                                    .toString(),
-                                                fit: BoxFit.contain,
+                                            GestureDetector(
+                                              onTap: () {
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            FullScreenImage(
+                                                              url: discussionTopicCommentsList!
+                                                                  .discussionComments![
+                                                                      index]
+                                                                  .image_url
+                                                                  .toString(),
+                                                            )));
+                                              },
+                                              child: Container(
+                                                height: 130,
+                                                child: Image.network(
+                                                  discussionTopicCommentsList!
+                                                      .discussionComments![
+                                                          index]
+                                                      .image_url
+                                                      .toString(),
+                                                  fit: BoxFit.contain,
+                                                ),
                                               ),
                                             ),
                                           if (getyoutubelink(
@@ -822,17 +888,34 @@ class _nameState extends State<DiscussionFormReply> {
                                               "")
                                             Stack(
                                               children: [
-                                                Image.network(
-                                                  getyoutubelink(
-                                                    discussionTopicCommentsList!
-                                                        .discussionComments![
-                                                            index]
-                                                        .comment
-                                                        .toString(),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.of(context).push(
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                FullScreenImage(
+                                                                  url:
+                                                                      getyoutubelink(
+                                                                    discussionTopicCommentsList!
+                                                                        .discussionComments![
+                                                                            index]
+                                                                        .comment
+                                                                        .toString(),
+                                                                  ),
+                                                                )));
+                                                  },
+                                                  child: Image.network(
+                                                    getyoutubelink(
+                                                      discussionTopicCommentsList!
+                                                          .discussionComments![
+                                                              index]
+                                                          .comment
+                                                          .toString(),
+                                                    ),
+                                                    fit: BoxFit.cover,
+                                                    height: 200,
+                                                    width: 300,
                                                   ),
-                                                  fit: BoxFit.cover,
-                                                  height: 200,
-                                                  width: 300,
                                                 ),
                                                 Positioned(
                                                   top: 14,

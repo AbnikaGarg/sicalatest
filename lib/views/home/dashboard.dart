@@ -235,7 +235,7 @@ class _MyDashBoardState extends State<MyDashBoard> {
       const Homepage(),
     //  EventsTabBar(),
       GalleryList(),
-      Profile(memberid: "0024",),
+      Profile(memberid: "",),
     ];
     return IndexedStack(
       index: widget.currentIndex,

@@ -123,11 +123,11 @@ class _ProfileState extends State<Profile> {
               title: Text("Profile"),
               actions: [
                 if (accountType == "1")
-                  if (widget.memberid ==
-                      memberDetails![0]
-                          .memberBasicDetails!
-                          .membershipNo
-                          .toString())
+                  // if (widget.memberid ==
+                  //     memberDetails![0]
+                  //         .memberBasicDetails!
+                  //         .membershipNo
+                  //         .toString())
                     IconButton(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
@@ -696,11 +696,11 @@ class _ProfileState extends State<Profile> {
                                 style: Theme.of(context)
                                     .textTheme
                                     .headlineMedium!),
-                            if (widget.memberid ==
-                                memberDetails![0]
-                                    .memberBasicDetails!
-                                    .membershipNo
-                                    .toString())
+                            // if (widget.memberid ==
+                            //     memberDetails![0]
+                            //         .memberBasicDetails!
+                            //         .membershipNo
+                            //         .toString())
                               GestureDetector(
                                 onTap: () {
                                   Navigator.of(context).push(MaterialPageRoute(
@@ -900,11 +900,11 @@ class _ProfileState extends State<Profile> {
                                     .textTheme
                                     .headlineMedium!),
                             if (memberDetails![0].projectWork!.length != 0)
-                              if (widget.memberid ==
-                                  memberDetails![0]
-                                      .memberBasicDetails!
-                                      .membershipNo
-                                      .toString())
+                              // if (widget.memberid ==
+                              //     memberDetails![0]
+                              //         .memberBasicDetails!
+                              //         .membershipNo
+                              //         .toString())
                                 GestureDetector(
                                     onTap: () {
                                       Navigator.of(context)
@@ -968,11 +968,11 @@ class _ProfileState extends State<Profile> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.end,
                                       children: [
-                                        if (widget.memberid ==
-                                            memberDetails![0]
-                                                .memberBasicDetails!
-                                                .membershipNo
-                                                .toString())
+                                        // if (widget.memberid ==
+                                        //     memberDetails![0]
+                                        //         .memberBasicDetails!
+                                        //         .membershipNo
+                                        //         .toString())
                                           GestureDetector(
                                             //  behavior: HitTestBehavior.opaque,
                                             onTap: () {

@@ -43,6 +43,20 @@ class _ProfileState extends State<Profile> {
   void initState() {
     super.initState();
     getMemberDetails();
+    getPayments();
+  }
+
+  List paymentDetils = [];
+
+  void getPayments() {
+    final service = MemberRepo();
+    service.getPayments().then((value) {
+      if (value.isNotEmpty) {
+        paymentDetils = value[0];
+
+        if (mounted) setState(() {});
+      }
+    });
   }
 
   String? accountType;
@@ -51,7 +65,7 @@ class _ProfileState extends State<Profile> {
     accountType = (sharedPreferences.getString('accounttype') ?? "");
     if (mounted) setState(() {});
     final service = MemberRepo();
-    service.getMemberDetails(widget.memberid).then((value) {
+    service.getMemberDetails("").then((value) {
       if (value.isNotEmpty) {
         memberDetails = value;
         if (mounted) setState(() {});
@@ -99,30 +113,36 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       //backgroundColor: AppTheme.backGround2,
-      appBar: memberDetails != null? AppBar(
-        titleSpacing: 12,
-       // automaticallyImplyLeading: false,
-        elevation: 1,
-        title: Text("Profile"),
-        actions: [
-          if (accountType == "1")
-            if (widget.memberid ==
-                memberDetails![0].memberBasicDetails!.membershipNo.toString())
-              IconButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => EditProfile(
-                              details: memberDetails![0].memberBasicDetails!,
-                            )));
-                  },
-                  icon: Icon(
-                    Icons.edit,
-                    // color: AppTheme.bodyTextColor,
-                  ))
-        ],
-      ):AppBar(),
+      appBar: memberDetails != null
+          ? AppBar(
+              titleSpacing: 12,
+              // automaticallyImplyLeading: false,
+              elevation: 1,
+              title: Text("Profile"),
+              actions: [
+                if (accountType == "1")
+                  if (widget.memberid ==
+                      memberDetails![0]
+                          .memberBasicDetails!
+                          .membershipNo
+                          .toString())
+                    IconButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => EditProfile(
+                                    details:
+                                        memberDetails![0].memberBasicDetails!,
+                                  )));
+                        },
+                        icon: Icon(
+                          Icons.edit,
+                          // color: AppTheme.bodyTextColor,
+                        ))
+              ],
+            )
+          : AppBar(),
       body: accountType == "1"
           ? memberDetails != null
               ? SingleChildScrollView(
@@ -199,7 +219,7 @@ class _ProfileState extends State<Profile> {
                                             .textTheme
                                             .headlineSmall!
                                             .copyWith(
-                                              fontSize: 18.sp,
+                                              fontSize: 18,
                                             ),
                                         children: <TextSpan>[
                                           TextSpan(
@@ -250,14 +270,14 @@ class _ProfileState extends State<Profile> {
                         //             .textTheme
                         //             .headlineSmall!
                         //             .copyWith(
-                        //               fontSize: 18.sp,
+                        //               fontSize: 18,
                         //             ),
                         //         children: <TextSpan>[
                         //           TextSpan(
                         //               text:
                         //                   '  ${memberDetails![0].memberBasicDetails!.membershipNo.toString()}',
                         //               style: TextStyle(
-                        //                 fontSize: 14.sp,
+                        //                 fontSize: 14,
                         //               )),
                         //         ],
                         //       ),
@@ -277,7 +297,7 @@ class _ProfileState extends State<Profile> {
                         //                 .textTheme
                         //                 .headlineSmall!
                         //                 .copyWith(
-                        //                   fontSize: 14.sp,
+                        //                   fontSize: 14,
                         //                 )),
                         //       ],
                         //     )
@@ -520,7 +540,8 @@ class _ProfileState extends State<Profile> {
                                               .toString())))
                                         GestureDetector(
                                           onTap: () {
-                                            createPayment();
+                                            showModal2(context);
+                                            // createPayment();
                                           },
                                           child: Container(
                                             padding: EdgeInsets.symmetric(
@@ -603,7 +624,8 @@ class _ProfileState extends State<Profile> {
                                         .headlineMedium!),
                                 GestureDetector(
                                   onTap: () {
-                                    createPayment();
+                                    showModal2(context);
+                                    //createPayment();
                                   },
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
@@ -861,7 +883,7 @@ class _ProfileState extends State<Profile> {
                         //     child: Text(
                         //       "Membership ends in 14 days. Click here to Renew",
                         //       style: GoogleFonts.inter(
-                        //           fontSize: 12.sp,
+                        //           fontSize: 12,
                         //           color: Theme.of(context).primaryColor,
                         //           decoration: TextDecoration.underline),
                         //     ),
@@ -923,7 +945,7 @@ class _ProfileState extends State<Profile> {
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .bodySmall!
-                                                .copyWith(fontSize: 15.sp),
+                                                .copyWith(fontSize: 15),
                                           ),
                                           SizedBox(
                                             height: 5.h,
@@ -933,7 +955,7 @@ class _ProfileState extends State<Profile> {
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .displaySmall!
-                                                .copyWith(fontSize: 12.sp),
+                                                .copyWith(fontSize: 12),
                                           ),
                                         ],
                                       ),
@@ -965,7 +987,7 @@ class _ProfileState extends State<Profile> {
                                                                       index])));
                                             },
                                             child: Icon(Icons.edit,
-                                                size: 17.sp,
+                                                size: 17,
                                                 color: Colors.white),
                                           ),
                                         SizedBox(
@@ -977,7 +999,7 @@ class _ProfileState extends State<Profile> {
                                               .textTheme
                                               .bodySmall!
                                               .copyWith(
-                                                  fontSize: 12.sp,
+                                                  fontSize: 12,
                                                   color: Theme.of(context)
                                                       .iconTheme
                                                       .color),
@@ -1016,7 +1038,7 @@ class _ProfileState extends State<Profile> {
                                           .textTheme
                                           .headlineSmall!
                                           .copyWith(
-                                              fontSize: 14.sp,
+                                              fontSize: 14,
                                               color: AppTheme
                                                   .whiteBackgroundColor),
                                     ),
@@ -1091,13 +1113,13 @@ class _ProfileState extends State<Profile> {
                                 .textTheme
                                 .headlineSmall!
                                 .copyWith(
-                                  fontSize: 18.sp,
+                                  fontSize: 18,
                                 ),
                             children: <TextSpan>[
                               TextSpan(
                                   text: '  2',
                                   style: TextStyle(
-                                    fontSize: 14.sp,
+                                    fontSize: 14,
                                   )),
                             ],
                           ),
@@ -1116,7 +1138,7 @@ class _ProfileState extends State<Profile> {
                                     .textTheme
                                     .headlineSmall!
                                     .copyWith(
-                                      fontSize: 14.sp,
+                                      fontSize: 14,
                                     )),
                           ],
                         )
@@ -1167,6 +1189,318 @@ class _ProfileState extends State<Profile> {
             ),
     );
   }
+
+  void showModal2(context) {
+    showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (context) {
+          return GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: (() {
+                Navigator.of(context).pop();
+              }),
+              child: SingleChildScrollView(
+                child: paymentDetils.isNotEmpty
+                    ? Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12.0.r),
+                            topRight: Radius.circular(12.0.r),
+                          ),
+                          color: Theme.of(context).cardColor,
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              right: 20.w,
+                              left: 20.w,
+                              bottom: MediaQuery.of(context).viewInsets.bottom),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                Center(
+                                  child: Container(
+                                    width: 40.w,
+                                    height: 4.h,
+                                    decoration: BoxDecoration(
+                                        color: Colors.grey[600],
+                                        borderRadius:
+                                            BorderRadius.circular(12)),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 12.h),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "Subscription Fee details",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineLarge!
+                                            .copyWith(fontSize: 16),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                          //showModal2(context);
+                                          createPayment();
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 8, vertical: 5),
+                                          decoration: BoxDecoration(
+                                              color: Colors.green,
+                                              borderRadius:
+                                                  BorderRadius.circular(4)),
+                                          child: Text(
+                                            "Pay now",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium!
+                                                .copyWith(fontSize: 20),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 6,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Paid Till:",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(fontSize: 16),
+                                    ),
+                                    Text(
+                                      "${paymentDetils[0]["paid_till"]}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(fontSize: 16),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 20.h,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "YEAR",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(fontSize: 16),
+                                    ),
+                                    Text(
+                                      "SICA",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(fontSize: 16),
+                                    ),
+                                    Text(
+                                      "CBT",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(fontSize: 16),
+                                    ),
+                                    Text(
+                                      "TOTAL",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(fontSize: 16),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                for (var video in paymentDetils[0]
+                                    ["subscription_years"])
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 10),
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(video["year"].toString(),
+                                              style: GoogleFonts.montserrat(
+                                                fontSize: 15,
+                                                color: Colors.green,
+                                                fontWeight: FontWeight.w600,
+                                              )),
+                                          Text(video["sica_fee"].toString(),
+                                              style: GoogleFonts.montserrat(
+                                                fontSize: 15,
+                                                color: Colors.green,
+                                                fontWeight: FontWeight.w600,
+                                              )),
+                                          Text(video["cbt_amount"].toString(),
+                                              style: GoogleFonts.montserrat(
+                                                fontSize: 15,
+                                                color: Colors.green,
+                                                fontWeight: FontWeight.w600,
+                                              )),
+                                          Text(
+                                              video["subscription_amount"]
+                                                  .toString(),
+                                              style: GoogleFonts.montserrat(
+                                                fontSize: 15,
+                                                color: Colors.green,
+                                                fontWeight: FontWeight.w600,
+                                              )),
+                                        ]),
+                                  ),
+                                Divider(
+                                  color: AppTheme.hintTextColor,
+                                ),
+                                SizedBox(
+                                  height: 6,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Total Fee:",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(fontSize: 16),
+                                    ),
+                                    Text(
+                                      "${paymentDetils[0]["subscription_total_fee"]}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(fontSize: 16),
+                                    ),
+                                  ],
+                                ),
+                                if (paymentDetils[0]["convience_fee"] != "")
+                                  SizedBox(
+                                    height: 20.h,
+                                  ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Convenience Fee:",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(fontSize: 16),
+                                    ),
+                                    Text(
+                                      "${paymentDetils[0]["convience_fee"]}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(fontSize: 16),
+                                    ),
+                                  ],
+                                ),
+                                if (paymentDetils[0]["gateway_note"] != "")
+                                  SizedBox(
+                                    height: 20.h,
+                                  ),
+                                if (paymentDetils[0]["gateway_note"] != "")
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "Payment Gateway note:",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineLarge!
+                                            .copyWith(fontSize: 16),
+                                      ),
+                                      Text(
+                                        "${paymentDetils[0]["gateway_note"]}",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineLarge!
+                                            .copyWith(fontSize: 16),
+                                      ),
+                                    ],
+                                  ),
+                                SizedBox(
+                                  height: 20.h,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Penalty:",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(fontSize: 16),
+                                    ),
+                                    Text(
+                                      "${paymentDetils[0]["penalty_fee"]}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(fontSize: 16),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 20.h,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Total Payment:",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(fontSize: 16),
+                                    ),
+                                    Text(
+                                      "${paymentDetils[0]["total_fee"]}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(fontSize: 16),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 30,
+                                ),
+                              ]),
+                        ),
+                      )
+                    : CircularProgressIndicator(),
+              ));
+        });
+  }
 }
 
 class SocialLinks extends StatelessWidget {
@@ -1198,7 +1532,7 @@ class SocialLinks extends StatelessWidget {
         Text(
           socialLinks["title"],
           style:
-              Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12.sp),
+              Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12),
         )
       ],
     );

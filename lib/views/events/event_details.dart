@@ -488,7 +488,7 @@ class _EventDetailState extends State<EventDetail> {
                 ),
               if (widget.events.eventLink.toString() != "")
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Icon(
                       CupertinoIcons.globe,
@@ -504,13 +504,31 @@ class _EventDetailState extends State<EventDetail> {
                           launchUrl(
                               Uri.parse(widget.events.eventLink.toString()));
                         },
-                        child: Text(
-                          "Event link: ${widget.events.eventLink.toString()}",
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelSmall!
-                              .copyWith(fontSize: 16, color: Colors.blue),
-                        ),
+                        child: 
+                         RichText(
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            text: TextSpan(
+                              style: Theme.of(context).textTheme.labelSmall!,
+                              children: <TextSpan>[
+                                TextSpan(
+                                    text:
+                                        'Event link: '),
+                                TextSpan(
+                                    text: '${widget.events.eventLink.toString()}',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,color: Colors.blue
+                                    )),
+                              ],
+                            ),
+                          ),
+                        // Text(
+                        //   "Event link: ${widget.events.eventLink.toString()}",
+                        //   style: Theme.of(context)
+                        //       .textTheme
+                        //       .labelSmall!
+                        //       .copyWith(fontSize: 16, color: Colors.blue),
+                        // ),
                       ),
                     ),
                   ],

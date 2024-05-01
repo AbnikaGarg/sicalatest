@@ -246,7 +246,7 @@ class _CreateShootingState extends State<CreateShooting> {
                   child: Text(
                     "History",
                     style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                        fontSize: 16.sp, color: AppTheme.whiteBackgroundColor),
+                        fontSize: 16, color: AppTheme.whiteBackgroundColor),
                   ),
                 ),
               ),

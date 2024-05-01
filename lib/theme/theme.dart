@@ -26,77 +26,77 @@ class AppTheme {
 
   static final TextStyle headingText = GoogleFonts.inter(
     color: darkTextColor,
-    fontSize: 26.sp,
+    fontSize: 26,
     letterSpacing: 0,
     fontWeight: FontWeight.w600,
   );
   static final TextStyle title16Px = GoogleFonts.inter(
     color: darkTextColor,
-    fontSize: 16.sp,
+    fontSize: 16,
     letterSpacing: 0,
     height: 0,
     fontWeight: FontWeight.w600,
   );
   static final TextStyle text14Px = GoogleFonts.inter(
     color: darkTextColor,
-    fontSize: 14.sp,
+    fontSize: 14,
     letterSpacing: 0,
     height: 1.4,
     fontWeight: FontWeight.w400,
   );
   static final TextStyle text14500Px = GoogleFonts.inter(
     color: hintTextColor,
-    fontSize: 14.sp,
+    fontSize: 14,
     letterSpacing: 0,
     height: 0,
     fontWeight: FontWeight.w500,
   );
   static final TextStyle text20600Px = GoogleFonts.inter(
     color: lightTextColor,
-    fontSize: 20.sp,
+    fontSize: 20,
     letterSpacing: 0,
     height: 0,
     fontWeight: FontWeight.w600,
   );
   static final TextStyle lightBoldText = GoogleFonts.inter(
     color: lightTextColor,
-    fontSize: 14.sp,
+    fontSize: 14,
     letterSpacing: 0,
     height: 0,
     fontWeight: FontWeight.w500,
   );
   static final TextStyle hintText = GoogleFonts.inter(
     color: hintTextColor,
-    fontSize: 14.sp,
+    fontSize: 14,
     letterSpacing: 0,
     fontWeight: FontWeight.w400,
   );
   static final TextStyle authScreenTitle = GoogleFonts.inter(
-      fontSize: 20.sp,
+      fontSize: 20,
       color: darkTextColor,
       letterSpacing: 0,
       fontWeight: FontWeight.w500,
       height: 1.4);
   static final TextStyle lableInputText = GoogleFonts.inter(
-    fontSize: 14.sp,
+    fontSize: 14,
     letterSpacing: 0,
     color: lightTextColor,
     fontWeight: FontWeight.w500,
   );
   static final TextStyle smallText = GoogleFonts.inter(
-    fontSize: 16.sp,
+    fontSize: 16,
     letterSpacing: 0,
     color: hintTextColor,
     fontWeight: FontWeight.w400,
   );
   static final TextStyle smallTextDark = GoogleFonts.inter(
-    fontSize: 16.sp,
+    fontSize: 16,
     letterSpacing: 0,
     color: hintTextColor,
     fontWeight: FontWeight.w500,
   );
   static final TextStyle extraSmallText = GoogleFonts.inter(
-    fontSize: 14.sp,
+    fontSize: 14,
     letterSpacing: 0,
     color: lightTextColor,
     fontWeight: FontWeight.w400,
@@ -155,7 +155,7 @@ AppBarTheme appBarTheme() {
     actionsIconTheme: IconThemeData(color: AppTheme.darkTextColor),
     iconTheme: IconThemeData(color: AppTheme.darkTextColor),
     titleTextStyle: GoogleFonts.inter(
-        fontSize: 18.sp,
+        fontSize: 18,
         color: AppTheme.darkTextColor,
         fontWeight: FontWeight.w600),
   );
@@ -169,7 +169,7 @@ AppBarTheme appBarDarkTheme() {
     actionsIconTheme: IconThemeData(color: AppTheme.primaryColor),
     iconTheme: IconThemeData(color: AppTheme.primaryColor),
     titleTextStyle: GoogleFonts.inter(
-        fontSize: 18.sp,
+        fontSize: 18,
         color: AppTheme.whiteBackgroundColor,
         fontWeight: FontWeight.w600),
   );
@@ -181,11 +181,11 @@ TabBarTheme tabBarTheme() {
     indicatorColor: AppTheme.yelloDarkColor,
     unselectedLabelColor: AppTheme.darkTextColor,
     unselectedLabelStyle: GoogleFonts.inter(
-        fontSize: 16.sp,
+        fontSize: 16,
         color: AppTheme.darkTextColor,
         fontWeight: FontWeight.w600),
     labelStyle: GoogleFonts.inter(
-        fontSize: 16.sp,
+        fontSize: 16,
         color: AppTheme.darkTextColor,
         fontWeight: FontWeight.w600), // color for text
   );
@@ -197,11 +197,11 @@ TabBarTheme tabBarDarkTheme() {
     indicatorColor: AppTheme.darkPrimaryColor,
     unselectedLabelColor: AppTheme.whiteBackgroundColor,
     unselectedLabelStyle: GoogleFonts.inter(
-        fontSize: 16.sp,
+        fontSize: 16,
         color: AppTheme.whiteBackgroundColor,
         fontWeight: FontWeight.w600),
     labelStyle: GoogleFonts.inter(
-        fontSize: 16.sp,
+        fontSize: 16,
         color: AppTheme.whiteBackgroundColor,
         fontWeight: FontWeight.w600), // color for text
   );

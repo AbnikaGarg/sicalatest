@@ -67,7 +67,7 @@ class EventCard extends StatelessWidget {
                     //       child: Text(
                     //         "Tech Talk",
                     //         style: GoogleFonts.inter(
-                    //             fontSize: 12.sp,
+                    //             fontSize: 12,
                     //             fontWeight: FontWeight.w600,
                     //             color: AppTheme.whiteBackgroundColor),
                     //       ),
@@ -95,7 +95,7 @@ class EventCard extends StatelessWidget {
                     //         child: Text(
                     //           "Workshop",
                     //           style: GoogleFonts.inter(
-                    //               fontSize: 12.sp,
+                    //               fontSize: 12,
                     //               color: AppTheme.whiteBackgroundColor),
                     //         ),
                     //       ),
@@ -141,7 +141,7 @@ class EventCard extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .labelSmall!
-                              .copyWith(fontSize: 12.sp),
+                              .copyWith(fontSize: 12),
                         )
                       ],
                     ),
@@ -179,14 +179,15 @@ class EventCard extends StatelessWidget {
                             style: Theme.of(context)
                                 .textTheme
                                 .labelSmall!
-                                .copyWith(fontSize: 12.sp),
+                                .copyWith(fontSize: 12),
                           ),
                         ),
                         // Container(
                         //   width: 1,
-                        //   height: 20.sp,
+                        //   height: 20,
                         //   color: AppTheme.lightTextColor,
                         // ),
+                        if(events.isCompleted!=true)
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 10.w),
                           child: Container(
@@ -202,7 +203,7 @@ class EventCard extends StatelessWidget {
                                     ? " INR ${events.amount.toString()} "
                                     : " Free ",
                                 style: GoogleFonts.inter(
-                                    fontSize: 12.sp,
+                                    fontSize: 12,
                                     color: Theme.of(context).primaryColor),
                               ),
                             ),

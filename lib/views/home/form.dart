@@ -160,7 +160,7 @@ Timer? searchOnStoppedTyping;
       appBar: AppBar(
         titleSpacing: 0,
         elevation: 1,
-        titleTextStyle: TextStyle(fontSize: 16.sp),
+        titleTextStyle: TextStyle(fontSize: 16),
         title: const Text("Shooting Equipment’s Delay Report "),
       ),
       body: SingleChildScrollView(
@@ -178,7 +178,7 @@ Timer? searchOnStoppedTyping;
                     style: Theme.of(context)
                         .textTheme
                         .labelSmall!
-                        .copyWith(fontSize: 13.sp),
+                        .copyWith(fontSize: 13),
                   ),
                 ),
                 MyTextField(
@@ -201,7 +201,7 @@ Timer? searchOnStoppedTyping;
                     style: Theme.of(context)
                         .textTheme
                         .labelSmall!
-                        .copyWith(fontSize: 13.sp),
+                        .copyWith(fontSize: 13),
                   ),
                 ),
                 MyTextField(
@@ -222,7 +222,7 @@ Timer? searchOnStoppedTyping;
                     style: Theme.of(context)
                         .textTheme
                         .labelSmall!
-                        .copyWith(fontSize: 13.sp),
+                        .copyWith(fontSize: 13),
                   ),
                 ),
                 MyTextField(
@@ -243,7 +243,7 @@ Timer? searchOnStoppedTyping;
                     style: Theme.of(context)
                         .textTheme
                         .labelSmall!
-                        .copyWith(fontSize: 13.sp),
+                        .copyWith(fontSize: 13),
                   ),
                 ),
                 MyTextField(
@@ -264,7 +264,7 @@ Timer? searchOnStoppedTyping;
                     style: Theme.of(context)
                         .textTheme
                         .labelSmall!
-                        .copyWith(fontSize: 13.sp),
+                        .copyWith(fontSize: 13),
                   ),
                 ),
                 MyTextField(
@@ -285,7 +285,7 @@ Timer? searchOnStoppedTyping;
                     style: Theme.of(context)
                         .textTheme
                         .labelSmall!
-                        .copyWith(fontSize: 13.sp),
+                        .copyWith(fontSize: 13),
                   ),
                 ),
                 MyTextField(
@@ -306,7 +306,7 @@ Timer? searchOnStoppedTyping;
                     style: Theme.of(context)
                         .textTheme
                         .labelSmall!
-                        .copyWith(fontSize: 13.sp),
+                        .copyWith(fontSize: 13),
                   ),
                 ),
                 MyTextField(
@@ -342,7 +342,7 @@ Timer? searchOnStoppedTyping;
                     style: Theme.of(context)
                         .textTheme
                         .labelSmall!
-                        .copyWith(fontSize: 13.sp),
+                        .copyWith(fontSize: 13),
                   ),
                 ),
                 MyTextField(
@@ -363,7 +363,7 @@ Timer? searchOnStoppedTyping;
                     style: Theme.of(context)
                         .textTheme
                         .labelSmall!
-                        .copyWith(fontSize: 13.sp),
+                        .copyWith(fontSize: 13),
                   ),
                 ),
                 MyTextField(
@@ -384,7 +384,7 @@ Timer? searchOnStoppedTyping;
                     style: Theme.of(context)
                         .textTheme
                         .labelSmall!
-                        .copyWith(fontSize: 13.sp),
+                        .copyWith(fontSize: 13),
                   ),
                 ),
                 MyTextField(
@@ -417,7 +417,7 @@ Timer? searchOnStoppedTyping;
                     style: Theme.of(context)
                         .textTheme
                         .labelSmall!
-                        .copyWith(fontSize: 13.sp),
+                        .copyWith(fontSize: 13),
                   ),
                 ),
                 MyTextField(
@@ -451,7 +451,7 @@ Timer? searchOnStoppedTyping;
                     style: Theme.of(context)
                         .textTheme
                         .labelSmall!
-                        .copyWith(fontSize: 13.sp),
+                        .copyWith(fontSize: 13),
                   ),
                 ),
                 MyTextField(
@@ -472,7 +472,7 @@ Timer? searchOnStoppedTyping;
                     style: Theme.of(context)
                         .textTheme
                         .labelSmall!
-                        .copyWith(fontSize: 13.sp),
+                        .copyWith(fontSize: 13),
                   ),
                 ),
                 MyTextField(

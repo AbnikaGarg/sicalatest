@@ -275,7 +275,7 @@ class _nameState extends State<AddJobSeeker> {
                   child: Text(
                     "History",
                     style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                        fontSize: 16.sp, color: AppTheme.whiteBackgroundColor),
+                        fontSize: 16, color: AppTheme.whiteBackgroundColor),
                   ),
                 ),
               ),
@@ -295,7 +295,7 @@ class _nameState extends State<AddJobSeeker> {
                     style: Theme.of(context)
                         .textTheme
                         .labelSmall!
-                        .copyWith(fontSize: 13.sp),
+                        .copyWith(fontSize: 13),
                   ),
                   SizedBox(height: 2.h),
                   MyTextField(
@@ -319,7 +319,7 @@ class _nameState extends State<AddJobSeeker> {
                     style: Theme.of(context)
                         .textTheme
                         .labelSmall!
-                        .copyWith(fontSize: 13.sp),
+                        .copyWith(fontSize: 13),
                   ),
                   SizedBox(height: 2.h),
                   MyTextField(
@@ -339,7 +339,7 @@ class _nameState extends State<AddJobSeeker> {
                     style: Theme.of(context)
                         .textTheme
                         .labelSmall!
-                        .copyWith(fontSize: 13.sp),
+                        .copyWith(fontSize: 13),
                   ),
                   SizedBox(height: 2.h),
                   MyTextField(
@@ -359,7 +359,7 @@ class _nameState extends State<AddJobSeeker> {
                     style: Theme.of(context)
                         .textTheme
                         .labelSmall!
-                        .copyWith(fontSize: 13.sp),
+                        .copyWith(fontSize: 13),
                   ),
                   SizedBox(height: 2.h),
                   MyTextField(
@@ -393,7 +393,7 @@ class _nameState extends State<AddJobSeeker> {
                     style: Theme.of(context)
                         .textTheme
                         .labelSmall!
-                        .copyWith(fontSize: 13.sp),
+                        .copyWith(fontSize: 13),
                   ),
                   SizedBox(height: 2.h),
                   if (jobList.isNotEmpty)
@@ -432,7 +432,7 @@ class _nameState extends State<AddJobSeeker> {
                     style: Theme.of(context)
                         .textTheme
                         .labelSmall!
-                        .copyWith(fontSize: 13.sp),
+                        .copyWith(fontSize: 13),
                   ),
                   SizedBox(height: 2.h),
                   if (mediumList.isNotEmpty)
@@ -472,7 +472,7 @@ class _nameState extends State<AddJobSeeker> {
                   //   style: Theme.of(context)
                   //       .textTheme
                   //       .labelSmall!
-                  //       .copyWith(fontSize: 13.sp),
+                  //       .copyWith(fontSize: 13),
                   // ),
                   // SizedBox(height: 2.h),
                   // MyTextField(
@@ -491,7 +491,7 @@ class _nameState extends State<AddJobSeeker> {
                     style: Theme.of(context)
                         .textTheme
                         .labelSmall!
-                        .copyWith(fontSize: 13.sp),
+                        .copyWith(fontSize: 13),
                   ),
                   SizedBox(height: 8.h),
                   if (skills.isNotEmpty)
@@ -515,7 +515,7 @@ class _nameState extends State<AddJobSeeker> {
                                 style: Theme.of(context)
                                     .textTheme
                                     .labelSmall!
-                                    .copyWith(fontSize: 14.sp),
+                                    .copyWith(fontSize: 14),
                               ),
                               value: selectedISkills.contains(
                                   skills[0][index]["skill"].toString()),
@@ -548,7 +548,7 @@ class _nameState extends State<AddJobSeeker> {
                     style: Theme.of(context)
                         .textTheme
                         .labelSmall!
-                        .copyWith(fontSize: 13.sp),
+                        .copyWith(fontSize: 13),
                   ),
                   SizedBox(height: 2.h),
                   MyTextField(
@@ -586,7 +586,7 @@ class _nameState extends State<AddJobSeeker> {
                       icon: Icon(
                         Icons.calendar_month,
                         color: Color(0xff585A60),
-                        size: 18.sp,
+                        size: 18,
                       ),
                       hintText: "Enter Available from",
                       color: const Color(0xff585A60)),
@@ -596,7 +596,7 @@ class _nameState extends State<AddJobSeeker> {
                     style: Theme.of(context)
                         .textTheme
                         .labelSmall!
-                        .copyWith(fontSize: 13.sp),
+                        .copyWith(fontSize: 13),
                   ),
                   SizedBox(height: 2.h),
                   MyTextField(
@@ -634,7 +634,7 @@ class _nameState extends State<AddJobSeeker> {
                       icon: Icon(
                         Icons.calendar_month,
                         color: Color(0xff585A60),
-                        size: 18.sp,
+                        size: 18,
                       ),
                       hintText: "Enter Available till",
                       color: const Color(0xff585A60)),
@@ -644,7 +644,7 @@ class _nameState extends State<AddJobSeeker> {
                   //   style: Theme.of(context)
                   //       .textTheme
                   //       .labelSmall!
-                  //       .copyWith(fontSize: 13.sp),
+                  //       .copyWith(fontSize: 13),
                   // ),
                   // SizedBox(height: 2.h),
                   // MyTextField(
@@ -663,7 +663,7 @@ class _nameState extends State<AddJobSeeker> {
                     style: Theme.of(context)
                         .textTheme
                         .labelSmall!
-                        .copyWith(fontSize: 13.sp),
+                        .copyWith(fontSize: 13),
                   ),
                   SizedBox(height: 2.h),
                   MyTextField(
@@ -683,7 +683,7 @@ class _nameState extends State<AddJobSeeker> {
                     style: Theme.of(context)
                         .textTheme
                         .labelSmall!
-                        .copyWith(fontSize: 13.sp),
+                        .copyWith(fontSize: 13),
                   ),
                   SizedBox(height: 2.h),
                   MyTextField(
@@ -703,7 +703,7 @@ class _nameState extends State<AddJobSeeker> {
                     style: Theme.of(context)
                         .textTheme
                         .labelSmall!
-                        .copyWith(fontSize: 13.sp),
+                        .copyWith(fontSize: 13),
                   ),
                   SizedBox(height: 2.h),
                   MyTextField(
@@ -723,7 +723,7 @@ class _nameState extends State<AddJobSeeker> {
                     style: Theme.of(context)
                         .textTheme
                         .labelSmall!
-                        .copyWith(fontSize: 13.sp),
+                        .copyWith(fontSize: 13),
                   ),
                   SizedBox(height: 8.h),
                   GestureDetector(

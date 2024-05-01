@@ -96,7 +96,7 @@ class _nameState extends State<AwardsDetails> {
                               child: Text(
                                 "Tamil",
                                 style: GoogleFonts.inter(
-                                    fontSize: 12.sp,
+                                    fontSize: 12,
                                     color: AppTheme.bodyTextColor),
                               ),
                             ),

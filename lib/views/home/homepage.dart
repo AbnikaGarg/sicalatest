@@ -75,7 +75,7 @@ class _HomepageState extends State<Homepage> {
     Choice(
         title: 'Discussion Forum', svg: "forum", page: const SelectForumType()),
     Choice(
-        title: 'Employment schema',
+        title: 'Employment scheme',
         svg: "employement",
         page: const SelectForumType()),
     Choice(
@@ -415,7 +415,7 @@ class _HomepageState extends State<Homepage> {
                             .textTheme
                             .displaySmall!
                             .copyWith(
-                                fontSize: 14.sp,
+                                fontSize: 14,
                                 color: const Color.fromRGBO(205, 192, 158, 1)),
                       ),
                     ),
@@ -476,7 +476,7 @@ class _HomepageState extends State<Homepage> {
               // SingleChildScrollView(
               //   scrollDirection: Axis.horizontal,
               //   child: Row(
-              //     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     // mainAxisAlignment: MainAxisAlignmentaceBetween,
               //     children: List.generate(
               //         _category.length,
               //         (index) => GestureDetector(
@@ -551,7 +551,7 @@ class _HomepageState extends State<Homepage> {
                                                   .textTheme
                                                   .labelMedium!
                                                   .copyWith(
-                                                      fontSize: 14.sp,
+                                                      fontSize: 14,
                                                       color: AppTheme
                                                           .darkTextColor,
                                                       height: 0)))),
@@ -568,7 +568,7 @@ class _HomepageState extends State<Homepage> {
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Row(
-                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              // mainAxisAlignment: MainAxisAlignmentaceBetween,
                               children: List.generate(
                                   newsDataList!.first.newsdata!.length,
                                   (index) {
@@ -604,7 +604,7 @@ class _HomepageState extends State<Homepage> {
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Row(
-                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              // mainAxisAlignment: MainAxisAlignmentaceBetween,
                               children: List.generate(
                                   techDataList!.first.techtalkVals!.length,
                                   (index) {
@@ -640,7 +640,7 @@ class _HomepageState extends State<Homepage> {
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Row(
-                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              // mainAxisAlignment: MainAxisAlignmentaceBetween,
                               children: List.generate(
                                   blogsDataList!.first.sicaBlogsVals!.length,
                                   (index) {
@@ -684,7 +684,7 @@ class _HomepageState extends State<Homepage> {
               // SingleChildScrollView(
               //   scrollDirection: Axis.horizontal,
               //   child: Row(
-              //     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     // mainAxisAlignment: MainAxisAlignmentaceBetween,
               //     children: List.generate(events.length, (index) {
               //       return Padding(
               //           padding: EdgeInsets.only(
@@ -726,7 +726,7 @@ class _HomepageState extends State<Homepage> {
               //                 padding:
               //                     EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
               //                 child: Row(
-              //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //                   mainAxisAlignment: MainAxisAlignmentaceBetween,
               //                   children: [
               //                     Column(
               //                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -738,7 +738,7 @@ class _HomepageState extends State<Homepage> {
               //                               .headlineLarge!
               //                               .copyWith(
               //                                   color: AppTheme.whiteBackgroundColor,
-              //                                   fontSize: 18.sp),
+              //                                   fontSize: 18),
               //                         ),
               //                         Text(
               //                           "Vote for your Favorite Artists",
@@ -747,7 +747,7 @@ class _HomepageState extends State<Homepage> {
               //                               .displaySmall!
               //                               .copyWith(
               //                                   color: AppTheme.whiteBackgroundColor,
-              //                                   fontSize: 10.sp),
+              //                                   fontSize: 10),
               //                         ),
               //                       ],
               //                     ),
@@ -762,7 +762,7 @@ class _HomepageState extends State<Homepage> {
               //                         child: Text(
               //                           "Vote now",
               //                           style: GoogleFonts.inter(
-              //                               fontSize: 14.sp,
+              //                               fontSize: 14,
               //                               color: AppTheme.whiteBackgroundColor),
               //                         ),
               //                       ),
@@ -781,7 +781,7 @@ class _HomepageState extends State<Homepage> {
               //               child: SingleChildScrollView(
               //                 scrollDirection: Axis.horizontal,
               //                 child: Row(
-              //                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //                   // mainAxisAlignment: MainAxisAlignmentaceBetween,
               //                   children: List.generate(featured.length, (index) {
               //                     return Padding(
               //                         padding: EdgeInsets.only(left: 12.w, bottom: 10.h),
@@ -822,7 +822,7 @@ class _HomepageState extends State<Homepage> {
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
-                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    // mainAxisAlignment: MainAxisAlignmentaceBetween,
                     children:
                         List.generate(galleryListCategory.length, (index) {
                       return Padding(
@@ -872,7 +872,7 @@ class _HomepageState extends State<Homepage> {
                   Text(
                     "Get Merchandise",
                     style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                        color: AppTheme.whiteBackgroundColor, fontSize: 20.sp),
+                        color: AppTheme.whiteBackgroundColor, fontSize: 20),
                   ),
                   SizedBox(
                     height: 6.h,
@@ -880,7 +880,7 @@ class _HomepageState extends State<Homepage> {
                   Text(
                     "Buy SICA Products",
                     style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                        color: AppTheme.whiteBackgroundColor, fontSize: 12.sp),
+                        color: AppTheme.whiteBackgroundColor, fontSize: 12),
                   ),
                   SizedBox(
                     height: 16.h,
@@ -896,7 +896,7 @@ class _HomepageState extends State<Homepage> {
                       child: Text(
                         "Shop now",
                         style: GoogleFonts.inter(
-                            fontSize: 14.sp,
+                            fontSize: 14,
                             color: AppTheme.whiteBackgroundColor),
                       ),
                     ),
@@ -929,14 +929,14 @@ class _HomepageState extends State<Homepage> {
             style: Theme.of(context)
                 .textTheme
                 .headlineLarge!
-                .copyWith(fontSize: 18.sp),
+                .copyWith(fontSize: 18),
           ),
           GestureDetector(
             onTap: onTouch,
             child: Text(
               "See all",
               style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                  fontSize: 14.sp,
+                  fontSize: 14,
                   color: const Color.fromRGBO(205, 192, 158, 1)),
             ),
           )
@@ -994,7 +994,7 @@ class _HomepageState extends State<Homepage> {
                               style: Theme.of(context)
                                   .textTheme
                                   .headlineLarge!
-                                  .copyWith(fontSize: 18.sp),
+                                  .copyWith(fontSize: 18),
                             ),
                           ),
                           SizedBox(
@@ -1025,7 +1025,7 @@ class _HomepageState extends State<Homepage> {
                                           child: Icon(
                                             CupertinoIcons.video_camera_solid,
                                             color: AppTheme.bodyTextColor,
-                                            size: 30.sp,
+                                            size: 30,
                                           )),
                                       SizedBox(
                                         height: 8.h,
@@ -1034,7 +1034,7 @@ class _HomepageState extends State<Homepage> {
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodySmall!
-                                              .copyWith(fontSize: 12.sp)),
+                                              .copyWith(fontSize: 12)),
                                     ],
                                   ),
                                 ),
@@ -1064,7 +1064,7 @@ class _HomepageState extends State<Homepage> {
                                             CupertinoIcons
                                                 .plus_square_fill_on_square_fill,
                                             color: AppTheme.bodyTextColor,
-                                            size: 24.sp,
+                                            size: 24,
                                           )),
                                       SizedBox(
                                         height: 8.h,
@@ -1073,7 +1073,7 @@ class _HomepageState extends State<Homepage> {
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodySmall!
-                                              .copyWith(fontSize: 12.sp)),
+                                              .copyWith(fontSize: 12)),
                                     ],
                                   ),
                                 ),
@@ -1097,7 +1097,7 @@ class _HomepageState extends State<Homepage> {
                                 //           child: Icon(
                                 //             Icons.list_rounded,
                                 //             color: AppTheme.bodyTextColor,
-                                //             size: 26.sp,
+                                //             size: 26,
                                 //           )),
                                 //       SizedBox(
                                 //         height: 8.h,
@@ -1106,7 +1106,7 @@ class _HomepageState extends State<Homepage> {
                                 //           style: Theme.of(context)
                                 //               .textTheme
                                 //               .bodySmall!
-                                //               .copyWith(fontSize: 12.sp)),
+                                //               .copyWith(fontSize: 12)),
                                 //     ],
                                 //   ),
                                 // ),
@@ -1133,7 +1133,7 @@ class _HomepageState extends State<Homepage> {
                                           child: Icon(
                                             Icons.approval_rounded,
                                             color: AppTheme.bodyTextColor,
-                                            size: 26.sp,
+                                            size: 26,
                                           )),
                                       SizedBox(
                                         height: 8.h,
@@ -1142,7 +1142,7 @@ class _HomepageState extends State<Homepage> {
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodySmall!
-                                              .copyWith(fontSize: 12.sp)),
+                                              .copyWith(fontSize: 12)),
                                     ],
                                   ),
                                 ),
@@ -1201,11 +1201,11 @@ class _HomepageState extends State<Homepage> {
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 12.h),
                             child: Text(
-                              "Employment Schema",
+                              "Employment Scheme",
                               style: Theme.of(context)
                                   .textTheme
                                   .headlineLarge!
-                                  .copyWith(fontSize: 18.sp),
+                                  .copyWith(fontSize: 18),
                             ),
                           ),
                           SizedBox(
@@ -1235,7 +1235,7 @@ class _HomepageState extends State<Homepage> {
                                           child: Icon(
                                             Icons.person_search,
                                             color: AppTheme.bodyTextColor,
-                                            size: 26.sp,
+                                            size: 26,
                                           )),
                                       SizedBox(
                                         height: 8.h,
@@ -1270,7 +1270,7 @@ class _HomepageState extends State<Homepage> {
                                           child: Icon(
                                             Icons.person_sharp,
                                             color: AppTheme.bodyTextColor,
-                                            size: 26.sp,
+                                            size: 26,
                                           )),
                                       SizedBox(
                                         height: 8.h,
@@ -1380,7 +1380,7 @@ class TechCard extends StatelessWidget {
                 style: Theme.of(context)
                     .textTheme
                     .headlineMedium!
-                    .copyWith(fontSize: 14.sp),
+                    .copyWith(fontSize: 14),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -1480,7 +1480,7 @@ class NewCard extends StatelessWidget {
                 style: Theme.of(context)
                     .textTheme
                     .headlineMedium!
-                    .copyWith(fontSize: 14.sp),
+                    .copyWith(fontSize: 14),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -1495,7 +1495,7 @@ class NewCard extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .displaySmall!
-                      .copyWith(fontSize: 12.sp),
+                      .copyWith(fontSize: 12),
                   maxLines: 6,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -1573,7 +1573,7 @@ class FeaturedCard extends StatelessWidget {
                 style: Theme.of(context)
                     .textTheme
                     .headlineMedium!
-                    .copyWith(fontSize: 14.sp),
+                    .copyWith(fontSize: 14),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -1587,7 +1587,7 @@ class FeaturedCard extends StatelessWidget {
                 style: Theme.of(context)
                     .textTheme
                     .displaySmall!
-                    .copyWith(fontSize: 10.sp),
+                    .copyWith(fontSize: 10),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),

@@ -69,4 +69,7 @@ class AppConstants {
       "/get/spd/banner?db=odoo_si&api_key=8f4f506e4b4022e154ac3651f9ee006e9b751261";
   static String getGalleryCategory =
       "/get/all/gallery/category?db=odoo_si&api_key=8f4f506e4b4022e154ac3651f9ee006e9b751261";
+     static String getChildComment ="/get/topic/child_comments";
+      static String createChildComment ="/create/child/discussion_comment";
+       static String updateChildComment ="/update/child/discussion_comment";
 }

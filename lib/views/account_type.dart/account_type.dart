@@ -65,7 +65,7 @@ class _AccountTypeState extends State<AccountType> {
               style: Theme.of(context)
                   .textTheme
                   .headlineLarge!
-                  .copyWith(fontSize: 24.sp),
+                  .copyWith(fontSize: 24),
             ),
             Center(
               child: Image.asset(
@@ -129,7 +129,7 @@ class _AccountTypeState extends State<AccountType> {
             // //   style: Theme.of(context)
             // //       .textTheme
             // //       .headlineLarge!
-            // //       .copyWith(fontSize: 16.sp, height: 1.4),
+            // //       .copyWith(fontSize: 16, height: 1.4),
             // //   textAlign: TextAlign.center,
             // // ),
 
@@ -138,7 +138,7 @@ class _AccountTypeState extends State<AccountType> {
               style: Theme.of(context)
                   .textTheme
                   .headlineLarge!
-                  .copyWith(fontSize: 18.sp),
+                  .copyWith(fontSize: 18),
             ),
             SizedBox(
               height: 20.h,
@@ -171,7 +171,7 @@ class _AccountTypeState extends State<AccountType> {
                   style: Theme.of(context)
                       .textTheme
                       .displayLarge!
-                      .copyWith(fontSize: 10.sp),
+                      .copyWith(fontSize: 10),
                   children: <TextSpan>[
                     TextSpan(
                       text: 'By continuing, you agree to our ',
@@ -254,7 +254,7 @@ class AccountTypeCard extends StatelessWidget {
             child: Text(
               accoutType[index],
               style: GoogleFonts.roboto(
-                fontSize: 15.sp,
+                fontSize: 15,
                 fontWeight: FontWeight.w600,
                 color: AppTheme.whiteBackgroundColor,
               ),

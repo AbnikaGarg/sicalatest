@@ -35,7 +35,7 @@ class FilterBox extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
             child: Text(_category,
                 style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                    fontSize: 14.sp,
+                    fontSize: 14,
                     color: AppTheme.darkTextColor,
                     height: 0))));
   }

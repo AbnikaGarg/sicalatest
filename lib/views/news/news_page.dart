@@ -147,7 +147,7 @@ class _NewsTabState extends State<NewsTab> {
                               style: Theme.of(context)
                                   .textTheme
                                   .headlineLarge!
-                                  .copyWith(fontSize: 12.sp),
+                                  .copyWith(fontSize: 12),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -170,7 +170,7 @@ class _NewsTabState extends State<NewsTab> {
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall!
-                                  .copyWith(fontSize: 12.sp),
+                                  .copyWith(fontSize: 12),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -234,7 +234,7 @@ class _NewsTabState extends State<NewsTab> {
                               style: Theme.of(context)
                                   .textTheme
                                   .headlineLarge!
-                                  .copyWith(fontSize: 12.sp),
+                                  .copyWith(fontSize: 12),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -258,7 +258,7 @@ class _NewsTabState extends State<NewsTab> {
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall!
-                                  .copyWith(fontSize: 12.sp),
+                                  .copyWith(fontSize: 12),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -323,7 +323,7 @@ class _NewsTabState extends State<NewsTab> {
                               style: Theme.of(context)
                                   .textTheme
                                   .headlineLarge!
-                                  .copyWith(fontSize: 12.sp),
+                                  .copyWith(fontSize: 12),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -367,7 +367,7 @@ class _NewsTabState extends State<NewsTab> {
                             //       .textTheme
                             //       .bodySmall!
                             //       .copyWith(
-                            //           fontSize: 12.sp, color: Colors.blue),
+                            //           fontSize: 12, color: Colors.blue),
                             //   maxLines: 2,
                             //   overflow: TextOverflow.ellipsis,
                             // ),

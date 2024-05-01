@@ -57,7 +57,7 @@ class MovieCard extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .headlineMedium!
-                        .copyWith(fontSize: 14.sp),
+                        .copyWith(fontSize: 14),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -66,7 +66,7 @@ class MovieCard extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .displaySmall!
-                        .copyWith(fontSize: 12.sp),
+                        .copyWith(fontSize: 12),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),

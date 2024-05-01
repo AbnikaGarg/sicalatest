@@ -63,7 +63,7 @@ class EventDetails {
     presisedBy = json['presised_by'].toString();
     chiefGuest = json['chief_guest'].toString();
     note = json['note'].toString();
-    is_member_booked = json['is_member_booked'];
+    is_member_booked = json['is_member_booked']?? false;
    imagesUrl = json['images_url'] != null ? json['images_url'].cast<String>() : [];
   }
   String? title;

@@ -151,7 +151,7 @@ class _nameState extends State<DiscussionForm> {
                         SearchList(value);
                       },
                       style: TextStyle(
-                          fontSize: 14.sp,
+                          fontSize: 14,
                           color: AppTheme.whiteBackgroundColor),
                       cursorColor: AppTheme.primaryColor,
                       textAlignVertical: TextAlignVertical.center,
@@ -178,7 +178,7 @@ class _nameState extends State<DiscussionForm> {
                             .textTheme
                             .displaySmall!
                             .copyWith(
-                                color: AppTheme.hintTextColor, fontSize: 14.sp),
+                                color: AppTheme.hintTextColor, fontSize: 14),
                         suffixIcon: InkWell(
                           //  onTap: _serach.clear,
                           child: Icon(Icons.search),
@@ -289,7 +289,7 @@ class _nameState extends State<DiscussionForm> {
                                                     .toString().toUpperCase(),
                                                 style: Theme.of(context)
                                                     .textTheme
-                                                    .headlineMedium!),
+                                                    .headlineMedium!.copyWith(color: AppTheme.primaryColor)),
                                             SizedBox(
                                               height: 4.h,
                                             ),
@@ -300,11 +300,11 @@ class _nameState extends State<DiscussionForm> {
                                                   .displayLarge!
                                                   .copyWith(
                                                       color: AppTheme
-                                                          .hintTextColor),
+                                                          .hintTextColor,fontSize: 14),
                                             ),
                                             if (topicListforum![index]
                                                     .discussionDetails!
-                                                    .last_member_name
+                                                    .lastMemberName
                                                     .toString() !=
                                                 "false")
                                               SizedBox(
@@ -312,11 +312,11 @@ class _nameState extends State<DiscussionForm> {
                                               ),
                                             if (topicListforum![index]
                                                     .discussionDetails!
-                                                    .last_member_name
+                                                    .lastMemberName
                                                     .toString() !=
                                                 "false")
                                               Text(
-                                                "Last Post by: ${topicListforum![index].discussionDetails!.last_member_name.toString()} | ${topicListforum![index].discussionDetails!.last_topic_create_date.toString()}",
+                                                "Last Post by: ${topicListforum![index].discussionDetails!.lastMemberName.toString()} | ${topicListforum![index].discussionDetails!.lastTopicCreateDate.toString()}",
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .bodySmall!
@@ -335,7 +335,7 @@ class _nameState extends State<DiscussionForm> {
                                       children: [
                                         Icon(
                                           Icons.insert_comment_outlined,
-                                          size: 16.sp,
+                                          size: 16,
                                           color: Theme.of(context).primaryColor,
                                         ),
                                         Padding(
@@ -348,7 +348,7 @@ class _nameState extends State<DiscussionForm> {
                                                 .headlineSmall!
                                                 .copyWith(
                                                   height: 0,
-                                                  fontSize: 14.sp,
+                                                  fontSize: 14,
                                                 ),
                                           ),
                                         )
@@ -422,7 +422,7 @@ class _nameState extends State<DiscussionForm> {
                                     style: Theme.of(context)
                                         .textTheme
                                         .headlineLarge!
-                                        .copyWith(fontSize: 18.sp),
+                                        .copyWith(fontSize: 18),
                                   ),
                                   GestureDetector(
                                       onTap: () {
@@ -514,7 +514,7 @@ class _nameState extends State<DiscussionForm> {
                             //   style: Theme.of(context)
                             //       .textTheme
                             //       .headlineLarge!
-                            //       .copyWith(fontSize: 14.sp),
+                            //       .copyWith(fontSize: 14),
                             // ),
                             // SizedBox(
                             //   height: 8.h,
@@ -541,7 +541,7 @@ class _nameState extends State<DiscussionForm> {
                             //                   style: Theme.of(context)
                             //                       .textTheme
                             //                       .displayMedium!
-                            //                       .copyWith(fontSize: 14.sp),
+                            //                       .copyWith(fontSize: 14),
                             //                 ),
                             //               ),
                             //               value: _topictype[i],
@@ -562,7 +562,7 @@ class _nameState extends State<DiscussionForm> {
                             //       //       style: Theme.of(context)
                             //       //           .textTheme
                             //       //           .displayMedium!
-                            //       //           .copyWith(fontSize: 14.sp),
+                            //       //           .copyWith(fontSize: 14),
                             //       //     ),
                             //       //     leading: Radio(
                             //       //       visualDensity: VisualDensity.compact,

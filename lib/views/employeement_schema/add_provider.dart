@@ -227,7 +227,7 @@ class _AddProviderState extends State<AddProvider> {
                 child: Text(
                   "History",
                   style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                      fontSize: 16.sp, color: AppTheme.whiteBackgroundColor),
+                      fontSize: 16, color: AppTheme.whiteBackgroundColor),
                 ),
               ),
             ),
@@ -384,7 +384,7 @@ class _AddProviderState extends State<AddProvider> {
                   style: Theme.of(context)
                       .textTheme
                       .labelSmall!
-                      .copyWith(fontSize: 13.sp),
+                      .copyWith(fontSize: 13),
                 ),
                 SizedBox(height: 5.h),
                 if (skills.isNotEmpty)
@@ -408,7 +408,7 @@ class _AddProviderState extends State<AddProvider> {
                               style: Theme.of(context)
                                   .textTheme
                                   .labelSmall!
-                                  .copyWith(fontSize: 14.sp),
+                                  .copyWith(fontSize: 14),
                             ),
                             value: selectedISkills
                                 .contains(skills[0][index]["skill"].toString()),
@@ -482,7 +482,7 @@ class _AddProviderState extends State<AddProvider> {
                 //     icon: Icon(
                 //       Icons.calendar_month,
                 //       color: Color(0xff585A60),
-                //       size: 18.sp,
+                //       size: 18,
                 //     ),
                 //     hintText: "Availables Dates",
                 //     color: const Color(0xff585A60)),
@@ -518,7 +518,7 @@ class _AddProviderState extends State<AddProvider> {
                     icon: Icon(
                       Icons.calendar_month,
                       color: Color(0xff585A60),
-                      size: 18.sp,
+                      size: 18,
                     ),
                     hintText: "Enter Required From",
                     color: const Color(0xff585A60)),
@@ -556,7 +556,7 @@ class _AddProviderState extends State<AddProvider> {
                     icon: Icon(
                       Icons.calendar_month,
                       color: Color(0xff585A60),
-                      size: 18.sp,
+                      size: 18,
                     ),
                     hintText: "Enter Required Till",
                     color: const Color(0xff585A60)),

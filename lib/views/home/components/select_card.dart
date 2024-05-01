@@ -18,7 +18,7 @@ class SelectCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextStyle textStyle =
-        Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 13.sp);
+        Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 13);
     return Container(
         // color: Color(0xFFFFEB3B),
         decoration: BoxDecoration(

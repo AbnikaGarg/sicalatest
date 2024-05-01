@@ -83,7 +83,7 @@ class AboutSica extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .bodySmall!
-                              .copyWith(fontSize: 15.sp),
+                              .copyWith(fontSize: 15),
                         ),
                       ),
                       Icon(
@@ -118,7 +118,7 @@ class AboutSica extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .bodySmall!
-                              .copyWith(fontSize: 15.sp),
+                              .copyWith(fontSize: 15),
                         ),
                       ),
                       Icon(
@@ -153,7 +153,7 @@ class AboutSica extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .bodySmall!
-                              .copyWith(fontSize: 15.sp),
+                              .copyWith(fontSize: 15),
                         ),
                       ),
                       Icon(
@@ -188,7 +188,7 @@ class AboutSica extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .bodySmall!
-                              .copyWith(fontSize: 15.sp),
+                              .copyWith(fontSize: 15),
                         ),
                       ),
                       Icon(
@@ -223,7 +223,7 @@ class AboutSica extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .bodySmall!
-                              .copyWith(fontSize: 15.sp),
+                              .copyWith(fontSize: 15),
                         ),
                       ),
                       Icon(

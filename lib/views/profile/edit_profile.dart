@@ -171,7 +171,7 @@ class _EditProfileState extends State<EditProfile> {
                 child: Text(
                   "+ Work",
                   style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                      fontSize: 16.sp, color: AppTheme.whiteBackgroundColor),
+                      fontSize: 16, color: AppTheme.whiteBackgroundColor),
                 ),
               ),
             ),
@@ -246,7 +246,7 @@ class _EditProfileState extends State<EditProfile> {
                       //             ),
                       //           ]),
                       //       child: Icon(Icons.edit,
-                      //           size: 14.sp, color: Colors.black),
+                      //           size: 14, color: Colors.black),
                       //     ),
                       //   )
                     ],
@@ -261,7 +261,7 @@ class _EditProfileState extends State<EditProfile> {
                       style: Theme.of(context)
                           .textTheme
                           .labelSmall!
-                          .copyWith(fontSize: 13.sp),
+                          .copyWith(fontSize: 13),
                     ),
                     Transform.scale(
                       scale: .7,
@@ -298,7 +298,7 @@ class _EditProfileState extends State<EditProfile> {
                   style: Theme.of(context)
                       .textTheme
                       .labelSmall!
-                      .copyWith(fontSize: 13.sp),
+                      .copyWith(fontSize: 13),
                 ),
                 SizedBox(height: 2.h),
                 MyTextField(
@@ -318,7 +318,7 @@ class _EditProfileState extends State<EditProfile> {
                   style: Theme.of(context)
                       .textTheme
                       .labelSmall!
-                      .copyWith(fontSize: 13.sp),
+                      .copyWith(fontSize: 13),
                 ),
                 SizedBox(height: 2.h),
                 MyTextField(
@@ -338,7 +338,7 @@ class _EditProfileState extends State<EditProfile> {
                 //   style: Theme.of(context)
                 //       .textTheme
                 //       .labelSmall!
-                //       .copyWith(fontSize: 13.sp),
+                //       .copyWith(fontSize: 13),
                 // ),
                 // SizedBox(height: 2.h),
                 // MyTextField(
@@ -357,7 +357,7 @@ class _EditProfileState extends State<EditProfile> {
                 //   style: Theme.of(context)
                 //       .textTheme
                 //       .labelSmall!
-                //       .copyWith(fontSize: 13.sp),
+                //       .copyWith(fontSize: 13),
                 // ),
                 // SizedBox(height: 2.h),
                 // MyTextField(
@@ -376,7 +376,7 @@ class _EditProfileState extends State<EditProfile> {
                 //   style: Theme.of(context)
                 //       .textTheme
                 //       .labelSmall!
-                //       .copyWith(fontSize: 13.sp),
+                //       .copyWith(fontSize: 13),
                 // ),
                 // SizedBox(height: 2.h),
                 // MyTextField(
@@ -396,7 +396,7 @@ class _EditProfileState extends State<EditProfile> {
                   style: Theme.of(context)
                       .textTheme
                       .labelSmall!
-                      .copyWith(fontSize: 13.sp),
+                      .copyWith(fontSize: 13),
                 ),
                 SizedBox(height: 2.h),
                 MyTextField(
@@ -419,7 +419,7 @@ class _EditProfileState extends State<EditProfile> {
                       style: Theme.of(context)
                           .textTheme
                           .labelSmall!
-                          .copyWith(fontSize: 13.sp),
+                          .copyWith(fontSize: 13),
                     ),
                     Transform.scale(
                       scale: .7,

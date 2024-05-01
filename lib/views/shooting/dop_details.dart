@@ -43,7 +43,7 @@
 //                   style: Theme.of(context)
 //                       .textTheme
 //                       .headlineSmall!
-//                       .copyWith(fontSize: 15.sp, color: AppTheme.blackColor),
+//                       .copyWith(fontSize: 15, color: AppTheme.blackColor),
 //                 ),
 //               ),
 //             ),
@@ -88,7 +88,7 @@
 //                                   style: Theme.of(context)
 //                                       .textTheme
 //                                       .bodySmall!
-//                                       .copyWith(fontSize: 15.sp),
+//                                       .copyWith(fontSize: 15),
 //                                 ),
 //                                 SizedBox(
 //                                   height: 5.h,
@@ -98,7 +98,7 @@
 //                                   style: Theme.of(context)
 //                                       .textTheme
 //                                       .displaySmall!
-//                                       .copyWith(fontSize: 12.sp),
+//                                       .copyWith(fontSize: 12),
 //                                 ),
 //                               ],
 //                             ),
@@ -123,7 +123,7 @@
 //                               //             )));
 //                               //   },
 //                               //   child: Icon(Icons.edit,
-//                               //       size: 17.sp, color: Colors.white),
+//                               //       size: 17, color: Colors.white),
 //                               // ),
 //                               // SizedBox(
 //                               //   height: 5.h,
@@ -134,7 +134,7 @@
 //                                     .textTheme
 //                                     .bodySmall!
 //                                     .copyWith(
-//                                         fontSize: 13.sp,
+//                                         fontSize: 13,
 //                                         color:
 //                                             Theme.of(context).iconTheme.color),
 //                               ),
@@ -168,7 +168,7 @@
 //                                 .textTheme
 //                                 .headlineSmall!
 //                                 .copyWith(
-//                                     fontSize: 14.sp,
+//                                     fontSize: 14,
 //                                     color: AppTheme.whiteBackgroundColor),
 //                           ),
 //                         ],

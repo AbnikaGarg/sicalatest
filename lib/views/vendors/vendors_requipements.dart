@@ -92,7 +92,7 @@ class ProductCard extends StatelessWidget {
             ),
             Text(vendor["description"].toString(),
                 style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                    fontSize: 12.sp)),
+                    fontSize: 12)),
           ],
         ),
       ),

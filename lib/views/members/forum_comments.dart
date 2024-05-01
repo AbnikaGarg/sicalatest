@@ -204,7 +204,7 @@ class _nameState extends State<ForumComments> {
                         "Are you sure you want to delete this topic",
                         style: GoogleFonts.roboto(
                             decoration: TextDecoration.none,
-                            fontSize: 16.sp,
+                            fontSize: 16,
                             fontWeight: FontWeight.w500,
                             color: AppTheme.whiteBackgroundColor),
                         textAlign: TextAlign.center,
@@ -234,7 +234,7 @@ class _nameState extends State<ForumComments> {
                                         .textTheme
                                         .headlineMedium!
                                         .copyWith(
-                                          fontSize: 14.sp,
+                                          fontSize: 14,
                                           color: AppTheme.blackColor,
                                           fontWeight: FontWeight.w500,
                                         ),
@@ -260,7 +260,7 @@ class _nameState extends State<ForumComments> {
                                     style: GoogleFonts.roboto(
                                         fontWeight: FontWeight.w500,
                                         decoration: TextDecoration.none,
-                                        fontSize: 14.sp,
+                                        fontSize: 14,
                                         color: Colors.white),
                                   ),
                                 ),
@@ -429,7 +429,7 @@ class _nameState extends State<ForumComments> {
                           children: [
                             Icon(
                               Icons.insert_comment_outlined,
-                              size: 16.sp,
+                              size: 16,
                               color: Theme.of(context).primaryColor,
                             ),
                             Text(
@@ -438,7 +438,7 @@ class _nameState extends State<ForumComments> {
                                   .textTheme
                                   .headlineSmall!
                                   .copyWith(
-                                    fontSize: 14.sp,
+                                    fontSize: 14,
                                   ),
                             )
                           ],
@@ -548,7 +548,7 @@ class _nameState extends State<ForumComments> {
                                             ),
                                             Text(
                                               "2 mints ago ",
-                                              style: TextStyle(fontSize: 12.sp),
+                                              style: TextStyle(fontSize: 12),
                                             ),
                                           ],
                                         ),
@@ -619,7 +619,7 @@ class _nameState extends State<ForumComments> {
                                         //               ),
                                         //               Text(
                                         //                 "2 mints ago",
-                                        //                 style: TextStyle(fontSize: 12.sp),
+                                        //                 style: TextStyle(fontSize: 12),
                                         //               )
                                         //             ],
                                         //           ),
@@ -687,7 +687,7 @@ class _nameState extends State<ForumComments> {
                   //             child: Text(
                   //               "Post",
                   //               style: GoogleFonts.inter(
-                  //                   fontSize: 14.sp,
+                  //                   fontSize: 14,
                   //                   fontWeight: FontWeight.w600,
                   //                   color: AppTheme.primaryColor),
                   //             ),
@@ -752,7 +752,7 @@ class _nameState extends State<ForumComments> {
                                     style: Theme.of(context)
                                         .textTheme
                                         .headlineLarge!
-                                        .copyWith(fontSize: 18.sp),
+                                        .copyWith(fontSize: 18),
                                   ),
                                   GestureDetector(
                                       onTap: () {

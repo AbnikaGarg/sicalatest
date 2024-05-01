@@ -168,7 +168,7 @@ void resendOtp() async {
                             margin: EdgeInsets.only(right: 12.w),
                             height: 38.h,
                             textStyle:
-                                TextStyle(fontSize: 18.sp, color: Colors.white),
+                                TextStyle(fontSize: 18, color: Colors.white),
                             decoration: BoxDecoration(
                               // color: Color(0xFFFFFFFF),
                               border: Border.all(
@@ -193,7 +193,7 @@ void resendOtp() async {
                             style: Theme.of(context)
                                 .textTheme
                                 .displayMedium!
-                                .copyWith(fontSize: 12.sp),
+                                .copyWith(fontSize: 12),
                           ),
                           GestureDetector(
                               onTap: () {resendOtp();},
@@ -227,7 +227,7 @@ void resendOtp() async {
                             style: Theme.of(context)
                                 .textTheme
                                 .displayLarge!
-                                .copyWith(fontSize: 10.sp),
+                                .copyWith(fontSize: 10),
                             children: const <TextSpan>[
                               TextSpan(
                                 text: 'By continuing, you agree to our ',

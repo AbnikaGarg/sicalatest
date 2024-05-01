@@ -40,7 +40,7 @@ class _nameState extends State<FilmsTab> {
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall!
-                                  .copyWith(fontSize: 15.sp),
+                                  .copyWith(fontSize: 15),
                             ),
                             SizedBox(
                               height: 5.h,
@@ -50,7 +50,7 @@ class _nameState extends State<FilmsTab> {
                               style: Theme.of(context)
                                   .textTheme
                                   .displaySmall!
-                                  .copyWith(fontSize: 12.sp),
+                                  .copyWith(fontSize: 12),
                             ),
                           ],
                         ),
@@ -91,7 +91,7 @@ class _nameState extends State<FilmsTab> {
                       .textTheme
                       .headlineSmall!
                       .copyWith(
-                          fontSize: 14.sp,
+                          fontSize: 14,
                           color: AppTheme.whiteBackgroundColor),
                 ),
               ],

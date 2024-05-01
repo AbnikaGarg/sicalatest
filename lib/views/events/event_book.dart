@@ -34,7 +34,7 @@ class EventBook extends StatelessWidget {
             style: Theme.of(context)
                 .textTheme
                 .headlineSmall!
-                .copyWith(fontSize: 20.sp, color: Colors.blueAccent),
+                .copyWith(fontSize: 20, color: Colors.blueAccent),
           ),
           Padding(
             padding: EdgeInsets.only(

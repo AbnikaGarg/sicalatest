@@ -142,7 +142,7 @@ class _MyDashBoardState extends State<MyDashBoard> {
                               style: Theme.of(context)
                                   .textTheme
                                   .headlineLarge!
-                                  .copyWith(fontSize: 18.sp),
+                                  .copyWith(fontSize: 18),
                             ),
                           ),
                           SizedBox(
@@ -171,7 +171,7 @@ class _MyDashBoardState extends State<MyDashBoard> {
                                           child: Icon(
                                             CupertinoIcons.video_camera_solid,
                                             color: AppTheme.bodyTextColor,
-                                            size: 26.sp,
+                                            size: 26,
                                           )),
                                       SizedBox(
                                         height: 8.h,
@@ -180,7 +180,7 @@ class _MyDashBoardState extends State<MyDashBoard> {
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodySmall!
-                                              .copyWith(fontSize: 12.sp)),
+                                              .copyWith(fontSize: 12)),
                                     ],
                                   ),
                                 ),
@@ -206,7 +206,7 @@ class _MyDashBoardState extends State<MyDashBoard> {
                                             CupertinoIcons
                                                 .plus_square_fill_on_square_fill,
                                             color: AppTheme.bodyTextColor,
-                                            size: 24.sp,
+                                            size: 24,
                                           )),
                                       SizedBox(
                                         height: 8.h,
@@ -215,7 +215,7 @@ class _MyDashBoardState extends State<MyDashBoard> {
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodySmall!
-                                              .copyWith(fontSize: 12.sp)),
+                                              .copyWith(fontSize: 12)),
                                     ],
                                   ),
                                 ),

@@ -46,7 +46,7 @@ class _nameState extends State<SelectReason> {
       appBar: AppBar(
         titleSpacing: 0,
         elevation: 1,
-        titleTextStyle: TextStyle(fontSize: 16.sp),
+        titleTextStyle: TextStyle(fontSize: 16),
         title: const Text("Grievances"),
       ),
       //  body: Center(
@@ -72,7 +72,7 @@ class _nameState extends State<SelectReason> {
                   style: Theme.of(context)
                       .textTheme
                       .labelSmall!
-                      .copyWith(fontSize: 13.sp),
+                      .copyWith(fontSize: 13),
                 ),
               ),
               if (reasons.isNotEmpty)

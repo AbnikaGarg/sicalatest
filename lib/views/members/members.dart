@@ -192,7 +192,7 @@ class _nameState extends State<Members> {
                     SearchList(value);
                   },
                   style: TextStyle(
-                      fontSize: 14.sp, color: AppTheme.whiteBackgroundColor),
+                      fontSize: 14, color: AppTheme.whiteBackgroundColor),
                   cursorColor: AppTheme.primaryColor,
                   textAlignVertical: TextAlignVertical.center,
 
@@ -218,7 +218,7 @@ class _nameState extends State<Members> {
                         .textTheme
                         .displaySmall!
                         .copyWith(
-                            color: AppTheme.hintTextColor, fontSize: 14.sp),
+                            color: AppTheme.hintTextColor, fontSize: 14),
                     suffixIcon: InkWell(
                       //  onTap: _serach.clear,
                       child: Icon(Icons.search),

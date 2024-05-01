@@ -72,7 +72,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
               //     Row(
               //       children: [
               //         Icon(Icons.person_2_outlined,
-              //             color: Theme.of(context).primaryColor, size: 20.sp),
+              //             color: Theme.of(context).primaryColor, size: 20),
               //         Text(
               //           ' The SICA',
               //           style: Theme.of(context).textTheme.displayLarge,
@@ -82,7 +82,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
               //     Row(
               //       children: [
               //         Icon(Icons.calendar_month_outlined,
-              //             color: Theme.of(context).primaryColor, size: 20.sp),
+              //             color: Theme.of(context).primaryColor, size: 20),
               //         Text(
               //           " 10 mar '23",
               //           style: Theme.of(context).textTheme.displayLarge,
@@ -92,7 +92,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
               //     Row(
               //       children: [
               //         Icon(Icons.remove_red_eye_outlined,
-              //             color: Theme.of(context).primaryColor, size: 20.sp),
+              //             color: Theme.of(context).primaryColor, size: 20),
               //         Text(
               //           ' 222',
               //           style: Theme.of(context).textTheme.displayLarge,
@@ -122,7 +122,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
               //     //   child: Text('see more',
               //     //       style: TextStyle(
               //     //         color: Theme.of(context).primaryColor,
-              //     //         fontSize: 12.sp,
+              //     //         fontSize: 12,
               //     //       )),
               //     // )
               //   ],

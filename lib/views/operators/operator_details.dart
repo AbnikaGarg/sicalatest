@@ -137,11 +137,11 @@
 //             children: [
 //               Text(' 4.1',
 //                   style: Theme.of(context).textTheme.displaySmall!.copyWith(
-//                         fontSize: 14.sp,
+//                         fontSize: 14,
 //                       )),
 //               Text(' (1285)',
 //                   style: Theme.of(context).textTheme.displaySmall!.copyWith(
-//                       fontSize: 12.sp,
+//                       fontSize: 12,
 //                       color: Theme.of(context).iconTheme.color)),
 //             ],
 //           ),
@@ -237,7 +237,7 @@
 //                               style: Theme.of(context)
 //                                   .textTheme
 //                                   .headlineLarge!
-//                                   .copyWith(fontSize: 18.sp),
+//                                   .copyWith(fontSize: 18),
 //                             ),
 //                           ),
 //                           SizedBox(
@@ -248,20 +248,20 @@
 //                             children: [
 //                               Icon(
 //                                 Icons.phone,
-//                                 size: 16.sp,
+//                                 size: 16,
 //                               ),
 //                               Expanded(
 //                                 child: Text("  Call",
 //                                     style: Theme.of(context)
 //                                         .textTheme
 //                                         .bodySmall!
-//                                         .copyWith(fontSize: 14.sp)),
+//                                         .copyWith(fontSize: 14)),
 //                               ),
 //                               Text("+91 111871671",
 //                                   style: Theme.of(context)
 //                                       .textTheme
 //                                       .bodySmall!
-//                                       .copyWith(fontSize: 14.sp)),
+//                                       .copyWith(fontSize: 14)),
 //                             ],
 //                           ),
 //                           SizedBox(
@@ -272,20 +272,20 @@
 //                             children: [
 //                               Icon(
 //                                 Icons.message,
-//                                 size: 16.sp,
+//                                 size: 16,
 //                               ),
 //                               Expanded(
 //                                 child: Text("  Text Message",
 //                                     style: Theme.of(context)
 //                                         .textTheme
 //                                         .bodySmall!
-//                                         .copyWith(fontSize: 14.sp)),
+//                                         .copyWith(fontSize: 14)),
 //                               ),
 //                               Text("+91 111871671",
 //                                   style: Theme.of(context)
 //                                       .textTheme
 //                                       .bodySmall!
-//                                       .copyWith(fontSize: 14.sp)),
+//                                       .copyWith(fontSize: 14)),
 //                             ],
 //                           ),
 //                           SizedBox(
@@ -296,20 +296,20 @@
 //                             children: [
 //                               Icon(
 //                                 CupertinoIcons.app_badge_fill,
-//                                 size: 16.sp,
+//                                 size: 16,
 //                               ),
 //                               Expanded(
 //                                 child: Text("  Whatsapp",
 //                                     style: Theme.of(context)
 //                                         .textTheme
 //                                         .bodySmall!
-//                                         .copyWith(fontSize: 14.sp)),
+//                                         .copyWith(fontSize: 14)),
 //                               ),
 //                               Text("+91 111871671",
 //                                   style: Theme.of(context)
 //                                       .textTheme
 //                                       .bodySmall!
-//                                       .copyWith(fontSize: 14.sp)),
+//                                       .copyWith(fontSize: 14)),
 //                             ],
 //                           ),
 //                           SizedBox(

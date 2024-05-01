@@ -215,7 +215,7 @@ class _MainPageState extends State<MakePayment> {
                           context,
                           MaterialPageRoute(
                               builder: (BuildContext context) => MyDashBoard(
-                                    currentIndex: 3,
+                                    currentIndex: 2,
                                   )),
                           ModalRoute.withName(
                               '/') // Replace this with your root screen's route name (usually '/')
@@ -484,6 +484,30 @@ class _MainPageState extends State<MakePayment> {
                                     ),
                                     Text(
                                       "${paymentDetils[0]["subscription_total_fee"]}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(fontSize: 16),
+                                    ),
+                                  ],
+                                ),
+                               if (paymentDetils[0]["convience_fee"] != "")
+                                  SizedBox(
+                                    height: 20.h,
+                                  ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Convenience Fee:",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(fontSize: 16),
+                                    ),
+                                    Text(
+                                      "${paymentDetils[0]["convience_fee"]}",
                                       style: Theme.of(context)
                                           .textTheme
                                           .headlineLarge!

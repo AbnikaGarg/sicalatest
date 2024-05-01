@@ -123,7 +123,7 @@ class _nameState extends State<JobProviders> {
                                                 .textTheme
                                                 .headlineSmall!
                                                 .copyWith(
-                                                    fontSize: 14.sp,
+                                                    fontSize: 14,
                                                     color: Theme.of(context)
                                                         .primaryColor),
                                             children: <TextSpan>[
@@ -246,7 +246,7 @@ class ProviderCard extends StatelessWidget {
                 ),
                 Text(' $index',
                     style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                          fontSize: 14.sp,
+                          fontSize: 14,
                         )),
               ],
             ),

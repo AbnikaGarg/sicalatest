@@ -156,7 +156,7 @@ class _ProfileState extends State<JobProfile> {
                                             .textTheme
                                             .headlineSmall!
                                             .copyWith(
-                                              fontSize: 18.sp,
+                                              fontSize: 18,
                                             ),
                                         children: <TextSpan>[
                                           TextSpan(
@@ -207,14 +207,14 @@ class _ProfileState extends State<JobProfile> {
                         //             .textTheme
                         //             .headlineSmall!
                         //             .copyWith(
-                        //               fontSize: 18.sp,
+                        //               fontSize: 18,
                         //             ),
                         //         children: <TextSpan>[
                         //           TextSpan(
                         //               text:
                         //                   '  ${memberDetails![0].memberBasicDetails!.membershipNo.toString()}',
                         //               style: TextStyle(
-                        //                 fontSize: 14.sp,
+                        //                 fontSize: 14,
                         //               )),
                         //         ],
                         //       ),
@@ -234,7 +234,7 @@ class _ProfileState extends State<JobProfile> {
                         //                 .textTheme
                         //                 .headlineSmall!
                         //                 .copyWith(
-                        //                   fontSize: 14.sp,
+                        //                   fontSize: 14,
                         //                 )),
                         //       ],
                         //     )
@@ -592,7 +592,7 @@ class _ProfileState extends State<JobProfile> {
                         //     child: Text(
                         //       "Membership ends in 14 days. Click here to Renew",
                         //       style: GoogleFonts.inter(
-                        //           fontSize: 12.sp,
+                        //           fontSize: 12,
                         //           color: Theme.of(context).primaryColor,
                         //           decoration: TextDecoration.underline),
                         //     ),
@@ -640,7 +640,7 @@ class _ProfileState extends State<JobProfile> {
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .bodySmall!
-                                                .copyWith(fontSize: 15.sp),
+                                                .copyWith(fontSize: 15),
                                           ),
                                           SizedBox(
                                             height: 5.h,
@@ -650,7 +650,7 @@ class _ProfileState extends State<JobProfile> {
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .displaySmall!
-                                                .copyWith(fontSize: 12.sp),
+                                                .copyWith(fontSize: 12),
                                           ),
                                         ],
                                       ),
@@ -673,7 +673,7 @@ class _ProfileState extends State<JobProfile> {
                                               .textTheme
                                               .bodySmall!
                                               .copyWith(
-                                                  fontSize: 12.sp,
+                                                  fontSize: 12,
                                                   color: Theme.of(context)
                                                       .iconTheme
                                                       .color),
@@ -712,7 +712,7 @@ class _ProfileState extends State<JobProfile> {
                                           .textTheme
                                           .headlineSmall!
                                           .copyWith(
-                                              fontSize: 14.sp,
+                                              fontSize: 14,
                                               color: AppTheme
                                                   .whiteBackgroundColor),
                                     ),
@@ -787,13 +787,13 @@ class _ProfileState extends State<JobProfile> {
                                 .textTheme
                                 .headlineSmall!
                                 .copyWith(
-                                  fontSize: 18.sp,
+                                  fontSize: 18,
                                 ),
                             children: <TextSpan>[
                               TextSpan(
                                   text: '  2',
                                   style: TextStyle(
-                                    fontSize: 14.sp,
+                                    fontSize: 14,
                                   )),
                             ],
                           ),
@@ -812,7 +812,7 @@ class _ProfileState extends State<JobProfile> {
                                     .textTheme
                                     .headlineSmall!
                                     .copyWith(
-                                      fontSize: 14.sp,
+                                      fontSize: 14,
                                     )),
                           ],
                         )
@@ -894,7 +894,7 @@ class SocialLinks extends StatelessWidget {
         Text(
           socialLinks["title"],
           style:
-              Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12.sp),
+              Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12),
         )
       ],
     );

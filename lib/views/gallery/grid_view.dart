@@ -63,7 +63,7 @@ final  List<GalleryModel>? galleryList;
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                        fontSize: 14.sp,
+                        fontSize: 14,
                         color: Colors.white,
                         fontWeight: FontWeight.bold)),
                 // GestureDetector(
@@ -72,7 +72,7 @@ final  List<GalleryModel>? galleryList;
                 //     },
                 //     child: Icon(
                 //       Icons.more_vert,
-                //       size: 20.sp,
+                //       size: 20,
                 //     ))
               ],
             ),

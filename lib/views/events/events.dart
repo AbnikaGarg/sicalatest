@@ -216,7 +216,7 @@ class _nameState extends State<EventsTab> {
                                   style: Theme.of(context)
                                       .textTheme
                                       .headlineLarge!
-                                      .copyWith(fontSize: 18.sp),
+                                      .copyWith(fontSize: 18),
                                 ),
                                 GestureDetector(
                                   onTap: () {},
@@ -226,7 +226,7 @@ class _nameState extends State<EventsTab> {
                                         .textTheme
                                         .displaySmall!
                                         .copyWith(
-                                            fontSize: 14.sp,
+                                            fontSize: 14,
                                             color: const Color.fromRGBO(
                                                 18, 205, 217, 1)),
                                   ),
@@ -239,7 +239,7 @@ class _nameState extends State<EventsTab> {
                             style: Theme.of(context)
                                 .textTheme
                                 .headlineLarge!
-                                .copyWith(fontSize: 14.sp),
+                                .copyWith(fontSize: 14),
                           ),
                           SizedBox(
                             height: 10.h,
@@ -272,7 +272,7 @@ class _nameState extends State<EventsTab> {
                             style: Theme.of(context)
                                 .textTheme
                                 .headlineLarge!
-                                .copyWith(fontSize: 14.sp),
+                                .copyWith(fontSize: 14),
                           ),
                           SizedBox(
                             height: 10.h,
@@ -305,7 +305,7 @@ class _nameState extends State<EventsTab> {
                             style: Theme.of(context)
                                 .textTheme
                                 .headlineLarge!
-                                .copyWith(fontSize: 14.sp),
+                                .copyWith(fontSize: 14),
                           ),
                           SizedBox(
                             height: 10.h,
@@ -390,7 +390,7 @@ class _nameState extends State<EventsTab> {
         label,
         textAlign: TextAlign.center,
         style: TextStyle(
-          fontSize: 11.sp,
+          fontSize: 11,
           fontWeight: FontWeight.w400,
         ).copyWith(color: color),
       );

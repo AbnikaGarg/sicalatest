@@ -80,7 +80,7 @@ class _nameState extends State<DOPList> {
                                         .textTheme
                                         .headlineSmall!
                                         .copyWith(
-                                            fontSize: 14.sp,
+                                            fontSize: 14,
                                             color:
                                                 Theme.of(context).primaryColor),
                                     children: <TextSpan>[

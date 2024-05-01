@@ -73,11 +73,11 @@ class ModalSheet {
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodySmall!
-                                          .copyWith(fontSize: 15.sp),
+                                          .copyWith(fontSize: 15),
                                     ),
                                     if ( items[index][key] == selValue)
                                       Icon(CupertinoIcons.checkmark,
-                                          size: 24.sp, color: Colors.blue)
+                                          size: 24, color: Colors.blue)
                                     // Container(
                                     //   decoration: BoxDecoration(
                                     //       shape: BoxShape.circle,
@@ -89,7 +89,7 @@ class ModalSheet {
                                     //   child: Padding(
                                     //     padding: const EdgeInsets.all(2),
                                     //     child: Icon(Icons.circle,
-                                    //         size: 10.sp,
+                                    //         size: 10,
                                     //         color: Colors.blue),
                                     //   ),
                                     // )

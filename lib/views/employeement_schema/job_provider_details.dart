@@ -102,7 +102,7 @@ class _nameState extends State<JobProvidersMatch> {
                                                 .textTheme
                                                 .headlineSmall!
                                                 .copyWith(
-                                                    fontSize: 14.sp,
+                                                    fontSize: 14,
                                                     color: AppTheme
                                                         .yelloDarkColor
                                                         .withOpacity(0.8)),
@@ -228,7 +228,7 @@ class ProviderCard extends StatelessWidget {
                 ),
                 Text(' $index',
                     style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                          fontSize: 14.sp,
+                          fontSize: 14,
                         )),
               ],
             ),

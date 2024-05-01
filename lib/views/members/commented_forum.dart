@@ -150,7 +150,7 @@ class DiscussionCommented extends StatelessWidget {
                         //   children: [
                         //     Icon(
                         //       Icons.insert_comment_outlined,
-                        //       size: 16.sp,
+                        //       size: 16,
                         //       color: Theme.of(context).primaryColor,
                         //     ),
                         //     Padding(
@@ -162,7 +162,7 @@ class DiscussionCommented extends StatelessWidget {
                         //             .headlineSmall!
                         //             .copyWith(
                         //               height: 0,
-                        //               fontSize: 14.sp,
+                        //               fontSize: 14,
                         //             ),
                         //       ),
                         //     )

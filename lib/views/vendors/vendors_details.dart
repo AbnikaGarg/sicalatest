@@ -226,7 +226,7 @@ class _nameState extends State<VendorsDetails> {
                               style: Theme.of(context)
                                   .textTheme
                                   .headlineLarge!
-                                  .copyWith(fontSize: 18.sp),
+                                  .copyWith(fontSize: 18),
                             ),
                           ),
                           SizedBox(
@@ -237,20 +237,20 @@ class _nameState extends State<VendorsDetails> {
                             children: [
                               Icon(
                                 Icons.phone,
-                                size: 16.sp,
+                                size: 16,
                               ),
                               Expanded(
                                 child: Text("  Call",
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodySmall!
-                                        .copyWith(fontSize: 14.sp)),
+                                        .copyWith(fontSize: 14)),
                               ),
                               Text("+91 111871671",
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodySmall!
-                                      .copyWith(fontSize: 14.sp)),
+                                      .copyWith(fontSize: 14)),
                             ],
                           ),
                           SizedBox(
@@ -261,20 +261,20 @@ class _nameState extends State<VendorsDetails> {
                             children: [
                               Icon(
                                 Icons.message,
-                                size: 16.sp,
+                                size: 16,
                               ),
                               Expanded(
                                 child: Text("  Text Message",
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodySmall!
-                                        .copyWith(fontSize: 14.sp)),
+                                        .copyWith(fontSize: 14)),
                               ),
                               Text("+91 111871671",
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodySmall!
-                                      .copyWith(fontSize: 14.sp)),
+                                      .copyWith(fontSize: 14)),
                             ],
                           ),
                           SizedBox(
@@ -285,20 +285,20 @@ class _nameState extends State<VendorsDetails> {
                             children: [
                               Icon(
                                 CupertinoIcons.app_badge_fill,
-                                size: 16.sp,
+                                size: 16,
                               ),
                               Expanded(
                                 child: Text("  Whatsapp",
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodySmall!
-                                        .copyWith(fontSize: 14.sp)),
+                                        .copyWith(fontSize: 14)),
                               ),
                               Text("+91 111871671",
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodySmall!
-                                      .copyWith(fontSize: 14.sp)),
+                                      .copyWith(fontSize: 14)),
                             ],
                           ),
                           SizedBox(

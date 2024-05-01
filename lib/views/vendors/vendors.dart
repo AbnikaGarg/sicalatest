@@ -125,7 +125,7 @@ class VendorCard extends StatelessWidget {
             ),
             Text(vendor["description"].toString(),
                 style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                    fontSize: 12.sp, color: Theme.of(context).iconTheme.color)),
+                    fontSize: 12, color: Theme.of(context).iconTheme.color)),
           ],
         ),
       ),

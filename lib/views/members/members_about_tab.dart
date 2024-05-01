@@ -106,7 +106,7 @@ class _nameState extends State<MemberAboutTab> {
                             style: Theme.of(context)
                                 .textTheme
                                 .headlineSmall!
-                                .copyWith(fontSize: 18.sp, height: 0),
+                                .copyWith(fontSize: 18, height: 0),
                             children: <TextSpan>[
                               TextSpan(
                                   text:

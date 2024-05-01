@@ -9,7 +9,7 @@ class RoundedButton extends StatelessWidget {
   var borderColor;
   var textcolor;
   int radius;
-  int fontsize;
+  double fontsize;
   FontWeight fontweigth;
   double height;
   RoundedButton(
@@ -40,7 +40,7 @@ class RoundedButton extends StatelessWidget {
               child: Text(
             title,
             style: TextStyle(
-                fontSize: fontsize.sp, color: textcolor, fontWeight: fontweigth),
+                fontSize: fontsize, color: textcolor, fontWeight: fontweigth),
           ))),
     );
   }

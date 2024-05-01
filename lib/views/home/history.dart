@@ -135,7 +135,7 @@ class _HistoryState extends State<History> {
                                   data[index]["title"],
                                   style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 14.sp,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.w700),
                                 ),
                                 Icon(
@@ -158,7 +158,7 @@ class _HistoryState extends State<History> {
                                     style: Theme.of(context)
                                         .textTheme
                                         .displayLarge!
-                                        .copyWith(height: 1.4, fontSize: 13.sp),
+                                        .copyWith(height: 1.4, fontSize: 13),
                                   ),
                                 )
                               : Container(),

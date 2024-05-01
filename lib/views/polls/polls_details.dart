@@ -78,7 +78,7 @@ class _nameState extends State<PollsDetails> {
                                 children: [
                                   Icon(
                                     Icons.insert_comment_outlined,
-                                    size: 16.sp,
+                                    size: 16,
                                     color: Theme.of(context).primaryColor,
                                   ),
                                   Text(
@@ -87,7 +87,7 @@ class _nameState extends State<PollsDetails> {
                                         .textTheme
                                         .headlineSmall!
                                         .copyWith(
-                                          fontSize: 14.sp,
+                                          fontSize: 14,
                                         ),
                                   )
                                 ],
@@ -118,13 +118,13 @@ class _nameState extends State<PollsDetails> {
                                                           .textTheme
                                                           .headlineSmall!
                                                           .copyWith(
-                                                              fontSize: 14.sp)),
+                                                              fontSize: 14)),
                                                   Text("8k",
                                                       style: Theme.of(context)
                                                           .textTheme
                                                           .displaySmall!
                                                           .copyWith(
-                                                              fontSize: 12.sp,
+                                                              fontSize: 12,
                                                               color: AppTheme
                                                                   .hintTextColor)),
                                                 ],
@@ -161,7 +161,7 @@ class _nameState extends State<PollsDetails> {
                                             child: Icon(
                                               Icons.check,
                                               color: Colors.white,
-                                              size: 14.sp,
+                                              size: 14,
                                             ),
                                           ),
                                         )
@@ -172,7 +172,7 @@ class _nameState extends State<PollsDetails> {
                               style: Theme.of(context)
                                   .textTheme
                                   .headlineSmall!
-                                  .copyWith(fontSize: 14.sp)),
+                                  .copyWith(fontSize: 14)),
                           SizedBox(
                             height: 6.h,
                           ),

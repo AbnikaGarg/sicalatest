@@ -59,7 +59,7 @@ class MyTextField extends StatelessWidget {
           cursorColor: Theme.of(context).primaryColor,
           textAlignVertical: TextAlignVertical.center,
           style:
-              TextStyle(fontSize: 14.sp, color: AppTheme.whiteBackgroundColor),
+              TextStyle(fontSize: 14, color: AppTheme.whiteBackgroundColor),
           decoration: InputDecoration(
               floatingLabelBehavior: float,
               labelStyle: Theme.of(context)
@@ -67,7 +67,7 @@ class MyTextField extends StatelessWidget {
                   .displaySmall!
                   .copyWith(color: AppTheme.hintTextColor),
               counterText: '',
-              errorStyle: GoogleFonts.roboto(fontSize: 12.sp),
+              errorStyle: GoogleFonts.roboto(fontSize: 12),
               errorBorder: OutlineInputBorder(
                 borderSide: const BorderSide(
                   color: Color.fromRGBO(225, 30, 61, 1),
@@ -78,7 +78,7 @@ class MyTextField extends StatelessWidget {
               hintStyle: Theme.of(context)
                   .textTheme
                   .displaySmall!
-                  .copyWith(color: AppTheme.hintTextColor, fontSize: 13.sp),
+                  .copyWith(color: AppTheme.hintTextColor, fontSize: 13),
               fillColor: const Color(0xFF121212),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: AppTheme.hintTextColor),

@@ -78,7 +78,7 @@ class _ShootingDopApprovalState extends State<ShootingDopApproval> {
                 "Are you sure you not attend this Shooting",
                 style: GoogleFonts.roboto(
                     decoration: TextDecoration.none,
-                    fontSize: 16.sp,
+                    fontSize: 16,
                     fontWeight: FontWeight.w500,
                     color: AppTheme.whiteBackgroundColor),
                 textAlign: TextAlign.center,
@@ -121,7 +121,7 @@ class _ShootingDopApprovalState extends State<ShootingDopApproval> {
                                 .textTheme
                                 .headlineMedium!
                                 .copyWith(
-                                  fontSize: 14.sp,
+                                  fontSize: 14,
                                   color: AppTheme.blackColor,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -147,7 +147,7 @@ class _ShootingDopApprovalState extends State<ShootingDopApproval> {
                             style: GoogleFonts.roboto(
                                 fontWeight: FontWeight.w500,
                                 decoration: TextDecoration.none,
-                                fontSize: 14.sp,
+                                fontSize: 14,
                                 color: Colors.white),
                           ),
                         ),
@@ -265,7 +265,7 @@ class _ShootingDopApprovalState extends State<ShootingDopApproval> {
                                         .copyWith(
                                             color:
                                                 AppTheme.whiteBackgroundColor,
-                                            fontSize: 20.sp),
+                                            fontSize: 20),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -319,7 +319,7 @@ class _ShootingDopApprovalState extends State<ShootingDopApproval> {
                               //     child: Text(
                               //       "Movie",
                               //       style: GoogleFonts.inter(
-                              //           fontSize: 12.sp,
+                              //           fontSize: 12,
                               //           fontWeight: FontWeight.w500,
                               //           color: AppTheme.bodyTextColor),
                               //     ),

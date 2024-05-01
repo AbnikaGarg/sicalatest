@@ -127,7 +127,7 @@ class MemberCard extends StatelessWidget {
               text: TextSpan(
                 text: 'M.no:',
                 style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                    fontSize: 14.sp, color: Theme.of(context).primaryColor),
+                    fontSize: 14, color: Theme.of(context).primaryColor),
                 children: <TextSpan>[
                   TextSpan(
                       text: '$memberno',

@@ -14,6 +14,7 @@ import 'package:sica/models/TopicModel.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:sica/services/forum_repo.dart';
 import 'package:sica/utils/config.dart';
+import 'package:sica/views/forum/comment_reply.dart';
 import 'package:sica/views/forum/image_fullview.dart';
 import 'package:sica/views/members/components/members_tabbar.dart';
 import 'package:sica/views/profile/profile.dart';
@@ -133,6 +134,9 @@ class _nameState extends State<DiscussionFormReply> {
   List<TopicModel>? topicList;
   DiscussionForumDetails? discussionTopicCommentsList;
   void getTopics() {
+    if (topicList != null) {
+      topicList!.clear();
+    }
     final service = Forum();
     textTopic.text = widget.discussionTopicComments.discussionDetails!.topic!;
     service
@@ -185,6 +189,7 @@ class _nameState extends State<DiscussionFormReply> {
               backgroundColor: Colors.green,
               gravity: ToastGravity.TOP,
               textColor: Colors.white);
+
           // Navigator.of(context).pop();
           getTopics();
         }
@@ -366,7 +371,7 @@ class _nameState extends State<DiscussionFormReply> {
                         "Are you sure you want to delete this topic",
                         style: GoogleFonts.roboto(
                             decoration: TextDecoration.none,
-                            fontSize: 16.sp,
+                            fontSize: 16,
                             fontWeight: FontWeight.w500,
                             color: AppTheme.whiteBackgroundColor),
                         textAlign: TextAlign.center,
@@ -396,7 +401,7 @@ class _nameState extends State<DiscussionFormReply> {
                                         .textTheme
                                         .headlineMedium!
                                         .copyWith(
-                                          fontSize: 14.sp,
+                                          fontSize: 14,
                                           color: AppTheme.blackColor,
                                           fontWeight: FontWeight.w500,
                                         ),
@@ -422,7 +427,7 @@ class _nameState extends State<DiscussionFormReply> {
                                     style: GoogleFonts.roboto(
                                         fontWeight: FontWeight.w500,
                                         decoration: TextDecoration.none,
-                                        fontSize: 14.sp,
+                                        fontSize: 14,
                                         color: Colors.white),
                                   ),
                                 ),
@@ -593,7 +598,7 @@ class _nameState extends State<DiscussionFormReply> {
                           children: [
                             Icon(
                               Icons.insert_comment_outlined,
-                              size: 16.sp,
+                              size: 16,
                               color: Theme.of(context).primaryColor,
                             ),
                             Text(
@@ -602,7 +607,7 @@ class _nameState extends State<DiscussionFormReply> {
                                   .textTheme
                                   .headlineSmall!
                                   .copyWith(
-                                    fontSize: 14.sp,
+                                    fontSize: 14,
                                   ),
                             )
                           ],
@@ -689,19 +694,19 @@ class _nameState extends State<DiscussionFormReply> {
                                         "")
                                       GestureDetector(
                                         onTap: () {
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) => MembersTabBar(
-                                                            memberid:
-                                                                discussionTopicCommentsList!
-                                                                    .discussionComments![
-                                                                        index]
-                                                                    .membership_no
-                                                                    .toString()),
-                                                      ),
-                                                    );
-                                                  },
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => MembersTabBar(
+                                                  memberid:
+                                                      discussionTopicCommentsList!
+                                                          .discussionComments![
+                                                              index]
+                                                          .membershipNo
+                                                          .toString()),
+                                            ),
+                                          );
+                                        },
                                         child: CachedNetworkImage(
                                           height: 36.h,
                                           width: 36.h,
@@ -719,9 +724,11 @@ class _nameState extends State<DiscussionFormReply> {
                                                   fit: BoxFit.cover,
                                                 )),
                                           ),
-                                          placeholder: (context, url) => SizedBox(
+                                          placeholder: (context, url) =>
+                                              SizedBox(
                                             child: Center(
-                                                child: CircularProgressIndicator(
+                                                child:
+                                                    CircularProgressIndicator(
                                               color: Colors.yellow,
                                             )),
                                             height: 10.h,
@@ -734,19 +741,19 @@ class _nameState extends State<DiscussionFormReply> {
                                     else
                                       GestureDetector(
                                         onTap: () {
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) => MembersTabBar(
-                                                            memberid:
-                                                                discussionTopicCommentsList!
-                                                                    .discussionComments![
-                                                                        index]
-                                                                    .membership_no
-                                                                    .toString()),
-                                                      ),
-                                                    );
-                                                  },
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => MembersTabBar(
+                                                  memberid:
+                                                      discussionTopicCommentsList!
+                                                          .discussionComments![
+                                                              index]
+                                                          .membershipNo
+                                                          .toString()),
+                                            ),
+                                          );
+                                        },
                                         child: Container(
                                           height: 50.h,
                                           width: 50.h,
@@ -780,12 +787,12 @@ class _nameState extends State<DiscussionFormReply> {
                                                     Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
-                                                        builder: (context) => MembersTabBar(
-                                                            memberid:
-                                                                discussionTopicCommentsList!
+                                                        builder: (context) =>
+                                                            MembersTabBar(
+                                                                memberid: discussionTopicCommentsList!
                                                                     .discussionComments![
                                                                         index]
-                                                                    .membership_no
+                                                                    .membershipNo
                                                                     .toString()),
                                                       ),
                                                     );
@@ -805,7 +812,6 @@ class _nameState extends State<DiscussionFormReply> {
                                               ),
                                             ],
                                           ),
-
                                           SizedBox(
                                             height: 5.h,
                                           ),
@@ -835,7 +841,6 @@ class _nameState extends State<DiscussionFormReply> {
                                               linkStyle:
                                                   TextStyle(color: Colors.blue),
                                             ),
-
                                           SizedBox(
                                             height: 10.h,
                                           ),
@@ -858,6 +863,7 @@ class _nameState extends State<DiscussionFormReply> {
                                                             )));
                                               },
                                               child: Container(
+                                                margin: EdgeInsets.only(bottom: 8),
                                                 height: 130,
                                                 child: Image.network(
                                                   discussionTopicCommentsList!
@@ -932,78 +938,212 @@ class _nameState extends State<DiscussionFormReply> {
                                                 ),
                                               ],
                                             ),
-                                          SizedBox(
-                                            height: 4.h,
-                                          ),
-                                          // SizedBox(
-                                          //   height: 16.h,
-                                          // ),
-                                          // ListView.builder(
-                                          //   // inner ListView
-                                          //   shrinkWrap: true, // 1st add
-                                          //   physics: ClampingScrollPhysics(), // 2nd add
-                                          //   itemCount: 2,
-                                          //   itemBuilder: (_, index) => Padding(
-                                          //     padding: EdgeInsets.only(
-                                          //         left: 30.w, bottom: 10.h, top: 10.h),
-                                          //     child: Container(
-                                          //       padding: EdgeInsets.symmetric(
-                                          //           horizontal: 10.w, vertical: 8.h),
-                                          //       decoration: BoxDecoration(
-                                          //           borderRadius: BorderRadius.circular(8),
-                                          //           color: Theme.of(context).cardColor,
-                                          //           border: Border.all(
-                                          //               color: Colors.grey.withOpacity(0.3),
-                                          //               width: 1)),
-                                          //       child: Column(
-                                          //         children: [
-                                          //           Row(
-                                          //             crossAxisAlignment:
-                                          //                 CrossAxisAlignment.center,
-                                          //             children: [
-                                          //               Container(
-                                          //                 height: 30.h,
-                                          //                 width: 30.h,
-                                          //                 decoration: BoxDecoration(
-                                          //                   shape: BoxShape.circle,
-                                          //                   image: DecorationImage(
-                                          //                     image: AssetImage(
-                                          //                         'assets/images/tie.jpg'),
-                                          //                     fit: BoxFit.cover,
+                                          // if (discussionTopicCommentsList!
+                                          //     .discussionComments![index]
+                                          //     .childDiscussionComments!
+                                          //     .isNotEmpty)
+                                          //   SizedBox(
+                                          //     height: 4.h,
+                                          //   ),
+                                          // if (discussionTopicCommentsList!
+                                          //     .discussionComments![index]
+                                          //     .childDiscussionComments!
+                                          //     .isNotEmpty)
+                                          //   ListView.builder(
+                                          //     // inner ListView
+                                          //     shrinkWrap: true, // 1st add
+                                          //     physics:
+                                          //         ClampingScrollPhysics(), // 2nd add
+                                          //     itemCount:
+                                          //         discussionTopicCommentsList!
+                                          //             .discussionComments![
+                                          //                 index]
+                                          //             .childDiscussionComments!
+                                          //             .length,
+                                          //     itemBuilder: (_, index2) =>
+                                          //         Padding(
+                                          //       padding: EdgeInsets.only(
+                                          //           bottom: 10.h, top: 10.h),
+                                          //       child: Container(
+                                          //         padding: EdgeInsets.symmetric(
+                                          //             horizontal: 10.w,
+                                          //             vertical: 8.h),
+                                          //         decoration: BoxDecoration(
+                                          //             borderRadius:
+                                          //                 BorderRadius.circular(
+                                          //                     8),
+                                          //             color: Theme.of(context)
+                                          //                 .cardColor,
+                                          //             border: Border.all(
+                                          //                 color: Colors.grey
+                                          //                     .withOpacity(0.3),
+                                          //                 width: 1)),
+                                          //         child: Column(
+                                          //           crossAxisAlignment:
+                                          //               CrossAxisAlignment
+                                          //                   .start,
+                                          //           children: [
+                                          //             Row(
+                                          //               crossAxisAlignment:
+                                          //                   CrossAxisAlignment
+                                          //                       .center,
+                                          //               children: [
+                                          //                 Container(
+                                          //                   height: 20.h,
+                                          //                   width: 20.h,
+                                          //                   decoration:
+                                          //                       BoxDecoration(
+                                          //                     shape: BoxShape
+                                          //                         .circle,
+                                          //                     image:
+                                          //                         DecorationImage(
+                                          //                       image: NetworkImage(discussionTopicCommentsList!
+                                          //                           .discussionComments![
+                                          //                               index]
+                                          //                           .childDiscussionComments![
+                                          //                               index2]
+                                          //                           .profileImage
+                                          //                           .toString()),
+                                          //                       fit: BoxFit
+                                          //                           .cover,
+                                          //                     ),
                                           //                   ),
                                           //                 ),
-                                          //               ),
-                                          //               Expanded(
-                                          //                 child: Padding(
-                                          //                   padding: EdgeInsets.only(left: 8.w),
-                                          //                   child: Text("Vimal",
-                                          //                       style: Theme.of(context)
-                                          //                           .textTheme
-                                          //                           .headlineMedium!),
+                                          //                 Expanded(
+                                          //                   child: Padding(
+                                          //                     padding: EdgeInsets
+                                          //                         .only(
+                                          //                             left:
+                                          //                                 8.w),
+                                          //                     child: Text(
+                                          //                         discussionTopicCommentsList!
+                                          //                             .discussionComments![
+                                          //                                 index]
+                                          //                             .childDiscussionComments![
+                                          //                                 index2]
+                                          //                             .memberName
+                                          //                             .toString(),
+                                          //                         style: Theme.of(
+                                          //                                 context)
+                                          //                             .textTheme
+                                          //                             .bodySmall!
+                                          //                             .copyWith(
+                                          //                                 fontSize:
+                                          //                                     13)),
+                                          //                   ),
                                           //                 ),
-                                          //               ),
-                                          //               SizedBox(
-                                          //                 width: 10.w,
-                                          //               ),
-                                          //               Text(
-                                          //                 "2 mints ago",
-                                          //                 style: TextStyle(fontSize: 12.sp),
-                                          //               )
-                                          //             ],
-                                          //           ),
-                                          //           SizedBox(
-                                          //             height: 8.h,
-                                          //           ),
-                                          //           Text(
-                                          //             style:
-                                          //                 Theme.of(context).textTheme.bodySmall!,
-                                          //             "Here i’m studying B. Sc. Statistics this is my final year. I liked this college because i learned to my life. The staffs from my department ",
-                                          //           )
-                                          //         ],
+                                          //               ],
+                                          //             ),
+                                          //             SizedBox(
+                                          //               height: 8.h,
+                                          //             ),
+                                          //             Text(
+                                          //                 style: Theme.of(
+                                          //                         context)
+                                          //                     .textTheme
+                                          //                     .headlineMedium!
+                                          //                     .copyWith(
+                                          //                         fontSize: 14),
+                                          //                 discussionTopicCommentsList!
+                                          //                     .discussionComments![
+                                          //                         index]
+                                          //                     .childDiscussionComments![
+                                          //                         index2]
+                                          //                     .comment
+                                          //                     .toString())
+                                          //           ],
+                                          //         ),
                                           //       ),
                                           //     ),
                                           //   ),
-                                          // ),
+                                          if (discussionTopicCommentsList!
+                                              .discussionComments![index]
+                                              .childDiscussionComments!
+                                              .isNotEmpty)
+                                            GestureDetector(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ChildCommentPage(
+                                                      comment:
+                                                          discussionTopicCommentsList!
+                                                                  .discussionComments![
+                                                              index],
+                                                      discussionid: widget
+                                                          .discussionTopicComments
+                                                          .discussionDetails!
+                                                          .discussionId
+                                                          .toString(),
+                                                    ),
+                                                  ),
+                                                ).then((val) =>
+                                                    val ? getTopics() : null);
+                                              },
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyMedium!
+                                                          .copyWith(
+                                                              fontSize: 14,
+                                                              color:
+                                                                  Colors.blue),
+                                                      "${discussionTopicCommentsList!.discussionComments![index].childDiscussionComments!.length} replies"),
+                                                  GestureDetector(
+                                                    child: Icon(
+                                                      Icons.reply_sharp,
+                                                      color: Colors.blue,
+                                                      size: 24,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          else
+                                            GestureDetector(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ChildCommentPage(
+                                                      comment:
+                                                          discussionTopicCommentsList!
+                                                                  .discussionComments![
+                                                              index],
+                                                      discussionid: widget
+                                                          .discussionTopicComments
+                                                          .discussionDetails!
+                                                          .discussionId
+                                                          .toString(),
+                                                    ),
+                                                  ),
+                                                ).then((val) =>
+                                                    val ? getTopics() : null);
+                                              },
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyMedium!
+                                                          .copyWith(
+                                                              fontSize: 14,
+                                                              color:
+                                                                  Colors.blue),
+                                                      "Add a reply"),
+                                                ],
+                                              ),
+                                            )
                                         ],
                                       ),
                                     ),
@@ -1199,7 +1339,7 @@ class _nameState extends State<DiscussionFormReply> {
                               child: Text(
                                 "Post",
                                 style: GoogleFonts.inter(
-                                    fontSize: 14.sp,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w600,
                                     color: AppTheme.primaryColor),
                               ),
@@ -1264,7 +1404,7 @@ class _nameState extends State<DiscussionFormReply> {
                                     style: Theme.of(context)
                                         .textTheme
                                         .headlineLarge!
-                                        .copyWith(fontSize: 18.sp),
+                                        .copyWith(fontSize: 18),
                                   ),
                                   GestureDetector(
                                       onTap: () {

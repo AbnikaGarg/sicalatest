@@ -57,41 +57,98 @@ class DiscussionComments {
       this.profileImage, 
       this.comment, 
       this.commentCreateDate, 
-      this.image_url,
       this.memberName, 
-      this.membership_no,
+      this.membershipNo, 
+      this.image_url,
       this.designation, 
-      this.commentId,});
+      this.commentId, 
+      this.childDiscussionComments,});
 
   DiscussionComments.fromJson(dynamic json) {
     profileImage = json['profile_image'];
     comment = json['comment'];
-    image_url= json['image_url'];
     commentCreateDate = json['comment_create_date'];
     memberName = json['member_name'];
-    designation = json['designation'].toString();
+    membershipNo = json['membership_no'];
+    designation = json['designation'];
+    image_url= json['image_url'].toString();
     commentId = json['comment_id'];
-    membership_no=json["membership_no"];
+    if (json['child_discussion_comments'] != null) {
+      childDiscussionComments = [];
+      json['child_discussion_comments'].forEach((v) {
+        childDiscussionComments?.add(ChildDiscussionComments.fromJson(v));
+      });
+    }
   }
   String? profileImage;
   String? comment;
   String? commentCreateDate;
   String? memberName;
+  String? membershipNo;
   String? designation;
-   String? image_url;
+  String? image_url;
   int? commentId;
-  String? membership_no;
+  List<ChildDiscussionComments>? childDiscussionComments;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['profile_image'] = profileImage;
     map['comment'] = comment;
-    map['image_url'] = image_url;
     map['comment_create_date'] = commentCreateDate;
     map['member_name'] = memberName;
+    map['image_url'] = image_url;
+    map['membership_no'] = membershipNo;
     map['designation'] = designation;
-    map['membership_no'] = membership_no;
+
     map['comment_id'] = commentId;
+    if (childDiscussionComments != null) {
+      map['child_discussion_comments'] = childDiscussionComments?.map((v) => v.toJson()).toList();
+    }
+    return map;
+  }
+
+}
+
+class ChildDiscussionComments {
+  ChildDiscussionComments({
+      this.profileImage, 
+      this.comment, 
+      this.commentCreateDate, 
+      this.memberName, 
+      this.membershipNo, 
+      this.designation, 
+      this.commentId, 
+      this.childCommentId,});
+
+  ChildDiscussionComments.fromJson(dynamic json) {
+    profileImage = json['profile_image'];
+    comment = json['comment'];
+    commentCreateDate = json['comment_create_date'];
+    memberName = json['member_name'];
+    membershipNo = json['membership_no'];
+    designation = json['designation'];
+    commentId = json['comment_id'];
+    childCommentId = json['child_comment_id'];
+  }
+  String? profileImage;
+  String? comment;
+  String? commentCreateDate;
+  String? memberName;
+  String? membershipNo;
+  String? designation;
+  int? commentId;
+  int? childCommentId;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['profile_image'] = profileImage;
+    map['comment'] = comment;
+    map['comment_create_date'] = commentCreateDate;
+    map['member_name'] = memberName;
+    map['membership_no'] = membershipNo;
+    map['designation'] = designation;
+    map['comment_id'] = commentId;
+    map['child_comment_id'] = childCommentId;
     return map;
   }
 
@@ -106,25 +163,25 @@ class DiscussionDetails {
       this.categoryId, 
       this.discussionId, 
       this.createDate, 
-      this.last_commit_member_image,
-      this.last_member_name,
-      this.last_topic_create_date,
       this.memberId, 
-      this.designation,});
+      this.designation, 
+      this.lastMemberName, 
+      this.lastTopicCreateDate, 
+      this.lastCommitMemberImage,});
 
   DiscussionDetails.fromJson(dynamic json) {
-    profile = json['profile'];
-    topic = json['topic'];
-    memberName = json['member_name'];
+    profile = json['profile'].toString();
+    topic = json['topic'].toString();
+    memberName = json['member_name'].toString();
     categoryName = json['category_name'].toString();
     categoryId = json['category_id'];
     discussionId = json['discussion_id'];
-    createDate = json['create_date'];
+    createDate = json['create_date'].toString();
     memberId = json['member_id'];
     designation = json['designation'].toString();
-    last_topic_create_date = json['last_topic_create_date'].toString();
-    last_member_name = json['last_member_name'].toString();
-    last_commit_member_image = json['last_commit_member_image'].toString();
+    lastMemberName = json['last_member_name'].toString();
+    lastTopicCreateDate = json['last_topic_create_date'].toString();
+    lastCommitMemberImage = json['last_commit_member_image'].toString();
   }
   String? profile;
   String? topic;
@@ -135,9 +192,9 @@ class DiscussionDetails {
   String? createDate;
   int? memberId;
   String? designation;
-  String? last_member_name;
-  String? last_topic_create_date;
-  String? last_commit_member_image;
+  String? lastMemberName;
+  String? lastTopicCreateDate;
+  String? lastCommitMemberImage;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -150,9 +207,9 @@ class DiscussionDetails {
     map['create_date'] = createDate;
     map['member_id'] = memberId;
     map['designation'] = designation;
-     map['last_member_name'] = last_member_name;
-    map['last_commit_member_image'] = last_commit_member_image;
-    map['desiglast_topic_create_datenation'] = last_topic_create_date;
+    map['last_member_name'] = lastMemberName;
+    map['last_topic_create_date'] = lastTopicCreateDate;
+    map['last_commit_member_image'] = lastCommitMemberImage;
     return map;
   }
 

@@ -269,7 +269,7 @@ class _CreateDOPState extends State<CreateDOP> {
                   child: Text(
                     "History",
                     style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                        fontSize: 16.sp, color: AppTheme.whiteBackgroundColor),
+                        fontSize: 16, color: AppTheme.whiteBackgroundColor),
                   ),
                 ),
               ),
@@ -659,7 +659,7 @@ class _CreateDOPState extends State<CreateDOP> {
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodySmall!
-                                            .copyWith(fontSize: 15.sp),
+                                            .copyWith(fontSize: 15),
                                       ),
                                       SizedBox(
                                         height: 5.h,
@@ -669,7 +669,7 @@ class _CreateDOPState extends State<CreateDOP> {
                                         style: Theme.of(context)
                                             .textTheme
                                             .displaySmall!
-                                            .copyWith(fontSize: 13.sp),
+                                            .copyWith(fontSize: 13),
                                       ),
                                       SizedBox(
                                         height: 6.h,
@@ -711,7 +711,7 @@ class _CreateDOPState extends State<CreateDOP> {
                                           .textTheme
                                           .bodySmall!
                                           .copyWith(
-                                              fontSize: 13.sp,
+                                              fontSize: 13,
                                               color: Theme.of(context)
                                                   .iconTheme
                                                   .color),
@@ -755,7 +755,7 @@ class _CreateDOPState extends State<CreateDOP> {
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodySmall!
-                                            .copyWith(fontSize: 15.sp),
+                                            .copyWith(fontSize: 15),
                                       ),
                                       SizedBox(
                                         height: 5.h,
@@ -765,7 +765,7 @@ class _CreateDOPState extends State<CreateDOP> {
                                         style: Theme.of(context)
                                             .textTheme
                                             .displaySmall!
-                                            .copyWith(fontSize: 13.sp),
+                                            .copyWith(fontSize: 13),
                                       ),
                                       SizedBox(
                                         height: 6.h,
@@ -807,7 +807,7 @@ class _CreateDOPState extends State<CreateDOP> {
                                           .textTheme
                                           .bodySmall!
                                           .copyWith(
-                                              fontSize: 13.sp,
+                                              fontSize: 13,
                                               color: Theme.of(context)
                                                   .iconTheme
                                                   .color),
@@ -911,7 +911,7 @@ class _CreateDOPState extends State<CreateDOP> {
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodySmall!
-                                          .copyWith(fontSize: 15.sp),
+                                          .copyWith(fontSize: 15),
                                     ),
                                     if (dopList![index]
                                             .shootingDetails!
@@ -919,7 +919,7 @@ class _CreateDOPState extends State<CreateDOP> {
                                             .toString() ==
                                         selValue)
                                       Icon(CupertinoIcons.checkmark,
-                                          size: 24.sp, color: Colors.blue)
+                                          size: 24, color: Colors.blue)
                                     // Container(
                                     //   decoration: BoxDecoration(
                                     //       shape: BoxShape.circle,
@@ -931,7 +931,7 @@ class _CreateDOPState extends State<CreateDOP> {
                                     //   child: Padding(
                                     //     padding: const EdgeInsets.all(2),
                                     //     child: Icon(Icons.circle,
-                                    //         size: 10.sp,
+                                    //         size: 10,
                                     //         color: Colors.blue),
                                     //   ),
                                     // )

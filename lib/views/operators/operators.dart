@@ -269,7 +269,7 @@ class VendorCard extends StatelessWidget {
                     Text(' 4.1',
                         style:
                             Theme.of(context).textTheme.displaySmall!.copyWith(
-                                  fontSize: 14.sp,
+                                  fontSize: 14,
                                 )),
                   ],
                 ),
@@ -278,7 +278,7 @@ class VendorCard extends StatelessWidget {
                 ),
                 Text(' (3.5k)',
                     style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                        fontSize: 12.sp,
+                        fontSize: 12,
                         color: Theme.of(context).iconTheme.color)),
               ],
             ),

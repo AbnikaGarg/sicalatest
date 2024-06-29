@@ -287,7 +287,18 @@ class _HomepageState extends State<Homepage> {
       }
     });
   }
-
+ launchURLMethod(String link) async {
+    final Uri url = Uri.parse(link);
+    try {
+        if (!await launchUrl(url,mode: LaunchMode.inAppBrowserView)) {
+      throw Exception('Could not launch $url');
+    }
+    // ignore: empty_catches
+    } catch (e) {
+      print(e);
+    }
+  
+  }
   String? accountType = "";
   Future<void> getDettails() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -340,15 +351,23 @@ class _HomepageState extends State<Homepage> {
                         padding: EdgeInsets.symmetric(horizontal: 5),
                         child: Stack(
                           children: [
-                            AspectRatio(
-                              aspectRatio: 16 / 7,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(16),
-                                child: Image.network(
-                                  bannerImages[0][index]["image_url"],
-                                  fit: BoxFit.cover,
-                                  // color: Color(0x66000000),
-                                  // colorBlendMode: BlendMode.darken,
+                            GestureDetector(
+                              onTap: () {
+                                if(bannerImages[0][index]["promotion_link"]!=""){
+  launchURLMethod( bannerImages[0][index]["promotion_link"]);
+                                }
+                              
+                              },
+                              child: AspectRatio(
+                                aspectRatio: 16 / 7,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(16),
+                                  child: Image.network(
+                                    bannerImages[0][index]["image_url"],
+                                    fit: BoxFit.cover,
+                                    // color: Color(0x66000000),
+                                    // colorBlendMode: BlendMode.darken,
+                                  ),
                                 ),
                               ),
                             ),

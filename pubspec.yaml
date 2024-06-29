@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+1
+version: 1.0.0+4
 
 environment:
   sdk: '>=3.1.0 <4.0.0'
@@ -38,28 +38,34 @@ dependencies:
   flutter_screenutil: ^5.9.0
   google_fonts: ^6.1.0
   flutter_svg: ^2.0.9
-  intl: ^0.18.1
-  file_picker: ^6.2.0
+  intl: ^0.19.0
+  file_picker: ^8.0.3
   dots_indicator: ^3.0.0
   url_launcher: ^6.2.1
   carousel_slider: ^4.2.1
-  pinput: ^3.0.1
+  pinput: ^4.0.0
   flutter_staggered_grid_view: ^0.7.0
   flutter_share: ^2.0.0
   fluttertoast: ^8.2.3
   shared_preferences: ^2.2.2
-  image_cropper: ^5.0.0
+  image_cropper: ^6.0.0
   image_picker: ^1.0.7
   webview_flutter: ^4.4.2
-  flutter_widget_from_html: ^0.14.8
+  flutter_widget_from_html: ^0.15.0
   flutter_html: ^3.0.0-beta.2
-  lottie: ^2.7.0
+  lottie: ^3.1.2
   flutter_slidable: ^3.0.1
   flutter_linkify: ^6.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.13.1
+
+
+flutter_icons:
+  android: "launcher_icon"
+  image_path: "assets/images/icon.webp"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

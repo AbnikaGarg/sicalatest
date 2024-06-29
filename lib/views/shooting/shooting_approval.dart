@@ -145,7 +145,7 @@ class _nameState extends State<ShootingApprovalList> {
                                         Row(
                                           children: [
                                             Text(
-                                              "${dopList!.first.memberShootingPendingDopApproval![index].medium}",
+                                              "${dopList!.first.memberShootingPendingDopApproval![index].memberName}",
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .displaySmall,
@@ -177,27 +177,27 @@ class _nameState extends State<ShootingApprovalList> {
                                         SizedBox(
                                           height: 3.h,
                                         ),
-                                        if (dopList!
-                                                .first
-                                                .memberShootingPendingDopApproval![
-                                                    index]
-                                                .notes !=
-                                            "")
-                                          Text(
-                                            "Notes- ${dopList!.first.memberShootingPendingDopApproval![index].notes}",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodySmall,
-                                          ),
-                                        if (dopList!
-                                                .first
-                                                .memberShootingPendingDopApproval![
-                                                    index]
-                                                .notes !=
-                                            "")
-                                          SizedBox(
-                                            height: 6.h,
-                                          ),
+                                        // if (dopList!
+                                        //         .first
+                                        //         .memberShootingPendingDopApproval![
+                                        //             index]
+                                        //         .notes !=
+                                        //     "")
+                                        //   Text(
+                                        //     "Notes- ${dopList!.first.memberShootingPendingDopApproval![index].notes}",
+                                        //     style: Theme.of(context)
+                                        //         .textTheme
+                                        //         .bodySmall,
+                                        //   ),
+                                        // if (dopList!
+                                        //         .first
+                                        //         .memberShootingPendingDopApproval![
+                                        //             index]
+                                        //         .notes !=
+                                        //     "")
+                                        //   SizedBox(
+                                        //     height: 6.h,
+                                        //   ),
                                       ],
                                     ),
                                   )));

@@ -62,10 +62,7 @@ class _HomepageState extends State<Homepage> {
   int _selectIndex = 0;
   List<Choice> guestChoice = <Choice>[
     Choice(title: 'About Sica', svg: "about", page: const AboutSica()),
-    Choice(
-        title: 'Gallery',
-        svg: "camera2",
-        page: const GalleryList()),
+    Choice(title: 'Gallery', svg: "camera2", page: const GalleryList()),
     Choice(
         title: 'Discussion Forum', svg: "forum", page: const SelectForumType()),
   ];
@@ -80,9 +77,9 @@ class _HomepageState extends State<Homepage> {
         page: const SelectForumType()),
     Choice(
         title: 'Shooting  Diary', svg: "camera", page: const SelectForumType()),
-    Choice(title: 'Vendors', svg: "vendors", page: const Vendors()),
+    Choice(title: 'Service Provider', svg: "vendors", page: const Vendors()),
     Choice(title: 'Operators', svg: "member", page: const Operators()),
-    Choice(title: 'Fund', svg: "hand", page: const Funds()),
+    Choice(title: 'Support', svg: "support", page: const SelectReason()),
     Choice(title: 'Event', svg: "callender", page: EventsTabBar()),
   ];
   // List forumType = [
@@ -340,7 +337,7 @@ class _HomepageState extends State<Homepage> {
                     itemCount: bannerImages[0].length,
                     itemBuilder: (context, index, realIndex) {
                       return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 5.w),
+                        padding: EdgeInsets.symmetric(horizontal: 5),
                         child: Stack(
                           children: [
                             AspectRatio(
@@ -397,30 +394,30 @@ class _HomepageState extends State<Homepage> {
                         borderRadius: BorderRadius.circular(5.0)),
                   ),
                 ),
-              if (accountType == "1")
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                  ),
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => SeeAllFeatures()));
-                      },
-                      child: Text(
-                        "View all",
-                        style: Theme.of(context)
-                            .textTheme
-                            .displaySmall!
-                            .copyWith(
-                                fontSize: 14,
-                                color: const Color.fromRGBO(205, 192, 158, 1)),
-                      ),
-                    ),
-                  ),
-                ),
+              // if (accountType == "1")
+              //   Padding(
+              //     padding: EdgeInsets.symmetric(
+              //       horizontal: 16.w,
+              //     ),
+              //     child: Align(
+              //       alignment: Alignment.topRight,
+              //       child: GestureDetector(
+              //         onTap: () {
+              //           Navigator.of(context).push(MaterialPageRoute(
+              //               builder: (context) => SeeAllFeatures()));
+              //         },
+              //         child: Text(
+              //           "View all",
+              //           style: Theme.of(context)
+              //               .textTheme
+              //               .displaySmall!
+              //               .copyWith(
+              //                   fontSize: 14,
+              //                   color: const Color.fromRGBO(205, 192, 158, 1)),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
               SizedBox(
                 height: 10.h,
               ),
@@ -431,9 +428,10 @@ class _HomepageState extends State<Homepage> {
                 child: GridView.count(
                     shrinkWrap: true,
                     primary: false,
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 12.w,
-                    mainAxisSpacing: 14.h,
+                    crossAxisCount:
+                        MediaQuery.of(context).size.width < 500 ? 3 : 5,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 14,
                     childAspectRatio: 1 / 0.8,
                     children: accountType == "1"
                         ? List.generate(choices.length, (index) {
@@ -459,8 +457,8 @@ class _HomepageState extends State<Homepage> {
                             return GestureDetector(
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          guestChoice[index].page));
+                                    builder: (context) =>
+                                        guestChoice[index].page));
                               },
                               child: SelectCard(
                                 title: guestChoice[index].title,
@@ -771,34 +769,34 @@ class _HomepageState extends State<Homepage> {
               //                 ),
               //               ),
               //             ),
-              //             SizedBox(
-              //               height: 20.h,
-              //             ),
-              //             _buildHeadLine("Featured", () {}),
-              //             Container(
-              //               width: double.infinity,
-              //               //color: AppTheme.whiteBackgroundColor,
-              //               child: SingleChildScrollView(
-              //                 scrollDirection: Axis.horizontal,
-              //                 child: Row(
-              //                   // mainAxisAlignment: MainAxisAlignmentaceBetween,
-              //                   children: List.generate(featured.length, (index) {
-              //                     return Padding(
-              //                         padding: EdgeInsets.only(left: 12.w, bottom: 10.h),
-              //                         child: FeaturedCard(featured: featured[index]));
-              //                   }),
-              //                 ),
-              //               ),
-              //             ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          _buildHeadLine("Featured", () {}),
+                          Container(
+                            width: double.infinity,
+                            //color: AppTheme.whiteBackgroundColor,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                // mainAxisAlignment: MainAxisAlignmentaceBetween,
+                                children: List.generate(featured.length, (index) {
+                                  return Padding(
+                                      padding: EdgeInsets.only(left: 12.w, bottom: 10.h),
+                                      child: FeaturedCard(featured: featured[index]));
+                                }),
+                              ),
+                            ),
+                          ),
 
-              //             SizedBox(
-              //               height: 10.h,
-              //             ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
 
-              //             _buildAwards(),
-              //             SizedBox(
-              //               height: 20.h,
-              //             ),
+                          // _buildAwards(),
+                          // SizedBox(
+                          //   height: 20.h,
+                          // ),
               _buildHeadLine("Gallery", () {
                 Navigator.push(
                   context,
@@ -896,8 +894,7 @@ class _HomepageState extends State<Homepage> {
                       child: Text(
                         "Shop now",
                         style: GoogleFonts.inter(
-                            fontSize: 14,
-                            color: AppTheme.whiteBackgroundColor),
+                            fontSize: 14, color: AppTheme.whiteBackgroundColor),
                       ),
                     ),
                   ),
@@ -936,8 +933,7 @@ class _HomepageState extends State<Homepage> {
             child: Text(
               "See all",
               style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                  fontSize: 14,
-                  color: const Color.fromRGBO(205, 192, 158, 1)),
+                  fontSize: 14, color: const Color.fromRGBO(205, 192, 158, 1)),
             ),
           )
         ],
@@ -1297,7 +1293,7 @@ class _HomepageState extends State<Homepage> {
 class TechCard extends StatelessWidget {
   TechCard({super.key, required this.news});
   var news;
-  
+
   String? convertUrlToId(String url, {bool trimWhitespaces = true}) {
     // if (!url.contains("http") && (url.length == 11)) return url;
     print(url);
@@ -1364,10 +1360,10 @@ class TechCard extends StatelessWidget {
           children: [
             Image.network(
               getyoutubelink(
-               news.link.toString(),
+                news.link.toString(),
               ),
               fit: BoxFit.cover,
-             height: 150.h,
+              height: 150.h,
               width: double.infinity,
             ),
             SizedBox(

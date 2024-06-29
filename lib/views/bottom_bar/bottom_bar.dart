@@ -34,7 +34,7 @@ class CustomAnimatedBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bgColor = backgroundColor ?? Theme.of(context).bottomAppBarColor;
+    final bgColor = backgroundColor;
 
     return Container(
       decoration: BoxDecoration(
@@ -62,7 +62,7 @@ class CustomAnimatedBottomBar extends StatelessWidget {
                   item: item,
                   iconSize: iconSize,
                   isSelected: index == selectedIndex,
-                  backgroundColor: bgColor,
+              //  backgroundColor: bgColor,
                   itemCornerRadius: itemCornerRadius,
                   animationDuration: animationDuration,
                   curve: curve,
@@ -80,7 +80,7 @@ class _ItemWidget extends StatelessWidget {
   final double iconSize;
   final bool isSelected;
   final BottomNavyBarItem item;
-  final Color backgroundColor;
+  //final Color backgroundColor;
   final double itemCornerRadius;
   final Duration animationDuration;
   final Curve curve;
@@ -89,7 +89,7 @@ class _ItemWidget extends StatelessWidget {
     Key? key,
     required this.item,
     required this.isSelected,
-    required this.backgroundColor,
+  //  required this.backgroundColor,
     required this.animationDuration,
     required this.itemCornerRadius,
     required this.iconSize,
@@ -108,7 +108,7 @@ class _ItemWidget extends StatelessWidget {
         curve: curve,
         decoration: BoxDecoration(
           color:
-          isSelected ? item.activeColor.withOpacity(0.2) : backgroundColor,
+          isSelected ? item.activeColor.withOpacity(0.2) : Theme.of(context).bottomNavigationBarTheme.backgroundColor,
           borderRadius: BorderRadius.circular(itemCornerRadius),
         ),
         child: SingleChildScrollView(

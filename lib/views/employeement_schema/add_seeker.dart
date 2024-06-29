@@ -706,17 +706,63 @@ class _nameState extends State<AddJobSeeker> {
                         .copyWith(fontSize: 13),
                   ),
                   SizedBox(height: 2.h),
-                  MyTextField(
-                      readOnly: widget.seeker.jobSeekerId != null,
-                      // // textEditingController: _controller.emailController,
-                      // validation: (value) {
-                      //   if (value == null || value.isEmpty) {
-                      //     return "Enter Notes";
-                      //   }
-                      //   return null;
-                      // },
-                      hintText: "Notes",
-                      color: const Color(0xff585A60)),
+                Row(
+                  children: [
+                    Flexible(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: 25.0,
+                          maxHeight: 135.0,
+                        ),
+                        child: Scrollbar(
+                          child: TextField(
+                            cursorColor: Colors.blue,
+                            keyboardType: TextInputType.multiline,
+                            maxLines: null,
+                            style:
+                                TextStyle(color: AppTheme.whiteBackgroundColor),
+                            controller: notes,
+                            maxLength: 1000,
+                            //   _handleSubmitted : null,
+                            decoration: InputDecoration(
+                              hintStyle: Theme.of(context)
+                                  .textTheme
+                                  .displaySmall!
+                                  .copyWith(
+                                      color: AppTheme.hintTextColor,
+                                      fontSize: 13),
+                              counterStyle: TextStyle(
+                                  fontSize: 12,
+                                  color: AppTheme.whiteBackgroundColor),
+                              fillColor: const Color(0xFF121212),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: AppTheme.hintTextColor),
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: AppTheme.hintTextColor),
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: AppTheme.hintTextColor),
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                              contentPadding: EdgeInsets.only(
+                                  top: 2.0,
+                                  left: 13.0,
+                                  right: 13.0,
+                                  bottom: 2.0),
+                              hintText: "Type your notes",
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
                   SizedBox(height: 10.h),
                   Text(
                     "Document",

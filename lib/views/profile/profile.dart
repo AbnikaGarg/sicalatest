@@ -365,7 +365,7 @@ class _ProfileState extends State<Profile> {
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyMedium!
-                                          .copyWith(fontSize: 22),
+                                          .copyWith(fontSize: 18),
                                     ),
                                   ),
                                 )
@@ -634,11 +634,11 @@ class _ProfileState extends State<Profile> {
                                         color: Colors.red,
                                         borderRadius: BorderRadius.circular(4)),
                                     child: Text(
-                                      "RENEW NOW",
+                                      "Renew Now",
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyMedium!
-                                          .copyWith(fontSize: 20),
+                                          .copyWith(fontSize: 18),
                                     ),
                                   ),
                                 )

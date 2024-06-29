@@ -81,7 +81,7 @@ class SeeAllFeatures extends StatelessWidget {
                 },
                 child: _buildIconwithText("Members", "member", context),
               ),
-              _buildIconwithText("Vendors", "vendors", context),
+              _buildIconwithText("Service Provider", "vendors", context),
               SizedBox(
                 height: 30.h,
               ),

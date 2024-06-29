@@ -39,7 +39,7 @@ class _nameState extends State<Vendors> {
         appBar: AppBar(
           titleSpacing: 0,
           elevation: 0.1,
-          title: Text("Vendors"),
+          title: Text("Service Provider"),
           actions: [
             IconButton(
                 onPressed: () {},
@@ -58,44 +58,44 @@ class _nameState extends State<Vendors> {
         //     ),
         //   ),
         // ),
-        // body: Column(
-        //   children: [
-        //     SizedBox(
-        //       height: 10.h,
-        //     ),
-        //     if (vendorList.isNotEmpty)
-        //       Expanded(
-        //           child: ListView.builder(
-        //         itemCount: vendorList.length,
-        //         itemBuilder: (context, index) {
-        //           return GestureDetector(
-        //             onTap: () {
-        //               Navigator.of(context).push(MaterialPageRoute(
-        //                   builder: (context) =>
-        //                       VendorsDetails(cat: vendorList[index]["category_id"])));
-        //             },
-        //             child: VendorCard(
-        //               vendor: vendorList[index],
-        //             ),
-        //           );
-        //         },
-        //       ))
-        //     else
-        //       Center(
-        //         child: CircularProgressIndicator(),
-        //       )
-        //   ],
-       // )
-      //  );
-       body: Center(
-        child: Container(
-          width: 260.w,
-          child: Lottie.network(
-            'https://lottie.host/86c8b48e-69f0-48a6-a6c6-b506bb45a9d0/ERZSLsvt2n.json',
+        body: Column(
+          children: [
+            SizedBox(
+              height: 10.h,
+            ),
+            if (vendorList.isNotEmpty)
+              Expanded(
+                  child: ListView.builder(
+                itemCount: vendorList.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      // Navigator.of(context).push(MaterialPageRoute(
+                      //     builder: (context) =>
+                      //         VendorsDetails(cat: vendorList[index]["category_id"])));
+                    },
+                    child: VendorCard(
+                      vendor: vendorList[index],
+                    ),
+                  );
+                },
+              ))
+            else
+              Center(
+                child: CircularProgressIndicator(),
+              )
+          ],
+       )
+       );
+      //  body: Center(
+      //   child: Container(
+      //     width: 260.w,
+      //     child: Lottie.network(
+      //       'https://lottie.host/86c8b48e-69f0-48a6-a6c6-b506bb45a9d0/ERZSLsvt2n.json',
             
-          ),
-        ),
-      ));
+      //     ),
+      //   ),
+      // ));
   }
 }
 

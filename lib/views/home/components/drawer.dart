@@ -7,6 +7,7 @@ import 'package:sica/theme/theme.dart';
 import 'package:sica/utils/config.dart';
 import 'package:sica/views/account_type.dart/account_type.dart';
 import 'package:sica/views/awards/awards.dart';
+import 'package:sica/views/funds/funds.dart';
 import 'package:sica/views/gallery/gallery_list.dart';
 import 'package:sica/views/login/login.dart';
 import 'package:sica/views/members/members.dart';
@@ -167,7 +168,17 @@ class _NavBarState extends State<NavBar> {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => const Vendors()));
                     },
-                    child: _buildIconwithText("Vendors", "vendors", context),
+                    child: _buildIconwithText("Service Provider", "vendors", context),
+                  ),
+                if (accountType == "1")
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const Funds()));
+                    },
+                    child: _buildIconwithText("Funds", "hand", context),
                   ),
 
                 SizedBox(
@@ -178,8 +189,8 @@ class _NavBarState extends State<NavBar> {
                 GestureDetector(
                   onTap: () {
                     Navigator.pop(context);
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => SelectReason()));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => SelectReason()));
                   },
                   child: _buildIconwithText("Support", "support", context),
                 ),
@@ -253,19 +264,22 @@ class _NavBarState extends State<NavBar> {
       padding: EdgeInsets.only(top: 18.h),
       child: Row(
         children: [
-          SvgPicture.asset(
-            "assets/icons/$svg.svg",
-            color: Theme.of(context).primaryColor,
-          ),
+          if (svg == "hand")
+            Icon(Icons.currency_rupee_rounded,
+                color: Theme.of(context).primaryColor, size: 20)
+          else
+            SvgPicture.asset(
+              "assets/icons/$svg.svg",
+              color: Theme.of(context).primaryColor,
+              height: 20,
+            ),
           SizedBox(
             width: 6.w,
           ),
           Text(
             text,
-            style: Theme.of(context)
-                .textTheme
-                .bodySmall!
-                .copyWith(fontSize: 15),
+            style:
+                Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 15),
           )
         ],
       ),

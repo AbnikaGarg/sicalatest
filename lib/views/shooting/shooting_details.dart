@@ -330,22 +330,22 @@ class _ShootingDopApprovalState extends State<ShootingDopApproval> {
                           SizedBox(
                             height: 10.h,
                           ),
-                          SizedBox(
-                            height: 20.h,
-                          ),
-                          Text(
-                            "Description",
-                            style: Theme.of(context).textTheme.headlineMedium,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          Text(
-                            "${widget.approval.notes}",
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
+                          // SizedBox(
+                          //   height: 20.h,
+                          // ),
+                          // Text(
+                          //   "Description",
+                          //   style: Theme.of(context).textTheme.headlineMedium,
+                          //   maxLines: 1,
+                          //   overflow: TextOverflow.ellipsis,
+                          // ),
+                          // SizedBox(
+                          //   height: 10.h,
+                          // ),
+                          // Text(
+                          //   "${widget.approval.notes}",
+                          //   style: Theme.of(context).textTheme.bodySmall,
+                          // ),
                         ],
                       ),
                     )

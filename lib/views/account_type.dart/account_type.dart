@@ -22,7 +22,7 @@ class _AccountTypeState extends State<AccountType> {
     "SICA Member",
   ];
 
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +59,7 @@ class _AccountTypeState extends State<AccountType> {
             //     fit: BoxFit.cover,
             //   ),
             // ),
-            SizedBox(height: 100.h),
+            SizedBox(height: 200),
             Text(
               "Welcome To",
               style: Theme.of(context)
@@ -88,15 +88,18 @@ class _AccountTypeState extends State<AccountType> {
                 fit: BoxFit.cover,
               ),
             ),
-            Image.asset(
-              "assets/images/line2.jpeg",
+             SizedBox(
+              height: 50.h,
+            ),
+            // Image.asset(
+            //   "assets/images/line2.jpeg",
 
-              // width: 100,
-              fit: BoxFit.cover,
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
+            //   // width: 100,
+            //   fit: BoxFit.cover,
+            // ),
+            // SizedBox(
+            //   height: 10.h,
+            // ),
             // ClipRRect(
             //   borderRadius: BorderRadius.all(Radius.circular(50)),
             //   child: Container(
@@ -133,36 +136,36 @@ class _AccountTypeState extends State<AccountType> {
             // //   textAlign: TextAlign.center,
             // // ),
 
-            Text(
-              "Select Account Type",
-              style: Theme.of(context)
-                  .textTheme
-                  .headlineLarge!
-                  .copyWith(fontSize: 18),
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: List.generate(
-                  accoutType.length,
-                  (index) => GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _selectedIndex = index;
-                          });
-                        },
-                        child: AccountTypeCard(
-                            index: index,
-                            image: index == 0
-                                ? "assets/images/2.png"
-                                : "assets/images/1.png",
-                            selectedIndex: _selectedIndex,
-                            accoutType: accoutType),
-                      )),
-            ),
-            Spacer(),
+            // Text(
+            //   "Select Account Type",
+            //   style: Theme.of(context)
+            //       .textTheme
+            //       .headlineLarge!
+            //       .copyWith(fontSize: 18),
+            // ),
+            // SizedBox(
+            //   height: 20.h,
+            // ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //   children: List.generate(
+            //       accoutType.length,
+            //       (index) => GestureDetector(
+            //             onTap: () {
+            //               setState(() {
+            //                 _selectedIndex = index;
+            //               });
+            //             },
+            //             child: AccountTypeCard(
+            //                 index: index,
+            //                 image: index == 0
+            //                     ? "assets/images/2.png"
+            //                     : "assets/images/1.png",
+            //                 selectedIndex: _selectedIndex,
+            //                 accoutType: accoutType),
+            //           )),
+            // ),
+          //  Spacer(),
             Center(
               child: RichText(
                 textAlign: TextAlign.center,
@@ -201,7 +204,7 @@ class _AccountTypeState extends State<AccountType> {
                       ),
                     );
                   },
-                  title: "Continue",
+                  title: "Sign In",
                   color: Theme.of(context).primaryColor,
                   textcolor: AppTheme.darkTextColor),
             ),

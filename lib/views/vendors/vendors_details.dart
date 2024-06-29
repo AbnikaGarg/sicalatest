@@ -61,7 +61,7 @@ class _nameState extends State<VendorsDetails> {
         appBar: AppBar(
           titleSpacing: 0,
           elevation: 0,
-          title: Text("Vendor"),
+          title: Text("Service Provider"),
           // actions: [
           //   IconButton(
           //       onPressed: () {
